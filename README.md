@@ -1,9 +1,7 @@
 # Espy
-Espy app
 
-**Project Name**  
-**Team Name**  
-**Team Members**  
+**Team-Espy**  
+**Jose Garcia, Elvis Boves, Marbella Vidals, Vanice Yee**  
 
 ## The Problem 
 Describe the problem that your app will address. This does not need to be a novel idea or product, but your app should not directly recreate an existing product. If you are basing the app on an existing product, there should be some edge to your design or feature that solves a problem with that existing product.   
