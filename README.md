@@ -4,7 +4,7 @@
 **Jose Garcia, Elvis Boves, Marbella Vidals, Vanice Yee**  
 
 ## The Problem 
-Describe the problem that your app will address. This does not need to be a novel idea or product, but your app should not directly recreate an existing product. If you are basing the app on an existing product, there should be some edge to your design or feature that solves a problem with that existing product.   
+Often times you're recommended places to visit and things to do whether it's eating at a restaurant, reading a book, having a drink at a bar or watching a movie but with a busy schedule you tend to forget about those things and never get around to them. It would be nice if you had a tool that would remind you to do those things. Espy is the tool for this problem. Add the things you want to do into your Espy list and you'll be reminded once per week to try something on your list. If you're out and about in the city and happen to be near a place that's on your list, Espy will notify you it's nearby.
 
 In this section, please frame the issue with supporting statistics about the need (market size, competitors, use cases). You should fully think through your user - who is your user? Why do they need this app? How are they using it?   
 
