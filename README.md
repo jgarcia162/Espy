@@ -9,16 +9,24 @@ Often times you're recommended places to visit and things to do whether it's eat
 In this section, please frame the issue with supporting statistics about the need (market size, competitors, use cases). You should fully think through your user - who is your user? Why do they need this app? How are they using it?   
 
 ## The Solution 
-It would be nice if you had a tool that would remind you to do those things. Espy is the tool for this problem. Add the things you want to do into your Espy list and you'll be reminded once per week to try something on your list. If you're out and about in the city and happen to be near a place that's on your list, Espy will notify you it's nearby. Enter your home, work and school address and Espy will mark down the places that are near your usual route so you can try that new coffee shop instead of the usual pre-work Starbucks!
+An app that reminds you to do those things you were recommended by alerting you when your nearby. Espy adds the things you want to do into a list and you'll be reminded once per week to try something on your list. If you're out and about in the city and happen to be near a place that's on your list, Espy will notify you it's nearby. For example, using your home, work and school addresses and Espy will mark down the places that are near your usual route so you can try that new coffee shop instead of the usual pre-work Starbucks!
 
-Please provide a detailed description of the app here. Map out how the app solves the problem described in section I. You should also include:
-  *  Baseline features you plan to implement by Demo 1 (what + why).
-  *  Reminder notifications to do these things
+Detailed description of the app:. Map out how the app solves the problem described in section I. You should also include:
+
+  Baseline features planned to implement by Demo 1 (what + why):
+  *  Reminder notifications to do things on your list
   *  Location tracking to tell you if you're near a place
-  *  Bonus features you plan to implement if baseline features are completed in time (what + why).
-  *  A wireframe of the app. 
+  
+  Bonus features you plan to implement if baseline features are completed in time (what + why):
+  *  Amazon API will alert users if an item on their list such as a book is on sale
+  *  Social media (twitter, instagram, facebook) to notify user's contacts of things user is doing or to find/post        recommendations etc.  
+  
+ Wireframe of the app: 
 
 ## Execution
-Please describe how you will build this app. Include: 
+
+[Project Plan] (https://docs.google.com/spreadsheets/d/1n4XtthaWqkg7YvaTfJZwC9Fc10RKd4JLr4HaUtYAh1c/edit?usp=sharing)
+
+
   *  A detailed timeline for building the product, broken out by weekly sprints. Implement the training from the [Project Management workshop](https://github.com/accesscode-2-1/unit-3/blob/master/lessons/16_ProjectManagement.md) to plan your sprints and outline which features you want to build out over the next 4 weeks. Think about the user stories you would frame your sprints around. *Projects should be planned to complete the build by Demo 1 on September 1, 2015.*  
   *  A breakdown of team member responsibilities. Team members should take ownership over a specific feature or aspect of the app.   
