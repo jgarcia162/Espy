@@ -8,6 +8,12 @@ import android.view.MenuItem;
 
 public class EspyMain extends ActionBarActivity {
 
+//   Client id
+//    GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ
+
+//    Client secret
+//    4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
