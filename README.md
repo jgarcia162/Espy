@@ -15,12 +15,12 @@ An app that reminds you to do those things you were recommended by alerting you 
 
 Detailed description of the app:. Map out how the app solves the problem described in section I. You should also include:
 
-  #Baseline features planned to implement by Demo 1 (what + why):
+  *Baseline features planned to implement by Demo 1 (what + why):*
   *  Customizable reminder notifications so user has control of how often they would like to be reminded to look at their list
   *  Location tracking to determine when the user is near a location
   *  Search bar to find places on your list or recommended places
   
-  #Bonus features you plan to implement if baseline features are completed in time (what + why):
+  *Bonus features you plan to implement if baseline features are completed in time (what + why):*
   *  Use Amazon API to alert users if an item on their list such as a book is on sale
   *  Implement OMDB to find movies and tv shows 
   *  Social media (twitter, instagram, facebook) to notify user's contacts of things user is doing or to find/post        recommendations etc.  
