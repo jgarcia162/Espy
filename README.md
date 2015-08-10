@@ -19,6 +19,7 @@ Baseline features planned to implement by Demo 1 (what + why):
   *  Customizable reminder notifications so user has control of how often they would like to be reminded to look at their list
   *  Location tracking to determine when the user is near a location
   *  Search bar to find places on your list or recommended places
+  *  Firebase Database to store information for offline use, will sync automatically when internet is available
   
 Bonus features you plan to implement if baseline features are completed in time (what + why):
   *  Use Amazon API to alert users if an item on their list such as a book is on sale
