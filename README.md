@@ -7,7 +7,7 @@
 
 Often times you're recommended places to visit and things to do whether it's eating at a restaurant, reading a book, having a drink at a bar or watching a movie but with a busy schedule you tend to forget about those things and never get around to them. 
 
-Our users are modern day people who use technology on a daily base. Our goal is to manage information overload from friends, family or coworkers' reccomendations. Espy is a simple and organized app to managed these activties. As of right now there are no known apps that organize events and activites simulanetously using geolocation reminders. 
+Our users are modern day people who use technology on a daily base. Our goal is to manage information overload from friends, family or coworkers' reccomendations. Espy is a simple and organized app to managed these activties. As of right now there are no known apps that organize events and activites simulanetously using geolocation reminders. Unlike Google Keep and Evernote that save items and to-do lists, Espy will focus on saving venues, events, things to do around the city and will notify users of exploring these recommended events when nearby  and/or on a weekly/bi-weekly basis. 
 
 [Outline of problem]  (https://docs.google.com/document/d/1xEwsq84LiiHmpbS7On1YMXngnqEUJ9EmwHR-CCjF3Zc/edit#)
 
