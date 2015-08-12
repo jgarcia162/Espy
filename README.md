@@ -34,7 +34,7 @@ Detailed description of the app:. Map out how the app solves the problem describ
 
 [Project Plan] (https://docs.google.com/spreadsheets/d/1n4XtthaWqkg7YvaTfJZwC9Fc10RKd4JLr4HaUtYAh1c/edit?usp=sharing)
 
-Jose - Building Database and location tracking
-Marbella - Building Adapters, ListViews, and Notifications
-Vanice - UX
-Elvis - Parsing information
+Jose - Building Database and location tracking      
+Marbella - Building Adapters, ListViews, and Notifications      
+Vanice - UX      
+Elvis - Parsing information       
