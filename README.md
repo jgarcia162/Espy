@@ -18,15 +18,23 @@ An app that reminds you to do those things you were recommended by alerting you 
 Detailed description of the app:. Map out how the app solves the problem described in section I. You should also include:
 
   Baseline features planned to implement by Demo 1 (what + why):
-  *  Reminder notifications to do things on your list
-  *  Location tracking to tell you if you're near a place
+  *  Customizable reminder notifications so user has control of how often they would like to be reminded to look at their list
+  *  Location tracking to determine when the user is near a location
+  *  Search bar to find places on your list or recommended places
+  *  Firebase Database to store information for offline use, will sync automatically when internet is available
   
   Bonus features you plan to implement if baseline features are completed in time (what + why):
   *  Amazon API will alert users if an item on their list such as a book is on sale
+  *  Implement OMDB to find movies and tv shows
   *  Social media (twitter, instagram, facebook) to notify user's contacts of things user is doing or to find/post        recommendations etc.  
   
- Wireframe of the app: 
+ [Wireframe of the app] (https://marvelapp.com/5d95c7)
 
 ## Execution
 
 [Project Plan] (https://docs.google.com/spreadsheets/d/1n4XtthaWqkg7YvaTfJZwC9Fc10RKd4JLr4HaUtYAh1c/edit?usp=sharing)
+
+Jose - Building Database and location tracking
+Marbella - Building Adapters, ListViews, and Notifications
+Vanice - UX
+Elvis - Parsing information
