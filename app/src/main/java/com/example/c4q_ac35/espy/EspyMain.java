@@ -64,11 +64,14 @@ public class EspyMain extends ActionBarActivity {
         //update child by using setValue
         myFireBase.child("List View").setValue(mArrayList);
 
-        myFireBase.child("message").setValue("Do you have data, you'll love Firebase!");
         myFireBase.child("message").child("second message").child("third message").setValue("wow another message");
         myFireBase.child("message").child("second message").child("fourth message").setValue("OMG ANOTHER ONE!");
+        myFireBase.child("second child").setValue("this is a second child of Espy");
+        // adding a child to an object replaces that object's value with that child
+        myFireBase.child("second child").child("second child message").setValue("this is a child of the second child");
 
-        myFireBase.child("message").addValueEventListener(new ValueEventListener() {
+        // must follow tree to retrieve specific data
+        myFireBase.child("message").child("second message").child("fourth message").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mTesting.setText(dataSnapshot.getValue().toString());
