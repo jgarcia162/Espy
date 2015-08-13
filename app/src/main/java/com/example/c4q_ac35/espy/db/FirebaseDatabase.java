@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class FirebaseDatabase {
 
-    Firebase myFireBase = new Firebase("https://blinding-torch-1145.firebaseio.com/");
+    Firebase myFireBase = new Firebase("https://espy.firebaseio.com/");
 
     public void addUser(String username){
         myFireBase.child(username);
