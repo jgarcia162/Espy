@@ -7,9 +7,13 @@ import java.util.List;
 /**
  * Created by c4q-ac35 on 8/13/15.
  */
-public class FirebaseDatabase {
+public class FirebaseDatabase extends Firebase{
 
     Firebase myFireBase = new Firebase("https://espy.firebaseio.com/");
+
+    public FirebaseDatabase(String url) {
+        super(url);
+    }
 
     public void addUser(String username){
         myFireBase.child(username);
