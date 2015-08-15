@@ -1,13 +1,15 @@
 package com.example.c4q_ac35.espy;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 
 public class EspyMain extends ActionBarActivity {
@@ -18,6 +20,9 @@ public class EspyMain extends ActionBarActivity {
     EspyMapFragment espyMapFragment;
     MapActivity mapActivity;
     Button mapButton;
+    private ImageButton mButtonSearch;
+    private EditText mEditTextZipCode;
+    String zipCode;
 
 
     @Override
@@ -33,6 +38,27 @@ public class EspyMain extends ActionBarActivity {
             public void onClick(View v) {
                 Intent viewMap = new Intent(EspyMain.this,MapActivity.class);
                 startActivity(viewMap);
+            }
+        });
+        mButtonSearch = (ImageButton) findViewById(R.id.searchbt);
+        mEditTextZipCode = (EditText) findViewById(R.id.zipcode_final);
+
+        mButtonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                zipCode = mEditTextZipCode.getText().toString();
+
+                SharedPreferences info;
+                info = EspyMain.this.getSharedPreferences("PREFS_NAME", 0);
+                SharedPreferences.Editor editor = info.edit();
+
+                editor.putString("zipcode", zipCode);
+
+                Intent intent = new Intent(EspyMain.this, SearchResultsActivity.class);
+                intent.putExtra("zipcode", zipCode);
+                startActivity(intent);
+
             }
         });
     }
