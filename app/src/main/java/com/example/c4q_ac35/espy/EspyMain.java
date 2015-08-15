@@ -1,5 +1,6 @@
 package com.example.c4q_ac35.espy;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -94,6 +95,8 @@ public class EspyMain extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent( EspyMain.this, SettingActivity.class);
+            EspyMain.this.startActivity(settingsIntent);
             return true;
         }
 

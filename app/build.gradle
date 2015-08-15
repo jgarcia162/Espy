@@ -31,4 +31,6 @@ dependencies {
     compile 'com.firebase:geofire:1.1.0+'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.google.android.gms:play-services-maps:7.5.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }
