@@ -17,9 +17,10 @@ public class WelcomeBackActivity extends AppCompatActivity{
     @Bind(R.id.listbt) ImageButton listBt;
 
     @OnClick(R.id.mapModebt) void showMap() {
-        Intent goMapFragement = new Intent(WelcomeBackActivity.this, MapFragment.class);
+        Intent goMapFragement = new Intent(WelcomeBackActivity.this, EspyMain.class);
         startActivity(goMapFragement);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
