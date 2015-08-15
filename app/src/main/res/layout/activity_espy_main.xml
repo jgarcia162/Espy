@@ -7,28 +7,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
+    android:id="@+id/container"
     tools:context=".EspyMain">
 
-    <android.support.v4.view.ViewPager
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/pager"
+    <Button
+        android:id="@+id/map_button"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v4.view.PagerTabStrip
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:id="@+id/tabs">
-
-
-        </android.support.v4.view.PagerTabStrip>
-
-    </android.support.v4.view.ViewPager>
-
-    <ListView
-        android:id="@+id/list_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="wrap_content"
+        android:text="View Map"/>
 
 </LinearLayout>
