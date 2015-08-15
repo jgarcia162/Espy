@@ -1,11 +1,8 @@
 package com.example.c4q_ac35.espy;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.TextView;import java.lang.Override;import java.lang.String;import eboves.c4q.nyc.practiceespyfinal.R;
+import android.support.v7.app.ActionBarActivity;
+import android.widget.TextView;
 
 
 public class PlaceInf extends ActionBarActivity {

@@ -6,7 +6,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;import java.lang.Override;
+import android.widget.EditText;
+import java.lang.Override;
 import java.lang.String;
 
 

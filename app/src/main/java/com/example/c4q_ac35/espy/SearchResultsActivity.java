@@ -1,18 +1,19 @@
 package com.example.c4q_ac35.espy;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.lang.Override;import java.lang.String;import java.util.List;
-
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
-import eboves.c4q.nyc.practiceespyfinal.R;import retrofit.Callback;
+
+import java.util.List;
+
+import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.android.AndroidLog;
