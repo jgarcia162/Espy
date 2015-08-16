@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:orientation="vertical"
+                android:background="#6CCECB"
+                tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="@string/name"/>
+
+        <TextView
+            android:id="@+id/nameInstruction"
+            android:text="@string/nameInstru"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:hint="@string/home_address"/>
+
+
+
+        <TextView
+            android:id="@+id/homeInstruction"
+            android:text="@string/homeInstru"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:hint="@string/Work_Address"/>
+
+        <TextView
+            android:id="@+id/WorkInstruction"
+            android:text="@string/workInstru"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:hint="@string/school_Address"/>
+
+
+        <TextView
+            android:id="@+id/SchoolInstruction"
+            android:text="@string/schoolInstru"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/ErrorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/submit"
+        android:id="@+id/firstSubmit"
+        android:layout_marginBottom="28dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+
+</RelativeLayout>

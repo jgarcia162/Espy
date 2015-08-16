@@ -42,8 +42,8 @@ public class CustomeAdapter extends ArrayAdapter<Venue> {
 
         Venue venue = mVenueses[position];
 
-       name.setText(venue.getName());
-       address.setText(venue.getLocation().getCity());
+        name.setText(venue.getName());
+        address.setText(venue.getLocation().getCity());
         phone.setText(venue.getContact().phone);
 
         Log.w("TAG", "Called");
