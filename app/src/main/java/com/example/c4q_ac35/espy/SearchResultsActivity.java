@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
@@ -22,6 +23,7 @@ import retrofit.client.Response;
 
 public class SearchResultsActivity extends ActionBarActivity {
 
+    EditText searchBar;
     private ListView mListViewSearchResult;
     private CustomeAdapter adapter;
 
@@ -37,6 +39,8 @@ public class SearchResultsActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
+
+        searchBar = (EditText) findViewById(R.id.search_bar);
 
         mListViewSearchResult = (ListView) findViewById(R.id.search_list_final);
 

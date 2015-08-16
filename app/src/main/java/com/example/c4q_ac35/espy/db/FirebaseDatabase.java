@@ -1,6 +1,9 @@
 package com.example.c4q_ac35.espy.db;
 
+import android.content.Context;
+
 import com.firebase.client.Firebase;
+import com.firebase.geofire.GeoFire;
 
 import java.util.List;
 
@@ -9,7 +12,7 @@ import java.util.List;
  */
 public class FirebaseDatabase extends Firebase{
 
-    Firebase myFireBase = new Firebase("https://espy.firebaseio.com/");
+   public Firebase myFireBase = new Firebase("https://espy.firebaseio.com/");
 
     public FirebaseDatabase(String url) {
         super(url);
