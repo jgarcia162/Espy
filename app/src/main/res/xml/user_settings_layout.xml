@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+                         android:title="Main">
+    <SwitchPreference
+                         android:title="Enable Notifications"
+                         android:key="EnabledNotif"
+                         android:summary="Check to enable Notification Settings"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+                        android:title="Notification Settings"/>
+    <CheckBoxPreference android:title="Weekly"
+                        android:key="EnabledWeekly"
+                        android:dependency="EnabledNotif"/>
+    <CheckBoxPreference android:title="Bi-Weekly"
+                        android:key="EnabledBi-Weekly"
+                        android:dependency="EnabledNotif"/>
+    <RingtonePreference android:title="Ringtone Preference"
+                        android:summary="Select Ringtone"
+                        android:ringtoneType="all"
+                        android:key="Ringtone"
+                        android:dependency="EnabledNotif"/>
+    <PreferenceCategory
+                        android:title="Edit Addresses">
+    <EditTextPreference android:title="Home Address"
+                        android:key="Home"
+                        android:summary="Enter your home address"
+                        android:dialogTitle="Enter Home Address"/>
+    <EditTextPreference android:title="Work Address"
+                        android:key="Work"
+                        android:summary="Enter your work address"
+                        android:dialogTitle="Enter Work Address"/>
+    <EditTextPreference android:title="Other Address"
+                        android:key="Other"
+                        android:summary="Enter your other address"
+                        android:dialogTitle="Enter other Address"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+                        android:title="About"/>
+</PreferenceScreen>

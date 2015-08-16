@@ -10,4 +10,6 @@
         <item>Two Things</item>
         <item>Three Things</item>
     </string-array>
+    <string name="title_activity_welcome_back">WelcomeBackActivity</string>
+    <string name="title_activity_setting">SettingActivity</string>
 </resources>
