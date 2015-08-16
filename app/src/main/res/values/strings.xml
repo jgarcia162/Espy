@@ -4,6 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="espy">Espy</string>
+    <string name="entering_geofence">Entered Geofence</string>
 
     <string-array name="array">
         <item>One Thing</item>

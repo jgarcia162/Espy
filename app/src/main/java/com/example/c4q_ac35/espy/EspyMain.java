@@ -14,16 +14,15 @@ import android.widget.ImageButton;
 
 public class EspyMain extends ActionBarActivity {
     private static final String CLIENT_ID ="GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
-
     private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
+    private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
 
     EspyMapFragment espyMapFragment;
     MapActivity mapActivity;
-    Button mapButton;
+    ImageButton mapButton;
     private ImageButton mButtonSearch;
     private EditText mEditTextZipCode;
     String zipCode;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +31,7 @@ public class EspyMain extends ActionBarActivity {
 
         espyMapFragment = new EspyMapFragment();
         mapActivity = new MapActivity();
-        mapButton = (Button) findViewById(R.id.map_button);
+        mapButton = (ImageButton) findViewById(R.id.map_button);
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,13 +46,12 @@ public class EspyMain extends ActionBarActivity {
             @Override
             public void onClick(View view) {
 
-                zipCode = mEditTextZipCode.getText().toString();
 
-                SharedPreferences info;
-                info = EspyMain.this.getSharedPreferences("PREFS_NAME", 0);
-                SharedPreferences.Editor editor = info.edit();
-
-                editor.putString("zipcode", zipCode);
+//                SharedPreferences info;
+//                info = EspyMain.this.getSharedPreferences("PREFS_NAME", 0);
+//                SharedPreferences.Editor editor = info.edit();
+//
+//                editor.putString("zipcode", zipCode);
 
                 Intent intent = new Intent(EspyMain.this, SearchResultsActivity.class);
                 intent.putExtra("zipcode", zipCode);
@@ -85,4 +83,5 @@ public class EspyMain extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

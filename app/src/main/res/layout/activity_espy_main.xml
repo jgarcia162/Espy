@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,13 +10,8 @@
     android:id="@+id/container"
     tools:context=".EspyMain">
 
-    <Button
-        android:id="@+id/map_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="View Map"/>
     <TextView
-        android:text="Welcome Back!"
+        android:text="Welcome to Espy!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/welcomeText"
@@ -39,7 +34,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/mapModebt"
+        android:id="@+id/map_button"
         android:src="@android:drawable/ic_menu_mapmode"
         android:layout_alignTop="@+id/listbt"
         android:layout_alignRight="@+id/welcomeText"
@@ -53,4 +48,4 @@
         android:layout_marginTop="57dp"
         android:layout_below="@+id/listbt"
         android:layout_centerHorizontal="true"/>
-</LinearLayout>
+</RelativeLayout>

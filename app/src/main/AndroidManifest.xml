@@ -28,6 +28,7 @@
             android:name=".MapActivity"
             android:label="Map">
         </activity>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -43,6 +44,8 @@
             android:name=".SettingActivity"
             android:label="@string/title_activity_setting" >
         </activity>
+        <activity android:name=".SearchResultsActivity"
+            android:label="SearchResultsActivity"/>
     </application>
 
 </manifest>
