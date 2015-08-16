@@ -1,24 +1,118 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    tools:context=".EspyMain">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/espy"
-        android:textSize="32sp"/>
-    <TextView
-        android:id="@+id/testing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="32sp"/>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:orientation="vertical"
+                android:background="#6CCECB"
+                tools:context=".MainActivity">
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout">
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/EditTextStandard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/nameText">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="@string/name"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/nameInstruction"
+            android:text="@string/nameInstru"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/EditTextStandard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/homeText">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:hint="@string/home_address"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/homeInstruction"
+            android:text="@string/homeInstru"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/EditTextStandard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/workText">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:hint="@string/Work_Address"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/WorkInstruction"
+            android:text="@string/workInstru"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/EditTextStandard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/schoolText">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:hint="@string/school_Address"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/SchoolInstruction"
+            android:text="@string/schoolInstru"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/ErrorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <Button
+        style="@style/ButtonStandard"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/submit"
+        android:id="@+id/firstSubmit"
+        android:layout_marginBottom="28dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+
+</RelativeLayout>

@@ -21,28 +21,6 @@ public class EspyMain extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_espy_main);
 
-        mTextView = (TextView) findViewById(R.id.textView);
-        mTesting = (TextView) findViewById(R.id.testing);
-
-
-        // TESTING FIREBASE CONNECTION
-        Firebase.setAndroidContext(this);
-
-        Firebase myFireBase = new Firebase("https://blinding-torch-1145.firebaseio.com/");
-
-        myFireBase.child("message").setValue("Do you have data, you'll love Firebase!");
-
-        myFireBase.child("message").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mTesting.setText(dataSnapshot.getValue().toString());
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
     }
 
 
@@ -53,18 +31,4 @@ public class EspyMain extends ActionBarActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

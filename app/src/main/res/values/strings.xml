@@ -3,5 +3,14 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="espy">Espy</string>
+    <string name="name">Name</string>
+    <string name="home_address">Home Address</string>
+    <string name="Work_Address">Work Address</string>
+    <string name="submit">Submit</string>
+    <string name="school_Address">School Address</string>
+    <string name="nameInstru">Enter full name.</string>
+    <string name="homeInstru">Enter full home address with zip code.</string>
+    <string name="workInstru">Enter full work address with zip code.</string>
+    <string name="schoolInstru">Enter full school address with zip code.</string>
+    <string name="search">Search</string>
 </resources>
