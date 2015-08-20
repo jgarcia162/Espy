@@ -23,4 +23,5 @@
     <string name="workInstru">Enter full work address with zip code.</string>
     <string name="schoolInstru">Enter full school address with zip code.</string>
     <string name="search">Search</string>
+    <string name="title_activity_user_inital_set">UserInitalSetActivity</string>
 </resources>
