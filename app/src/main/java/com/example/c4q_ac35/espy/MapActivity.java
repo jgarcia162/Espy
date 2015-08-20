@@ -47,7 +47,6 @@ public class MapActivity extends FragmentActivity {
 
         createMap();
 
-
         //Falchi
         double lat = 40.742729;
         double lon = -73.935181;
@@ -84,9 +83,6 @@ public class MapActivity extends FragmentActivity {
 //
 //            }
 //        });
-
-
-
 
     }
 
