@@ -24,11 +24,13 @@ import java.util.List;
 /**
  * Created by c4q-ac35 on 8/12/15.
  */
-public class EspyMapFragment extends SupportMapFragment implements GoogleApiClient.ConnectionCallbacks , GoogleApiClient.OnConnectionFailedListener{
+
+public class EspyMapFragment extends SupportMapFragment implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener{
     GoogleMap googleMap;
     GoogleApiClient mGoogleApiClient;
     Location myLocation;
-    List<Geofence> mGeofenceList;
+    List<EspyGeofence> mGeofenceList;
+    ArrayList<Location> mListOfLocations;
     float GEOFENCE_RADIUS_IN_METERS = 1000;
 
     @Override
@@ -38,6 +40,8 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
         googleMap = getMap(); // loads map
         googleMap.setMyLocationEnabled(true); //finds current location
 
+     
+
         // Calls location service within context
 
         double lat = 40.722695;
@@ -45,12 +49,54 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
 
         //Geofence.Builder falchiGeofence = new
 
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        Criteria criteria = new Criteria();
+
+       String provider = locationManager.getBestProvider(criteria, true);
+
+        //Falchi Coordinates
+        double falchiLat = 40.742676;
+        double falchiLong = -73.935182;
+
+        double riceLat = 40.721840;
+        double riceLong = -73.995774;
+
+        float geofenceRadius = 100;
+
+        //Create geofence objects
+        EspyGeofence falchi = new EspyGeofence("Falchi",falchiLat,falchiLong,geofenceRadius,Constants.GEOFENCE_EXPIRATION_TIME,Geofence.GEOFENCE_TRANSITION_ENTER|Geofence.GEOFENCE_TRANSITION_EXIT);
+
+        EspyGeofence rice = new EspyGeofence("Rice To Riches", riceLat, riceLong,geofenceRadius,Constants.GEOFENCE_EXPIRATION_TIME,Geofence.GEOFENCE_TRANSITION_ENTER|Geofence.GEOFENCE_TRANSITION_EXIT);
+
+        //Build geofences
+        rice.toGeofence();
+        falchi.toGeofence();
+
+        //Add geofences to geofence list
+//        mGeofenceList.add(rice);
+//        mGeofenceList.add(falchi);
+
+        //add location marker to map
         Marker marker = googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(lat,lon))
+                .position(new LatLng(riceLat,riceLong))
                 .title("Rice To Riches"));
         marker.setSnippet("Phone Number: (212) 274-0008");
         marker.isInfoWindowShown();
 
+//        //Loop for setting markers and geofences for each location in list
+//        for(Location location : mListOfLocations ){
+//            double lat = location.getLatitude();
+//            double lon = location.getLongitude();
+//            EspyGeofence locationFence = new EspyGeofence(location.getName().toString(),lat,lon,geofenceRadius,Constants.GEOFENCE_EXPIRATION_TIME,Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_DWELL | Geofence.GEOFENCE_TRANSITION_EXIT);
+//            locationFence.toGeofence();
+//
+//            Marker locationMarker = googleMap.addMarker(new MarkerOptions()
+//                    .position(new LatLng(location.getLatitude(),location.getLongitude()))
+//                    .title(location.getName()));
+//            locationMarker.setSnippet("Phone NUmber: " + location.getPhone().toString());
+//            locationMarker.isInfoWindowShown();
+//        }
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -82,7 +128,6 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
 
     }
 
-    @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }

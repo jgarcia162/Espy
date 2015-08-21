@@ -11,8 +11,8 @@ import android.widget.ImageButton;
 
 
 public class EspyMain extends ActionBarActivity {
-    private static final String CLIENT_ID ="GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
-    private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
+    private static final String CLIENT_ID ="GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ"; //foursquare
+    private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY"; //foursquare
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
 
     EspyMapFragment espyMapFragment;

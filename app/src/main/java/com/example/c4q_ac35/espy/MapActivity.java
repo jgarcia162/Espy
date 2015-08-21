@@ -12,8 +12,10 @@ import com.example.c4q_ac35.espy.db.FirebaseDatabase;
 import com.firebase.client.Firebase;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.List;
 
@@ -23,9 +25,9 @@ import java.util.List;
  * FOR TESTING PURPOSES
  */
 
-public class MapActivity extends FragmentActivity {
+public class MapActivity extends FragmentActivity{
     Button home;
-    GoogleApiClient mGoogleApiClient;
+
     Geofence.Builder geofence;
     List<Geofence> mGeofenceList;
     PendingIntent mGeofencePendingIntent;

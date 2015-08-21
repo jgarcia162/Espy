@@ -46,6 +46,10 @@
         </activity>
         <activity android:name=".SearchResultsActivity"
             android:label="SearchResultsActivity"/>
+        <service
+            android:name=".GeofenceTransitionsIntentService"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>
