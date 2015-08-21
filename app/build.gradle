@@ -11,11 +11,27 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+ signingConfigs {
+        debug {
+            storeFile new File(getRootDir(), "debug.keystore")
+            storePassword "123456"
+            keyAlias "elvis"
+            keyPassword "123456"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
         }
+
+debug {
+            signingConfig signingConfigs.debug
+        }
+
     }
     packagingOptions {
         exclude 'META-INF/LICENSE'
