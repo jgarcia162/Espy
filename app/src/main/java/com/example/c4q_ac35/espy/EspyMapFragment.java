@@ -105,6 +105,7 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+        mGoogleApiClient.connect();
     }
 
     @Override

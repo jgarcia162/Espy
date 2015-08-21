@@ -3,11 +3,18 @@ package com.example.c4q_ac35.espy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 public class EspyMain extends ActionBarActivity {
@@ -17,33 +24,44 @@ public class EspyMain extends ActionBarActivity {
 
     EspyMapFragment espyMapFragment;
     MapActivity mapActivity;
-    ImageButton mapButton;
-    private ImageButton mButtonSearch;
-    private EditText mEditTextZipCode;
-    String zipCode;
+
+    @Bind(R.id.listbt) ImageButton listBt;
+    @Bind(R.id.map_button)ImageButton mapBt;
+    @Bind(R.id.searchbt) ImageButton searchBt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_espy_main);
+        ButterKnife.bind(this);
+
+        if (!isGooglePlayServicesAvailable()) {
+            finish();
+            return;
+        }
 
         espyMapFragment = new EspyMapFragment();
         mapActivity = new MapActivity();
-        mapButton = (ImageButton) findViewById(R.id.map_button);
-        mapButton.setOnClickListener(new View.OnClickListener() {
+
+        mapBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent viewMap = new Intent(EspyMain.this,MapActivity.class);
                 startActivity(viewMap);
             }
         });
-        mButtonSearch = (ImageButton) findViewById(R.id.searchbt);
-        mEditTextZipCode = (EditText) findViewById(R.id.zipcode_final);
 
-        mButtonSearch.setOnClickListener(new View.OnClickListener() {
+        listBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(EspyMain.this, UserInitalSetActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        searchBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
 //                SharedPreferences info;
 //                info = EspyMain.this.getSharedPreferences("PREFS_NAME", 0);
@@ -52,12 +70,14 @@ public class EspyMain extends ActionBarActivity {
 //                editor.putString("zipcode", zipCode);
 
                 Intent intent = new Intent(EspyMain.this, SearchResultsActivity.class);
-                intent.putExtra("zipcode", zipCode);
                 startActivity(intent);
 
             }
         });
     }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -80,6 +100,16 @@ public class EspyMain extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isGooglePlayServicesAvailable() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (ConnectionResult.SUCCESS == resultCode) {
+            return true;
+        } else {
+            Toast.makeText(this,"Google Play services is unavailable",Toast.LENGTH_LONG);
+            return false;
+        }
     }
 
 }

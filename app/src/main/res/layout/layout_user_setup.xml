@@ -17,11 +17,20 @@
         android:orientation="vertical"
         android:id="@+id/linearLayout">
 
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/EditTextStandard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/nameText">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:hint="@string/name"/>
+
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:id="@+id/nameInstruction"
@@ -29,13 +38,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <android.support.design.widget.TextInputLayout
+            style="@style/EditTextStandard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/homeText">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPostalAddress"
                 android:hint="@string/home_address"/>
 
-
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:id="@+id/homeInstruction"
@@ -43,11 +58,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <android.support.design.widget.TextInputLayout
+            style="@style/EditTextStandard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/workText">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPostalAddress"
                 android:hint="@string/Work_Address"/>
+
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:id="@+id/WorkInstruction"
@@ -55,12 +78,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <android.support.design.widget.TextInputLayout
+            style="@style/EditTextStandard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/schoolText">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPostalAddress"
                 android:hint="@string/school_Address"/>
 
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:id="@+id/SchoolInstruction"
@@ -76,6 +106,7 @@
     </LinearLayout>
 
     <Button
+        style="@style/ButtonStandard"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/submit"
@@ -83,6 +114,5 @@
         android:layout_marginBottom="28dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"/>
-
 
 </RelativeLayout>

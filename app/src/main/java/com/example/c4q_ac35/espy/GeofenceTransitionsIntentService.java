@@ -13,8 +13,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
-import com.google.android.gms.wearable.PutDataMapRequest;
-import com.google.android.gms.wearable.Wearable;
+import com.google.android.gms.location.LocationServices;
+
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,10 +32,11 @@ public class GeofenceTransitionsIntentService extends IntentService implements G
     public void onCreate() {
         super.onCreate();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Wearable.API)
+                .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
+        mGoogleApiClient.connect();
     }
 
     /**
@@ -54,7 +55,7 @@ public class GeofenceTransitionsIntentService extends IntentService implements G
             int transitionType = geoFenceEvent.getGeofenceTransition();
             if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType) {
                 // Connect to the Google Api service in preparation for sending a DataItem.
-                mGoogleApiClient.blockingConnect(Constants.CONNECTION_TIME_OUT_MS, TimeUnit.MILLISECONDS);
+                //mGoogleApiClient.blockingConnect(Constants.CONNECTION_TIME_OUT_MS, TimeUnit.MILLISECONDS);
                 // Get the geofence id triggered. Note that only one geofence can be triggered at a
                 // time in this example, but in some cases you might want to consider the full list
                 // of geofences triggered.
@@ -62,15 +63,9 @@ public class GeofenceTransitionsIntentService extends IntentService implements G
                         .getRequestId();
                 // Create a DataItem with this geofence's id. The wearable can use this to create
                 // a notification.
-                final PutDataMapRequest putDataMapRequest =
-                        PutDataMapRequest.create(Constants.GEOFENCE_DATA_ITEM_PATH);
-                putDataMapRequest.getDataMap().putString(Constants.KEY_GEOFENCE_ID, triggeredGeoFenceId);
                 if (mGoogleApiClient.isConnected()) {
-                    Wearable.DataApi.putDataItem(
-                            mGoogleApiClient, putDataMapRequest.asPutDataRequest()).await();
                 } else {
-                    Log.e(Constants.TAG, "Failed to send data item: " + putDataMapRequest
-                            + " - Client disconnected from Google Play Services");
+
                 }
                 mGoogleApiClient.disconnect();
             } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {

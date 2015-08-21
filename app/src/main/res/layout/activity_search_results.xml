@@ -10,10 +10,12 @@
 
 
     <EditText
-        android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:hint="Search Venue"
+        android:id="@+id/search_bar"/>
+
+
     <TextView
         android:text="Results"
         android:layout_width="fill_parent"
