@@ -3,8 +3,6 @@ package com.example.c4q_ac35.espy;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -40,32 +38,32 @@ public class SearchResultsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
-        searchBar = (EditText) findViewById(R.id.search_bar);
+        searchBar = (EditText) findViewById(R.id.search_view);
 
-        mListViewSearchResult = (ListView) findViewById(R.id.search_list_final);
-
-        mListViewSearchResult.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (! resultsFound) {
-                    return;
-                }
-//                String name = responseAPI.getResponse().getVenues().get(i).getName();
-//                String phone = responseAPI.getResponse().getVenues().get(i).getContact().phone;
-//                String website = responseAPI.getResponse().getVenues().get(i).getUrl();
-//                String address = responseAPI.getResponse().getVenues().get(i).getLocation().getCity() + "\n"
-//                        + responseAPI.getResponse().getVenues().get(i).getLocation().getState();
+        mListViewSearchResult = (ListView) findViewById(R.id.listView);
 //
-//                Intent intent = new Intent(SearchResultsActivity.this, PlaceInf.class);
+//        mListViewSearchResult.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                if (! resultsFound) {
+//                    return;
+//                }
+////                String name = responseAPI.getResponse().getVenues().get(i).getName();
+////                String phone = responseAPI.getResponse().getVenues().get(i).getContact().phone;
+////                String website = responseAPI.getResponse().getVenues().get(i).getUrl();
+////                String address = responseAPI.getResponse().getVenues().get(i).getLocation().getCity() + "\n"
+////                        + responseAPI.getResponse().getVenues().get(i).getLocation().getState();
+////
+////                Intent intent = new Intent(SearchResultsActivity.this, PlaceInf.class);
+////
+////                intent.putExtra("name", name);
+////                intent.putExtra("phone", phone);
+////                intent.putExtra("address", address);
+////                intent.putExtra("website", website);
+////                startActivity(intent);
 //
-//                intent.putExtra("name", name);
-//                intent.putExtra("phone", phone);
-//                intent.putExtra("address", address);
-//                intent.putExtra("website", website);
-//                startActivity(intent);
-
-            }
-        });
+//            }
+//        });
 
 
         RestAdapter mRestAdapter = new RestAdapter.Builder()
@@ -103,7 +101,7 @@ public class SearchResultsActivity extends ActionBarActivity {
 
                 venuee = venueList.toArray(new Venue[venueList.size()]);
 
-                adapter = new CustomeAdapter(getApplicationContext(), R.layout.row_layout, venuee);
+                adapter = new CustomeAdapter(getApplicationContext(), R.layout.venue_layout, venuee);
                 mListViewSearchResult.setAdapter(adapter);
             }
             adapter.setVenueses(venuee);

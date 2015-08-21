@@ -2,42 +2,60 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                tools:context="com.example.c4q_ac35.espy.SearchResultsActivity">
+                android:paddingLeft="@dimen/activity_recycleH_margin"
+                android:paddingRight="@dimen/activity_recycleH_margin"
+                android:paddingTop="@dimen/activity_recycleV_margin"
+                android:paddingBottom="@dimen/activity_recycleV_margin"
+                android:orientation="vertical"
+                android:background="#6CCECB"
+                tools:context=".MainActivity">
 
-    <android.support.design.widget.TextInputLayout
-        style="@style/EditTextStandard"
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        contentInsetLeft="72dp"
+        contentInsetStart="72dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/search_bar">
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="5dp"
+        android:minHeight="?attr/actionBarSize"
+        app:contentInsetLeft="72dp"
+        app:contentInsetStart="72dp"
+        app:theme="@style/AppTheme">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Search Venue"
-        />
-    </android.support.design.widget.TextInputLayout>
+        <LinearLayout
+            android:id="@+id/search_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-    <TextView
-        android:text="Results"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:gravity="center"
-        android:id="@+id/results_search"
-        android:textColor="@android:color/black"
-        android:layout_below="@id/search_bar"/>
+            <EditText
+                android:id="@+id/search_view"
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="@string/search"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingLeft="5dp"
+                android:singleLine="true"
+                android:textColor="#ffffff"
+                android:textColorHint="#b3ffffff" />
+        </LinearLayout>
 
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/search_list_final"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/results_search">
+    </android.support.v7.widget.Toolbar>
 
-    </ListView>
+   <ListView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:id="@+id/listView">
+
+   </ListView>
 
 </RelativeLayout>

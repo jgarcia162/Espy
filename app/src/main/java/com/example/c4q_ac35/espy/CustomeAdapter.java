@@ -33,10 +33,10 @@ public class CustomeAdapter extends ArrayAdapter<Venue> {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
-        View view = inflater.inflate(R.layout.row_layout, parent, false);
-        TextView name = (TextView) view.findViewById(R.id.name);
-        TextView address = (TextView) view.findViewById(R.id.address);
-        TextView phone = (TextView) view.findViewById(R.id.phone);
+        View view = inflater.inflate(R.layout.venue_layout, parent, false);
+        TextView name = (TextView) view.findViewById(R.id.item_name);
+        TextView address = (TextView) view.findViewById(R.id.item_address);
+        TextView phone = (TextView) view.findViewById(R.id.item_phone);
 
        // name.setText(mVenueses[position].getName());
 
