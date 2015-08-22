@@ -1,5 +1,7 @@
 package com.example.c4q_ac35.espy;
 
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -12,18 +14,22 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class EspyMain extends ActionBarActivity {
+public class EspyMain extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
     private static final String CLIENT_ID ="GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ"; //foursquare
     private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY"; //foursquare
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
 
     EspyMapFragment espyMapFragment;
     MapActivity mapActivity;
+    GoogleApiClient mGoogleApiClient;
+    private PendingIntent mGeofencePendingIntent;
 
     @Bind(R.id.listbt) ImageButton listBt;
     @Bind(R.id.map_button)ImageButton mapBt;
@@ -39,6 +45,13 @@ public class EspyMain extends ActionBarActivity {
             finish();
             return;
         }
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        mGoogleApiClient.connect();
 
         espyMapFragment = new EspyMapFragment();
         mapActivity = new MapActivity();
@@ -76,8 +89,6 @@ public class EspyMain extends ActionBarActivity {
         });
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -107,9 +118,23 @@ public class EspyMain extends ActionBarActivity {
         if (ConnectionResult.SUCCESS == resultCode) {
             return true;
         } else {
-            Toast.makeText(this,"Google Play services is unavailable",Toast.LENGTH_LONG);
+            Toast.makeText(this, "Google Play services is unavailable", Toast.LENGTH_LONG);
             return false;
         }
     }
 
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
 }

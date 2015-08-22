@@ -5,7 +5,7 @@ import com.google.android.gms.location.Geofence;
 /**
  * Created by c4q-ac35 on 8/18/15.
  */
-public class EspyGeofence {
+public class EspyGeofence implements Geofence{
     // Instance variables
     private final String mId;
     private final double mLatitude;
@@ -65,5 +65,10 @@ public class EspyGeofence {
                 .setCircularRegion(mLatitude, mLongitude, mRadius)
                 .setExpirationDuration(mExpirationDuration)
                 .build();
+    }
+
+    @Override
+    public String getRequestId() {
+        return null;
     }
 }

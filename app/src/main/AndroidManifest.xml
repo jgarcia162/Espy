@@ -52,7 +52,7 @@
             android:label="Initial Setup"/>
         <service
             android:name=".GeofenceTransitionsIntentService"
-            android:exported="false">
+            android:exported="true">
         </service>
 
     </application>
