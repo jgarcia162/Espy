@@ -1,7 +1,9 @@
 package com.example.c4q_ac35.espy;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -19,19 +21,20 @@ import retrofit.android.AndroidLog;
 import retrofit.client.Response;
 
 
-public class SearchResultsActivity extends ActionBarActivity {
+public class SearchResultsActivity extends AppCompatActivity {
 
     EditText searchBar;
     private ListView mListViewSearchResult;
     private CustomeAdapter adapter;
-
     public static final String BASE_API = "https://api.foursquare.com/v2";
     public static final String TAG = "Main Activity";
-
     FourSquareAPI servicesFourSquare = null;
-    private Venue[] venuee = null;
-
+    public Venue[] venuee = null;
     private boolean resultsFound = false;
+
+    private RecyclerView mRecyclerView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class SearchResultsActivity extends ActionBarActivity {
 
         searchBar = (EditText) findViewById(R.id.search_view);
 
-        mListViewSearchResult = (ListView) findViewById(R.id.listView);
+        //mListViewSearchResult = (ListView) findViewById(R.id.listView);
 //
 //        mListViewSearchResult.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -64,6 +67,9 @@ public class SearchResultsActivity extends ActionBarActivity {
 //
 //            }
 //        });
+
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.listView);
 
 
         RestAdapter mRestAdapter = new RestAdapter.Builder()
@@ -101,11 +107,15 @@ public class SearchResultsActivity extends ActionBarActivity {
 
                 venuee = venueList.toArray(new Venue[venueList.size()]);
 
-                adapter = new CustomeAdapter(getApplicationContext(), R.layout.venue_layout, venuee);
-                mListViewSearchResult.setAdapter(adapter);
+                VenueAdapter adapter = new VenueAdapter(getApplicationContext(),venuee);
+               // adapter = new CustomeAdapter(getApplicationContext(), R.layout.venue_layout, venuee);
+                mRecyclerView.setAdapter(adapter);
+                mRecyclerView.setLayoutManager((new LinearLayoutManager(getApplicationContext())));
+
             }
-            adapter.setVenueses(venuee);
-            adapter.notifyDataSetChanged();
+
+            //adapter.setVenueses(venuee);
+          //  adapter.notifyDataSetChanged();
 
 
             Log.d(TAG, "Success");
@@ -117,10 +127,6 @@ public class SearchResultsActivity extends ActionBarActivity {
 
         }
     }
-
-
-
-
 
 
 }
