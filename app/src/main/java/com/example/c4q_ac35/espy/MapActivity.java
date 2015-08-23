@@ -33,27 +33,14 @@ import java.util.ListIterator;
  * FOR TESTING PURPOSES
  */
 
-public class MapActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener,GoogleApiClient.ConnectionCallbacks{
-    GoogleApiClient mGoogleApiClient;
-    Button home , geofenceButton;
-    Geofence.Builder geofence;
-    List<Geofence> mGeofences;
-    List<EspyGeofence> mGeofenceList;
-    private PendingIntent mGeofencePendingIntent;
+public class MapActivity extends FragmentActivity {
+    Button home;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
 
         home = (Button) findViewById(R.id.home_button);
         home.setOnClickListener(new View.OnClickListener() {
@@ -64,60 +51,12 @@ public class MapActivity extends FragmentActivity implements GoogleApiClient.OnC
             }
         });
 
-        geofenceButton = (Button) findViewById(R.id.geofence_button);
         createMap();
 
         Firebase.setAndroidContext(MapActivity.this);
         Firebase myFireBase = new FirebaseDatabase("https://espy.firebaseio.com/");
         GeoFire geoFire = new GeoFire(myFireBase);
         geoFire.setLocation("Rite Aid", new GeoLocation(40.835860, -73.940228));
-
-    }
-
-
-
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        mGeofencePendingIntent = getGeofenceTransitionPendingIntent();
-
-        //Falchi Coordinates
-        final double falchiLat = 40.742676;
-        final double falchiLong = -73.935182;
-
-        final float geofenceRadius = 100;
-
-        mGeofences = new ArrayList<Geofence>();
-
-        mGeofences.add(new Geofence.Builder().setRequestId("Falchi")
-                        .setCircularRegion(falchiLat,falchiLong,geofenceRadius)
-                        .setExpirationDuration(Constants.GEOFENCE_EXPIRATION_TIME)
-                        .setLoiteringDelay(5000)
-                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER
-                                | Geofence.GEOFENCE_TRANSITION_DWELL
-                                | Geofence.GEOFENCE_TRANSITION_EXIT)
-                        .build());
-
-        new GeofencingRequest.Builder().addGeofences(mGeofences);
-
-        mGeofencePendingIntent = getGeofenceTransitionPendingIntent();
-
-        LocationServices.GeofencingApi.addGeofences(mGoogleApiClient, mGeofences, mGeofencePendingIntent);
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
-
-    private PendingIntent getGeofenceTransitionPendingIntent() {
-        Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
-        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void createMap(){
@@ -127,28 +66,4 @@ public class MapActivity extends FragmentActivity implements GoogleApiClient.OnC
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.add(R.id.map_box,espyMapFragment).commit();
     }
-
-
-
-//        final EspyGeofence falchi = new EspyGeofence("Falchi",falchiLat,falchiLong,geofenceRadius,Constants.GEOFENCE_EXPIRATION_TIME,Geofence.GEOFENCE_TRANSITION_ENTER|Geofence.GEOFENCE_TRANSITION_EXIT);
-
-    //Build geofences
-//        jimbo.toGeofence();
-//        rice.toGeofence();
-//        falchi.toGeofence();
-//
-//        //Add geofences to geofence list
-//        mGeofenceList.add(rice);
-//        mGeofenceList.add(falchi);
-//        mGeofenceList.add(jimbo);
-//    final double riceLat = 40.721840;
-//    final double riceLong = -73.995774;
-//
-//    //Jimbos
-//    final double jimLat = 40.835981;
-//    final double jimLon = -73.940245;
-//
-//    final EspyGeofence rice = new EspyGeofence("Rice To Riches", riceLat, riceLong,geofenceRadius,Constants.GEOFENCE_EXPIRATION_TIME,Geofence.GEOFENCE_TRANSITION_ENTER|Geofence.GEOFENCE_TRANSITION_EXIT);
-//
-//    final EspyGeofence jimbo = new EspyGeofence("Jimbo",jimLat,jimLon,geofenceRadius,Constants.GEOFENCE_EXPIRATION_TIME,Geofence.GEOFENCE_TRANSITION_ENTER|Geofence.GEOFENCE_TRANSITION_EXIT);
 }

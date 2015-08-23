@@ -48,4 +48,20 @@
         android:layout_marginTop="57dp"
         android:layout_below="@+id/listbt"
         android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/add_geofences"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Geofences"
+        android:layout_below="@id/searchbt"
+        android:onClick="addGeofencesButtonHandler" />
+
+    <Button
+        android:id="@+id/remove_geofences"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Remove Geofences"
+        android:onClick="removeGeofencesButtonHandler"
+        android:layout_below="@id/add_geofences"/>
 </RelativeLayout>

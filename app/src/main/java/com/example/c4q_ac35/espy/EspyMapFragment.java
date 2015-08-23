@@ -27,7 +27,7 @@ import java.util.List;
  * Created by c4q-ac35 on 8/12/15.
  */
 
-public class EspyMapFragment extends SupportMapFragment implements GoogleApiClient.ConnectionCallbacks{
+public class EspyMapFragment extends SupportMapFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     GoogleMap googleMap;
     Location myLocation;
     GoogleApiClient mapGoogleApiClient;
@@ -38,8 +38,8 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
         super.onActivityCreated(savedInstanceState);
 
         mapGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks((GoogleApiClient.ConnectionCallbacks) getActivity())
-                .addOnConnectionFailedListener((GoogleApiClient.OnConnectionFailedListener) getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
         mapGoogleApiClient.connect();
@@ -91,6 +91,11 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
 
     @Override
     public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
 
