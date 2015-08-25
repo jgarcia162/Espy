@@ -352,6 +352,4 @@ public class EspyMain extends Activity implements GoogleApiClient.ConnectionCall
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }
