@@ -267,9 +267,9 @@ public class EspyMain extends Activity implements GoogleApiClient.ConnectionCall
         final double falchiLat = 40.742676;
         final double falchiLong = -73.935182;
 
-        final float geofenceRadius = 1000;
+        final float geofenceRadius = 300;
         mGeofenceList.add(new Geofence.Builder()
-                .setRequestId("Falchi Building") //replace with place.getName()
+                .setRequestId("Falchi") //replace with place.getName()
 
                         // Set the circular region of this geofence.
                 .setCircularRegion(
@@ -282,15 +282,31 @@ public class EspyMain extends Activity implements GoogleApiClient.ConnectionCall
                         Geofence.GEOFENCE_TRANSITION_EXIT)
                 .build());
 
-        final double ddLat = 40.738895;
-        final double ddLong = -73.934374;
+        final double sevenLat = 40.744878;
+        final double sevenLong = -73.934073;
         mGeofenceList.add(new Geofence.Builder()
-                .setRequestId("Dunkin Donuts") //replace with place.getName()
+                .setRequestId("7-11") //replace with place.getName()
 
                         // Set the circular region of this geofence.
                 .setCircularRegion(
-                        ddLat, //Replace with place.getLat()
-                        ddLong, // Replace with place.getLong()
+                        sevenLat, //Replace with place.getLat()
+                        sevenLong, // Replace with place.getLong()
+                        geofenceRadius
+                )
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                        Geofence.GEOFENCE_TRANSITION_EXIT)
+                .build());
+
+        final double jimLat = 40.822683;
+        final double jimLong = -73.941702;
+        mGeofenceList.add(new Geofence.Builder()
+                .setRequestId("Jimbos") //replace with place.getName()
+
+                        // Set the circular region of this geofence.
+                .setCircularRegion(
+                        jimLat, //Replace with place.getLat()
+                        jimLong, // Replace with place.getLong()
                         geofenceRadius
                 )
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
