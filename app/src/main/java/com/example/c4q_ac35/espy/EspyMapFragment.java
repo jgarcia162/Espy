@@ -6,7 +6,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,7 +14,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,11 +40,14 @@ public class EspyMapFragment extends SupportMapFragment{
         String provider = locationManager.getBestProvider(criteria, true);
         myLocation = locationManager.getLastKnownLocation(provider);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); //Choose type of map, normal, terrain, satellite, none
-        double latitude = myLocation.getLatitude();
-        double longitude = myLocation.getLongitude();
 
         double lat = 40.722695;
         double lon = -73.996545;
+
+        double latitude = myLocation.getLatitude();
+        double longitude = myLocation.getLongitude();
+
+
 
         //Geofence.Builder falchiGeofence = new
 

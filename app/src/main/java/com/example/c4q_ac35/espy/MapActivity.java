@@ -1,13 +1,15 @@
 package com.example.c4q_ac35.espy;
 
 import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+
 import com.example.c4q_ac35.espy.db.FirebaseDatabase;
 import com.firebase.client.Firebase;
 import com.firebase.geofire.GeoFire;
@@ -23,36 +25,51 @@ import java.util.List;
  * FOR TESTING PURPOSES
  */
 
-public class MapActivity extends FragmentActivity {
+public class MapActivity extends Fragment {
     Button home;
     GoogleApiClient mGoogleApiClient;
     Geofence.Builder geofence;
     List<Geofence> mGeofenceList;
     PendingIntent mGeofencePendingIntent;
+    private String title;
+    private int page;
 
+    public static MapActivity newInstance (int page, String title){
+        MapActivity mapActivity = new MapActivity();
+        Bundle args = new Bundle();
+        args.putInt("mapPage", page);
+        args.putString("map", title);
+        mapActivity.setArguments(args);
+        return mapActivity;
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+       // setContentView(R.layout.activity_map);
 
-        home = (Button) findViewById(R.id.home_button);
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this,EspyMain.class);
-                startActivity(intent);
-            }
-        });
+//        home = (Button) findViewById(R.id.home_button);
+//        home.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MapActivity.this,EspyMain.class);
+//                startActivity(intent);
+//            }
+//        });
 
-        createMap();
+        page = getArguments().getInt("mapPage", 2);
+        title = getArguments().getString("map");
+
+
+
 
 
         //Falchi
         double lat = 40.742729;
         double lon = -73.935181;
 
-        Firebase.setAndroidContext(MapActivity.this);
+        Firebase.setAndroidContext(getActivity());
         Firebase myFireBase = new FirebaseDatabase("https://espy.firebaseio.com/");
         GeoFire geoFire = new GeoFire(myFireBase);
         geoFire.setLocation("Rite Aid", new GeoLocation(40.835860, -73.940228));
@@ -85,14 +102,18 @@ public class MapActivity extends FragmentActivity {
 //            }
 //        });
 
+    }
 
-
-
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+       View view = inflater.inflate(R.layout.activity_map,container,false);
+        createMap();
+        return view;
     }
 
     private void createMap(){
         EspyMapFragment espyMapFragment = new EspyMapFragment();
-        FragmentManager fm = this.getSupportFragmentManager();
+        FragmentManager fm = this.getFragmentManager();
 
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.add(R.id.map_box,espyMapFragment).commit();
