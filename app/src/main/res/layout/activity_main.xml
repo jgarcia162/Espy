@@ -28,6 +28,8 @@
         <TextView
             android:id="@+id/item_address"
             android:text="69 Grand St, Brooklyn, NY 11249"
+            android:textIsSelectable="true"
+            android:clickable="true"
             android:textColor="#218C8D"
             android:textSize="20sp"
             android:layout_width="wrap_content"
@@ -36,6 +38,8 @@
         <TextView
             android:id="@+id/item_phone"
             android:text="(718) 285-6180"
+            android:textIsSelectable="true"
+            android:clickable="true"
             android:textColor="#218C8D"
             android:textSize="20sp"
             android:layout_width="wrap_content"

@@ -34,6 +34,7 @@ public class EspyMain extends FragmentActivity {
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
         viewPager.getCurrentItem();
+        viewPager.setCurrentItem(0);
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -106,9 +107,9 @@ public class EspyMain extends FragmentActivity {
         public Fragment getItem(int position) {
            switch(position){
                case 0:
-                   return SearchResultsActivity.newInstance(0,"Page # 1");
+                   return MyList.newInstance(0, "Page # 1");
                case 1:
-                   return MyList.newInstance(1, "Page # 2");
+                   return SearchResultsActivity.newInstance(1,"Page # 2");
                case 2:
                    return MapActivity.newInstance(2, "Page # 3");
                default:
