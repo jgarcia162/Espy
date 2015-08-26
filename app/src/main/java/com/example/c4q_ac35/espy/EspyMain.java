@@ -6,30 +6,50 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class EspyMain extends FragmentActivity {
+
+public class EspyMain extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String CLIENT_ID ="GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
     private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
     FragmentPagerAdapter adapterViewPager;
-    EspyMapFragment espyMapFragment;
-    MapActivity mapActivity;
 
-//    @Bind(R.id.listbt) ImageButton listBt;
-//    @Bind(R.id.map_button)ImageButton mapBt;
-//    @Bind(R.id.searchbt) ImageButton searchBt;
+    //Todo: merge Elvis code
+    private static final String LOG_TAG = "MainActivity";
+    private AutoCompleteTextView mAutocompleteTextView;
+    private PlacesAdapter mPlaceArrayAdapter;
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
+            new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
+    private GoogleApiClient mGoogleApiClient;
+    private static final int GOOGLE_API_CLIENT_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_back);
-//        ButterKnife.bind(this);
 
-        //TODO;
+        mGoogleApiClient = new GoogleApiClient.Builder(EspyMain.this)
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
+                .addConnectionCallbacks(this)
+                .build();
+
         ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
@@ -53,43 +73,32 @@ public class EspyMain extends FragmentActivity {
             }
         });
 
+        //todo: Elvis Code
+        mAutocompleteTextView = (AutoCompleteTextView) findViewById(R.id.et_autocomplete_places);
+        mAutocompleteTextView.setThreshold(2);
 
-        // espyMapFragment = new EspyMapFragment();
-        //mapActivity = new MapActivity();
-//
-//        mapBt.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Intent viewMap = new Intent(EspyMain.this,MapActivity.class);
-//                //startActivity(viewMap);
-//            }
-//        });
-//
-//        listBt.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(EspyMain.this, UserInitalSetActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
-//        searchBt.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-////                SharedPreferences info;
-////                info = EspyMain.this.getSharedPreferences("PREFS_NAME", 0);
-////                SharedPreferences.Editor editor = info.edit();
-////
-////                editor.putString("zipcode", zipCode);
-//
-//                Intent intent = new Intent(EspyMain.this, SearchResultsActivity.class);
-//                startActivity(intent);
-//
-//            }
-//        });
-
+        mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
+        mPlaceArrayAdapter = new PlacesAdapter(this, android.R.layout.simple_list_item_1,
+                BOUNDS_MOUNTAIN_VIEW, null);
+        mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
+        
     }
+
+    private AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+//         findPlaceById(mAutocompleteTextView.getText().toString());
+//            Toast.makeText(getApplicationContext(), mAutocompleteTextView.getText(),Toast.LENGTH_LONG).show();
+            //displayPlace();
+//            LatLng latLng = new LatLng(latitude,longitude);
+//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//            googleMap.animateCamera(CameraUpdateFactory.zoomTo(11)); // choose default zoom of map
+
+        }
+
+    };
 
     class MyPagerAdapter extends FragmentPagerAdapter{
         private int NUM_ITEMS = 3;
@@ -124,8 +133,38 @@ public class EspyMain extends FragmentActivity {
 
     }
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+        Log.i(LOG_TAG, "Google Places API connected.");
 
+    }
 
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
+                + connectionResult.getErrorCode());
+
+        Toast.makeText(this,
+                "Google Places API connection failed with error code:" +
+                        connectionResult.getErrorCode(),
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mPlaceArrayAdapter.setGoogleApiClient(null);
+        Log.e(LOG_TAG, "Google Places API connection suspended.");
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(0, 0))
+                .title("Marker"));
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
