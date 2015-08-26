@@ -1,27 +1,18 @@
 package com.example.c4q_ac35.espy;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-
-import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by c4q-ac35 on 8/12/15.
@@ -31,7 +22,6 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
     GoogleMap googleMap;
     Location myLocation;
     GoogleApiClient mapGoogleApiClient;
-    ArrayList<Location> mListOfLocations;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -56,6 +46,7 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
         myLocation = locationManager.getLastKnownLocation(provider);
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); //Choose type of map, normal, terrain, satellite, none
+
         double latitude = myLocation.getLatitude();
         double longitude = myLocation.getLongitude();
 
@@ -84,8 +75,6 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
 
     @Override
     public void onConnected(Bundle bundle) {
-
-
 
     }
 

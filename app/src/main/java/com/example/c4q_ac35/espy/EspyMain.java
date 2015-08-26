@@ -1,124 +1,134 @@
 package com.example.c4q_ac35.espy;
 
-import android.app.Activity;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
-
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Result;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
-
 import java.util.ArrayList;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
-
-public class EspyMain extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status>{
-
+public class EspyMain extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
     private final String TAG = "Espy Main";
 
-    private static final String CLIENT_ID ="GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ"; //foursquare
-    private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY"; //foursquare
+
+    private static final String CLIENT_ID ="GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
+    private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
-
     protected GoogleApiClient mGoogleApiClient;
-    protected ArrayList<Geofence> mGeofenceList;
+    FragmentPagerAdapter adapterViewPager;
+    ArrayList<Geofence> mGeofenceList;
+    PendingIntent mGeofencePendingIntent;
     private boolean mGeofencesAdded;
-    private PendingIntent mGeofencePendingIntent;
     private SharedPreferences mSharedPreferences;
-
-    @Bind(R.id.listbt) ImageButton listBt;
-    @Bind(R.id.map_button)ImageButton mapBt;
-    @Bind(R.id.searchbt) ImageButton searchBt;
-    @Bind(R.id.add_geofences) Button mAddGeofencesButton;
-    @Bind(R.id.remove_geofences) Button mRemoveGeofencesButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_espy_main);
-        ButterKnife.bind(this);
+        setContentView(R.layout.activity_welcome_back);
 
-        mGeofenceList = new ArrayList<Geofence>();
-
-        // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
-        mGeofencePendingIntent = null;
-
-        mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME,MODE_PRIVATE);
-
-        // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
-        mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
-        setButtonsEnabledState();
-
-        populateGeofenceList();
-
-        buildGoogleApiClient();
-
-        mapBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent viewMap = new Intent(EspyMain.this,MapActivity.class);
-                startActivity(viewMap);
-            }
-        });
-
-        listBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(EspyMain.this, UserInitalSetActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        searchBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-//                SharedPreferences info;
-//                info = EspyMain.this.getSharedPreferences("PREFS_NAME", 0);
-//                SharedPreferences.Editor editor = info.edit();
-//
-//                editor.putString("zipcode", zipCode);
-
-                Intent intent = new Intent(EspyMain.this, SearchResultsActivity.class);
-                startActivity(intent);
-
-            }
-        });
-    }
-
-    //builds GoogleApiClient which is used to connect to Google Play services
-    protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+
+        mGoogleApiClient.connect();
+
+        mGeofenceList = new ArrayList<Geofence>();
+
+
+
+        // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
+        mGeofencePendingIntent = null;
+
+        mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+
+        // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
+        mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
+
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapterViewPager);
+        viewPager.getCurrentItem();
+        viewPager.setCurrentItem(0);
+
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Toast.makeText(getApplicationContext(), "Selected page position: " + position, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
+    class MyPagerAdapter extends FragmentPagerAdapter{
+        private int NUM_ITEMS = 3;
+
+        public MyPagerAdapter(android.support.v4.app.FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+           switch(position){
+               case 0:
+                   return MyLIst.newInstance(0, "Page # 1");
+               case 1:
+                   return SearchResultsActivity.newInstance(1,"Page # 2");
+               case 2:
+                   return MapActivity.newInstance(2, "Page # 3");
+               default:
+                   return null;
+           }
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "Page " + position;
+        }
+
     }
+
+
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        mGoogleApiClient.connect();
+//        populateGeofenceList();
+//        addGeofences();
+//    }
 
     @Override
     protected void onStop() {
@@ -129,6 +139,8 @@ public class EspyMain extends Activity implements GoogleApiClient.ConnectionCall
     @Override
     public void onConnected(Bundle connectionHint) {
         Log.i(TAG, "Connected to GoogleApiClient");
+        populateGeofenceList();
+        addGeofences();
     }
 
     @Override
@@ -167,9 +179,9 @@ public class EspyMain extends Activity implements GoogleApiClient.ConnectionCall
      * Adds geofences, which sets alerts to be notified when the device enters or exits one of the
      * specified geofences. Handles the success or failure results returned by addGeofences().
      */
-    public void addGeofencesButtonHandler(View view) {
+    public void addGeofences() {
         if (!mGoogleApiClient.isConnected()) {
-            Toast.makeText(this, "Not connected to GoogleApiClient", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Not connected to GoogleApiClient", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -235,7 +247,6 @@ public class EspyMain extends Activity implements GoogleApiClient.ConnectionCall
 
             // Update the UI. Adding geofences enables the Remove Geofences button, and removing
             // geofences enables the Add Geofences button.
-            setButtonsEnabledState();
 
             Toast.makeText(
                     this,
@@ -269,7 +280,7 @@ public class EspyMain extends Activity implements GoogleApiClient.ConnectionCall
 
         final float geofenceRadius = 300;
         mGeofenceList.add(new Geofence.Builder()
-                .setRequestId("Falchi") //replace with place.getName()
+                .setRequestId("Doughnut Plant") //replace with place.getName()
 
                         // Set the circular region of this geofence.
                 .setCircularRegion(
@@ -313,21 +324,6 @@ public class EspyMain extends Activity implements GoogleApiClient.ConnectionCall
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
                         Geofence.GEOFENCE_TRANSITION_EXIT)
                 .build());
-    }
-
-    /**
-     * Ensures that only one button is enabled at any time. The Add Geofences button is enabled
-     * if the user hasn't yet added geofences. The Remove Geofences button is enabled if the
-     * user has added geofences.
-     */
-    private void setButtonsEnabledState() {
-        if (mGeofencesAdded) {
-            mAddGeofencesButton.setEnabled(false);
-            mRemoveGeofencesButton.setEnabled(true);
-        } else {
-            mAddGeofencesButton.setEnabled(true);
-            mRemoveGeofencesButton.setEnabled(false);
-        }
     }
 
     @Override
