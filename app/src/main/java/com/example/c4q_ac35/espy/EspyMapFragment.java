@@ -7,6 +7,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,6 +39,7 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
         googleMap.setMyLocationEnabled(true); //finds current location
 
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
 
         Criteria criteria = new Criteria();
         String provider = locationManager.getBestProvider(criteria,true);

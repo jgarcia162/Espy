@@ -78,7 +78,6 @@ public class GeofenceTransitionsIntentService extends IntentService {
             return triggeringGeofencesIdsString + " is nearby!";
         else
             return "These places are nearby: " + triggeringGeofencesIdsString;
-
     }
 
     private void sendNotification(String notificationDetails) {

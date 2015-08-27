@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -19,6 +18,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import java.util.ArrayList;
 
@@ -48,7 +48,6 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
                 .build();
 
         mGoogleApiClient.connect();
-
         mGeofenceList = new ArrayList<Geofence>();
 
 
@@ -76,7 +75,6 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
 
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(getApplicationContext(), "Selected page position: " + position, Toast.LENGTH_SHORT).show();
 
             }
 
@@ -141,6 +139,7 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
         Log.i(TAG, "Connected to GoogleApiClient");
         populateGeofenceList();
         addGeofences();
+
     }
 
     @Override
@@ -205,7 +204,7 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
      * Removes geofences, which stops further notifications when the device enters or exits
      * previously registered geofences.
      */
-    public void removeGeofencesButtonHandler(View view) {
+    public void removeGeofences() {
         if (!mGoogleApiClient.isConnected()) {
             Toast.makeText(this, "Not connected to GoogleApiClient", Toast.LENGTH_SHORT).show();
             return;
@@ -309,8 +308,9 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
                         Geofence.GEOFENCE_TRANSITION_EXIT)
                 .build());
 
-        final double jimLat = 40.822683;
-        final double jimLong = -73.941702;
+        final double jimLat = 40.835837;
+        final double jimLong = -73.940200;
+
         mGeofenceList.add(new Geofence.Builder()
                 .setRequestId("Jimbos") //replace with place.getName()
 
@@ -318,6 +318,23 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
                 .setCircularRegion(
                         jimLat, //Replace with place.getLat()
                         jimLong, // Replace with place.getLong()
+                        geofenceRadius
+                )
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                        Geofence.GEOFENCE_TRANSITION_EXIT)
+                .build());
+
+        final double metLat = 40.740527;
+        final double metLong = -73.995740;
+
+        mGeofenceList.add(new Geofence.Builder()
+                .setRequestId("Droidcon") //replace with place.getName()
+
+                        // Set the circular region of this geofence.
+                .setCircularRegion(
+                        metLat, //Replace with place.getLat()
+                        metLong, // Replace with place.getLong()
                         geofenceRadius
                 )
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)

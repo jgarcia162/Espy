@@ -8,11 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by c4q-ac35 on 8/13/15.
- *
- * FOR TESTING PURPOSES
- */
 
 public class MapActivity extends Fragment {
     private String title;
