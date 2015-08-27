@@ -7,6 +7,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -38,21 +39,28 @@ public class EspyMapFragment extends SupportMapFragment{
         Criteria criteria = new Criteria();
 
         String provider = locationManager.getBestProvider(criteria, true);
+
         myLocation = locationManager.getLastKnownLocation(provider);
+
+
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); //Choose type of map, normal, terrain, satellite, none
 
         double lat = 40.722695;
         double lon = -73.996545;
 
-        double latitude = myLocation.getLatitude();
-        double longitude = myLocation.getLongitude();
-
-
-
-        //Geofence.Builder falchiGeofence = new
-
-        LatLng latLng = new LatLng(latitude,longitude);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        //Adding a null check
+        if(myLocation==null){
+            LocationRequest mLocationRequest = new LocationRequest();
+            mLocationRequest.setInterval(10000);
+            mLocationRequest.setFastestInterval(5000);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+        } else {
+            double latitude = myLocation.getLatitude();
+            double longitude = myLocation.getLongitude();
+            //Geofence.Builder falchiGeofence = new
+            LatLng latLng = new LatLng(latitude, longitude);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        }
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(11)); // choose default zoom of map
 
         Marker marker = googleMap.addMarker(new MarkerOptions()
@@ -62,9 +70,6 @@ public class EspyMapFragment extends SupportMapFragment{
         marker.isInfoWindowShown();
 
     }
-
-
-
 
 
     //TODO method for loading list of "venues"

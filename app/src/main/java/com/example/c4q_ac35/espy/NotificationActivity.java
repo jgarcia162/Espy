@@ -60,7 +60,6 @@ public class NotificationActivity extends AppCompatActivity {
         //TODO: Insert logo
         // builder.setSmallIcon(R.drawable.logo)
         Intent resultActivity = new Intent(getApplicationContext(),NotificationActivity.class);
-
         PendingIntent pendingResultActivity =
                 PendingIntent.getActivity(getApplicationContext(), 0,resultActivity,PendingIntent.FLAG_CANCEL_CURRENT);
         builder.setContentIntent(pendingResultActivity);
@@ -78,7 +77,6 @@ public class NotificationActivity extends AppCompatActivity {
        // builder.setSmallIcon(R.drawable.logo)
 
         Intent resultActivity = new Intent(getApplicationContext(),NotificationActivity.class);
-
         PendingIntent pendingResultActivity =
                 PendingIntent.getActivity(getApplicationContext(), 0,resultActivity,PendingIntent.FLAG_NO_CREATE);
         builder.setContentIntent(pendingResultActivity);
