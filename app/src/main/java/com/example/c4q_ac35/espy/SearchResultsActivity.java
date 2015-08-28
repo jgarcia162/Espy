@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
@@ -27,7 +26,6 @@ public class SearchResultsActivity extends Fragment{
 
     private String title;
     private int page;
-    EditText searchBar;
     private VenueAdapter adapter;
     public static final String BASE_API = "https://api.foursquare.com/v2";
     public static final String TAG = "Main Activity";
@@ -50,15 +48,9 @@ public class SearchResultsActivity extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_search_results);
-
-      //  searchBar = (EditText) findViewById(R.id.search_view);
-
-      //  mRecyclerView = (RecyclerView) findViewById(R.id.listView);
 
         page = getArguments().getInt("homePage",0);
         title = getArguments().getString("home");
-
 
         RestAdapter mRestAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog(TAG))
@@ -73,7 +65,6 @@ public class SearchResultsActivity extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        View view = inflater.inflate(R.layout.activity_search_results,container,false);
 
-        searchBar = (EditText) view.findViewById(R.id.search_view);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
 
