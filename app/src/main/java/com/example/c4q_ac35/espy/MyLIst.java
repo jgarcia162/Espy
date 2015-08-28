@@ -9,14 +9,14 @@ import android.view.ViewGroup;
 /**
  * Created by c4q-marbella on 8/24/15.
  */
-public class MyList extends Fragment {
+public class MyLIst extends Fragment {
 
     private String title;
     private int page;
 
     // newInstance constructor for creating fragment with arguments
-    public static MyList newInstance(int page, String title) {
-        MyList fragmentFirst = new MyList();
+    public static MyLIst newInstance(int page, String title) {
+        MyLIst fragmentFirst = new MyLIst();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);

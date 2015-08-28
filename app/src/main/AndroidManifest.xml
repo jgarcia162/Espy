@@ -35,19 +35,22 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="Place APi key" />
+            android:value="AIzaSyBN8rwfouuAtFnTMz2w3SUYMIRy4YvAcmQ" />
 
         <activity
             android:name=".SettingActivity"
             android:label="@string/title_activity_setting" >
         </activity>
-        <activity
-            android:name=".SearchResultsActivity"
-            android:label="SearchResultsActivity" />
-        <activity
-            android:name=".UserInitalSetActivity"
-            android:label="@string/title_activity_user_inital_set" >
-        </activity>
+
+        <activity android:name=".SearchResultsActivity"
+            android:label="SearchResultsActivity"/>
+        <activity android:name=".UserInitalSetActivity"
+            android:label="Initial Setup"/>
+        <service
+            android:name=".GeofenceTransitionsIntentService"
+            android:exported="true">
+        </service>
+
     </application>
 
 </manifest>
