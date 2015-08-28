@@ -56,7 +56,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        
+
         mGoogleApiClient = new GoogleApiClient.Builder(EspyMain.this)
                 .addApi(Places.GEO_DATA_API)
                 .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
