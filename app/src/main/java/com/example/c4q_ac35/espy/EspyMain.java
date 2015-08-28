@@ -1,8 +1,12 @@
 package com.example.c4q_ac35.espy;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,8 +22,13 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class EspyMain extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
     private final String TAG = "Espy Main";
@@ -34,6 +43,9 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
     PendingIntent mGeofencePendingIntent;
     private boolean mGeofencesAdded;
     private SharedPreferences mSharedPreferences;
+    private boolean mRequestingLocationUpdates = true;
+    Location mCurrentLocation;
+    private String mLastUpdateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +59,8 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
                 .build();
 
         mGoogleApiClient.connect();
+
+
         mGeofenceList = new ArrayList<Geofence>();
 
 
@@ -117,8 +131,6 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
 
     }
 
-
-
 //    @Override
 //    protected void onStart() {
 //        super.onStart();
@@ -138,6 +150,10 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
         Log.i(TAG, "Connected to GoogleApiClient");
         populateGeofenceList();
         addGeofences();
+
+        if(mRequestingLocationUpdates){
+            startLocationUpdates();
+        }
 
     }
 
@@ -340,6 +356,22 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
                         Geofence.GEOFENCE_TRANSITION_EXIT)
                 .build());
+    }
+
+
+
+    protected void startLocationUpdates(){
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(30000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationListener mLocationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                mCurrentLocation = location;
+                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+            }
+        };
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,mLocationRequest,mLocationListener);
     }
 
     @Override
