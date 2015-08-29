@@ -1,30 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="@dimen/activity_horizontal_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                tools:context="com.example.c4q_ac35.espy.WelcomeBackActivity">
-    <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:id="@+id/toolbar">
-        <AutoCompleteTextView
-            android:id="@+id/et_autocomplete_places"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionSearch"
-            android:layout_gravity="center_horizontal"
-            android:hint="Search Places" />
-    </android.support.v7.widget.Toolbar>
+<RelativeLayout
+         xmlns:android="http://schemas.android.com/apk/res/android"
+         xmlns:tools="http://schemas.android.com/tools"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         tools:context="com.example.c4q_ac35.espy.WelcomeBackActivity">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar">
+    </include>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vpPager"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -35,6 +23,21 @@
             android:layout_gravity="top"
             android:paddingBottom="10dp"
             android:paddingTop="15dp" />
+
     </android.support.v4.view.ViewPager>
+
+    <ImageButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/search_icon"
+        android:id="@+id/fab"
+        android:background="@drawable/circle"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="51dp"
+        android:layout_marginBottom="49dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
 
 </RelativeLayout>

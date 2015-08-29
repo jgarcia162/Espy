@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.Toolbar;
 import com.google.android.gms.common.ConnectionResult;
@@ -62,6 +63,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     private MenuItem mSearchAction;
     private boolean isSearchOpened = false;
     private android.support.v7.widget.Toolbar mToolbar;
+    private ImageButton FAB;
     ArrayList<Geofence> mGeofenceList;
     PendingIntent mGeofencePendingIntent;
     private boolean mGeofencesAdded;
@@ -72,8 +74,17 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_back);
 
-        mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
+
+        FAB = (ImageButton) findViewById(R.id.fab);
+
+        FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         mGoogleApiClient = new GoogleApiClient.Builder(EspyMain.this)
                 .addApi(Places.GEO_DATA_API)
