@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="350dp"
+    android:layout_height="match_parent"
     android:layout_margin="5dp"
     android:elevation="5dp"
     app:theme="@style/CardList">
