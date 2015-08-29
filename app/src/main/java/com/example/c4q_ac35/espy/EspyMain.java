@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +49,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
     FragmentPagerAdapter adapterViewPager;
-
     //Todo: merge Elvis code
     private static final String LOG_TAG = "MainActivity";
     private AutoCompleteTextView mAutocompleteTextView;
@@ -54,9 +57,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
     private GoogleApiClient mGoogleApiClient;
     private static final int GOOGLE_API_CLIENT_ID = 0;
-    private MenuItem mSearchAction;
-    private boolean isSearchOpened = false;
-    private android.support.v7.widget.Toolbar mToolbar;
     ArrayList<Geofence> mGeofenceList;
     PendingIntent mGeofencePendingIntent;
     private boolean mGeofencesAdded;
@@ -66,9 +66,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_back);
-
-        //mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(mToolbar);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -80,7 +77,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         mGoogleApiClient.connect();
         mGeofenceList = new ArrayList<Geofence>();
-
 
 
         // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
@@ -97,6 +93,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         viewPager.getCurrentItem();
         viewPager.setCurrentItem(0);
 
+        
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -165,10 +162,23 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                     return null;
             }
         }
+        //Todo: Vanice : insert drawable icons ids
+        private int[] imageResId = {
+                // R.drawable. ,
+                // R.drawable. ,
+                // R.drawable. ,
+                // R.drawable. ,
+        };
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Page " + position;
+
+            Drawable image = getResources().getDrawable(imageResId[position]);
+            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+            SpannableString sb = new SpannableString(" ");
+            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return sb;
         }
 
     }
@@ -204,72 +214,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                 .title("Marker"));
     }
 
-//Todo: Marbella's search
-
-//    protected void handleMenuSearch(){
-//        ActionBar action = getSupportActionBar(); //get the actionbar
-//
-//        if(isSearchOpened){ //test if the search is open
-//
-//            action.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar
-//            action.setDisplayShowTitleEnabled(true); //show the title in the action bar
-//
-//            //hides the keyboard
-//            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//            imm.hideSoftInputFromWindow(edtSeach.getWindowToken(), 0);
-//
-//            //add the search icon in the action bar
-//            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_open_search));
-//
-//            isSearchOpened = false;
-//        } else { //open the search entry
-//
-//            action.setDisplayShowCustomEnabled(true); //enable it to display a
-//            // custom view in the action bar.
-//            action.setCustomView(R.layout.search_bar);//add the custom view
-//            action.setDisplayShowTitleEnabled(false); //hide the title
-//
-//            edtSeach = (EditText)action.getCustomView().findViewById(R.id.edtSearch); //the text editor
-//
-//            //this is a listener to do a search when the user clicks on search button
-//            edtSeach.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//                @Override
-//                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//                        doSearch();
-//                        return true;
-//                    }
-//                    return false;
-//                }
-//            });
-//
-//            edtSeach.requestFocus();
-//
-//            //open the keyboard focused in the edtSearch
-//            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//            imm.showSoftInput(edtSeach, InputMethodManager.SHOW_IMPLICIT);
-//
-//            //add the close icon
-//            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_close_search));
-//
-//            isSearchOpened = true;
-//        }
-//    }
-
-    private void doSearch() {
 
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (isSearchOpened) {
-           // handleMenuSearch();
-            return;
-        }
-        super.onBackPressed();
-
-    }
 
 
 //    @Override
