@@ -13,7 +13,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import java.util.ArrayList;
 
 /**
  * Created by c4q-ac35 on 8/12/15.
@@ -42,12 +41,28 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
 
 
         Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria,true);
 
+
+        String provider = locationManager.getBestProvider(criteria, true);
 
         myLocation = locationManager.getLastKnownLocation(provider);
 
+
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); //Choose type of map, normal, terrain, satellite, none
+
+        //Adding a null check
+        if(myLocation==null){
+            LocationRequest mLocationRequest = new LocationRequest();
+            mLocationRequest.setInterval(10000);
+            mLocationRequest.setFastestInterval(5000);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+        } else {
+            double latitude = myLocation.getLatitude();
+            double longitude = myLocation.getLongitude();
+            //Geofence.Builder falchiGeofence = new
+            LatLng latLng = new LatLng(latitude, longitude);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        }
 
         double latitude = myLocation.getLatitude();
         double longitude = myLocation.getLongitude();

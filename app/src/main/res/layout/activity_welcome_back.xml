@@ -9,22 +9,15 @@
                 tools:context="com.example.c4q_ac35.espy.WelcomeBackActivity">
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/toolbar"
-        contentInsetLeft="72dp"
-        contentInsetStart="72dp"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="5dp"
-        android:minHeight="?attr/actionBarSize"
-        app:contentInsetLeft="72dp"
-        app:contentInsetStart="72dp"
-        app:theme="@style/AppTheme">
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:id="@+id/toolbar">
         <AutoCompleteTextView
             android:id="@+id/et_autocomplete_places"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:imeOptions="actionSearch"
             android:layout_gravity="center_horizontal"
             android:hint="Search Places" />
     </android.support.v7.widget.Toolbar>

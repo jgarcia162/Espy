@@ -1,21 +1,20 @@
 package com.example.c4q_ac35.espy;
 
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
+import android.app.PendingIntent;
 import android.content.SharedPreferences;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -30,15 +29,33 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class EspyMain extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+
+public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status>{
+
     private final String TAG = "Espy Main";
-
-
-    private static final String CLIENT_ID ="GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
+    private static final String CLIENT_ID = "GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
     private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
-    protected GoogleApiClient mGoogleApiClient;
     FragmentPagerAdapter adapterViewPager;
+
+    //Todo: merge Elvis code
+    private static final String LOG_TAG = "MainActivity";
+    private AutoCompleteTextView mAutocompleteTextView;
+    private PlacesAdapter mPlaceArrayAdapter;
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
+            new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
+    private GoogleApiClient mGoogleApiClient;
+    private static final int GOOGLE_API_CLIENT_ID = 0;
+    private MenuItem mSearchAction;
+    private boolean isSearchOpened = false;
+    private android.support.v7.widget.Toolbar mToolbar;
     ArrayList<Geofence> mGeofenceList;
     PendingIntent mGeofencePendingIntent;
     private boolean mGeofencesAdded;
@@ -52,18 +69,20 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_back);
 
+        mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(mToolbar);
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
 
         mGoogleApiClient.connect();
 
-
         mGeofenceList = new ArrayList<Geofence>();
-
-
 
         // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
         mGeofencePendingIntent = null;
@@ -72,7 +91,6 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
 
         // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
         mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
-
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
@@ -96,9 +114,18 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
             }
         });
 
+        //todo: Elvis Code
+//        mAutocompleteTextView = (AutoCompleteTextView) findViewById(R.id.et_autocomplete_places);
+//        mAutocompleteTextView.setThreshold(2);
+//
+//        mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
+//        mPlaceArrayAdapter = new PlacesAdapter(this, android.R.layout.simple_list_item_1,
+//                BOUNDS_MOUNTAIN_VIEW, null);
+//        mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
+
     }
 
-    class MyPagerAdapter extends FragmentPagerAdapter{
+    class MyPagerAdapter extends FragmentPagerAdapter {
         private int NUM_ITEMS = 3;
 
         public MyPagerAdapter(android.support.v4.app.FragmentManager fm) {
@@ -112,16 +139,17 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
 
         @Override
         public Fragment getItem(int position) {
-           switch(position){
-               case 0:
-                   return MyLIst.newInstance(0, "Page # 1");
-               case 1:
-                   return SearchResultsActivity.newInstance(1,"Page # 2");
-               case 2:
-                   return MapActivity.newInstance(2, "Page # 3");
-               default:
-                   return null;
-           }
+            switch (position) {
+                case 0:
+                    return MyLIst.newInstance(0, "Page # 1");
+                case 1:
+                    return SearchResultsActivity.newInstance(1, "Page # 2");
+                case 2:
+                    return MapActivity.newInstance(2, "Page # 3");
+                default:
+                    return null;
+            }
+
         }
 
         @Override
@@ -130,6 +158,111 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
         }
 
     }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+//        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+        populateGeofenceList();
+        addGeofences();
+
+        if (mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
+        Log.i(LOG_TAG, "Google Places API connected.");
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
+                + connectionResult.getErrorCode());
+
+        Toast.makeText(this,
+                "Google Places API connection failed with error code:" +
+                        connectionResult.getErrorCode(),
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mPlaceArrayAdapter.setGoogleApiClient(null);
+        Log.e(LOG_TAG, "Google Places API connection suspended.");
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(0, 0))
+                .title("Marker"));
+    }
+
+//Todo: Marbella's search
+
+//    protected void handleMenuSearch(){
+//        ActionBar action = getSupportActionBar(); //get the actionbar
+//
+//        if(isSearchOpened){ //test if the search is open
+//
+//            action.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar
+//            action.setDisplayShowTitleEnabled(true); //show the title in the action bar
+//
+//            //hides the keyboard
+//            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//            imm.hideSoftInputFromWindow(edtSeach.getWindowToken(), 0);
+//
+//            //add the search icon in the action bar
+//            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_open_search));
+//
+//            isSearchOpened = false;
+//        } else { //open the search entry
+//
+//            action.setDisplayShowCustomEnabled(true); //enable it to display a
+//            // custom view in the action bar.
+//            action.setCustomView(R.layout.search_bar);//add the custom view
+//            action.setDisplayShowTitleEnabled(false); //hide the title
+//
+//            edtSeach = (EditText)action.getCustomView().findViewById(R.id.edtSearch); //the text editor
+//
+//            //this is a listener to do a search when the user clicks on search button
+//            edtSeach.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//                @Override
+//                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                        doSearch();
+//                        return true;
+//                    }
+//                    return false;
+//                }
+//            });
+//
+//            edtSeach.requestFocus();
+//
+//            //open the keyboard focused in the edtSearch
+//            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//            imm.showSoftInput(edtSeach, InputMethodManager.SHOW_IMPLICIT);
+//
+//            //add the close icon
+//            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_close_search));
+//
+//            isSearchOpened = true;
+//        }
+//    }
+
+    private void doSearch() {
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isSearchOpened) {
+            // handleMenuSearch();
+            return;
+        }
+        super.onBackPressed();
+
+    }
+
 
 //    @Override
 //    protected void onStart() {
@@ -145,30 +278,6 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
         mGoogleApiClient.disconnect();
     }
 
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        Log.i(TAG, "Connected to GoogleApiClient");
-        populateGeofenceList();
-        addGeofences();
-
-        if(mRequestingLocationUpdates){
-            startLocationUpdates();
-        }
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + connectionResult.getErrorCode());
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        // The connection to Google Play services was lost for some reason.
-        Log.i(TAG, "Connection suspended");
-        // onConnected() will be called again automatically when the service reconnects
-
-    }
 
     /**
      * Builds and returns a GeofencingRequest. Specifies the list of geofences to be monitored.
@@ -244,7 +353,7 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
     /**
      * Runs when the result of calling addGeofences() and removeGeofences() becomes available.
      * Either method can complete successfully or with an error.
-     *
+     * <p/>
      * Since this activity implements the {@link ResultCallback} interface, we are required to
      * define this method.
      *
@@ -359,8 +468,7 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
     }
 
 
-
-    protected void startLocationUpdates(){
+    protected void startLocationUpdates() {
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(30000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -371,7 +479,7 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
                 mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
             }
         };
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,mLocationRequest,mLocationListener);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
     }
 
     @Override
@@ -390,7 +498,7 @@ public class EspyMain extends FragmentActivity implements GoogleApiClient.Connec
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent( EspyMain.this, SettingActivity.class);
+            Intent settingsIntent = new Intent(EspyMain.this, SettingActivity.class);
             EspyMain.this.startActivity(settingsIntent);
             return true;
         }
