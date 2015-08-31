@@ -35,8 +35,7 @@
             android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:theme="@style/.TextView"/>
+            android:layout_weight="1" />
         <TextView
             android:id="@+id/item_phone"
             android:text="(718) 285-6180"

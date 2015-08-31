@@ -8,8 +8,10 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -20,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
@@ -61,7 +64,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
     private MenuItem mSearchAction;
     private android.support.v7.widget.Toolbar mToolbar;
-    private ImageButton FAB;
+    private FloatingActionButton FAB;
 
     ArrayList<Geofence> mGeofenceList;
     PendingIntent mGeofencePendingIntent;
@@ -77,15 +80,9 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
 
-        FAB = (ImageButton) findViewById(R.id.fab);
+        FAB = (FloatingActionButton) findViewById(R.id.fab);
 
-        FAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
-        
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -106,17 +103,26 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
         mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
         viewPager.getCurrentItem();
         viewPager.setCurrentItem(0);
 
-        
+
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                final int width = viewPager.getWidth();
+                if (position == 0) { // represents transition from page 0 to page 1 (horizontal shift)
+                    int translationX = (int) ((-(width - FAB.getWidth()) / 2f) * positionOffset);
+                    FAB.setTranslationX(translationX);
+                    FAB.setTranslationY(0);
+                } else if (position == 1) { // represents transition from page 1 to page 2 (vertical shift)
+                    int translationY = (int) (FAB.getHeight() * positionOffset);
+                    FAB.setTranslationY(translationY);
+                    FAB.setTranslationX(-(width - FAB.getWidth()) / 2f);
+                }
             }
 
             @Override
@@ -126,10 +132,12 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
             @Override
             public void onPageScrollStateChanged(int state) {
+
             }
         });
 
-        //todo: Elvis Code
+
+      //  todo: Elvis Code
         mAutocompleteTextView = (AutoCompleteTextView) findViewById(R.id.et_autocomplete_places);
         mAutocompleteTextView.setThreshold(2);
 
@@ -153,7 +161,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 //            googleMap.animateCamera(CameraUpdateFactory.zoomTo(11)); // choose default zoom of map
 
         }
-
+//
     };
 
     class MyPagerAdapter extends FragmentPagerAdapter {
@@ -182,18 +190,21 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             }
 
         }
-        //Todo: Vanice : insert drawable icons ids
         private int[] imageResId = {
-                // R.drawable. ,
-                // R.drawable. ,
-                // R.drawable. ,
-                // R.drawable. ,
+
+                R.drawable.search_icon,
+                R.drawable.list_icon,
+                R.drawable.map_icon,
+                R.drawable.user_icon,
         };
+
+
 
         @Override
         public CharSequence getPageTitle(int position) {
 
             Drawable image = getResources().getDrawable(imageResId[position]);
+            assert image != null;
             image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
             SpannableString sb = new SpannableString(" ");
             ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
@@ -445,16 +456,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_espy_main, menu);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            SearchManager searchManager =
-                    (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-            SearchView searchView =
-                    (SearchView) menu.findItem(R.id.action_search).getActionView();
-            searchView.setSearchableInfo(
-                    searchManager.getSearchableInfo(getComponentName()));
-            searchView.setIconifiedByDefault(false);
-        }
         return true;
     }
 

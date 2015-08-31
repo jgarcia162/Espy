@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -10,33 +10,25 @@
                 android:background="#6CCECB"
                 tools:context=".MainActivity">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Search Venue"
-        android:id="@+id/search_bar"/>
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="65dp">
     <TextView
-        android:text="Results"
+        android:text="Favorites"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:gravity="center"
         android:id="@+id/results_search"
         android:textColor="@android:color/black"
-        android:layout_below="@id/search_bar"/>
+        />
 
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/search_list_final"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/results_search">
-    </ListView>
+</LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:id="@+id/listView"/>
 
-</RelativeLayout>
+</LinearLayout>

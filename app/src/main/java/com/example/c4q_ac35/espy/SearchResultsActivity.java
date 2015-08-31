@@ -63,7 +63,7 @@ public class SearchResultsActivity extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       View view = inflater.inflate(R.layout.activity_search_results,container,false);
+       View view = inflater.inflate(R.layout.activity_heart_list,container,false);
 
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);

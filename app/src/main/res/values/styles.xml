@@ -3,22 +3,16 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="AppTheme.Base"/>
 
-    <!-- the theme applied to the application or activity -->
-    <style name="CustomActionBarTheme"
-           parent="@android:style/Theme.Holo">
-        <item name="android:windowActionBarOverlay">true</item>
-    </style>
+    <!--<style name="CustomActionBarTheme"-->
+           <!--parent="@android:style/Theme.Holo">-->
+        <!--<item name="android:windowActionBarOverlay">true</item>-->
+    <!--</style>-->
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat">
-        <item name="searchViewStyle">@style/CustomToolBarTheme</item>
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/PrimaryColor</item>
         <item name="colorPrimaryDark">@color/PrimaryDarkColor</item>
         <item name="colorAccent">@color/AccentColor</item>
-    </style>
-
-    <style name="CustomToolBarTheme" parent="Widget.AppCompat.SearchView">
-        <item name="android:textColor">@color/PrimaryDarkColor</item>
-        <item name="android:background">@color/PrimaryColor</item>
     </style>
 
 
