@@ -24,10 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MapActivity"
-            android:label="Map" >
-        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -36,14 +32,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDDREe4DCpVa7J2EbvhQRsr-BSxaovc8Ms" />
 
-        <activity
-            android:name=".UserActivity"
-            android:label="@string/title_activity_setting" >
-        </activity>
-
-        <activity
-            android:name=".HomeSearchActivity"
-            android:label="SearchResultsActivity"/>
         <activity android:name=".UserInitalSetActivity"
             android:label="Initial Setup"/>
         <service

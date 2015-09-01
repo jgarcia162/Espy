@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -10,82 +10,59 @@
                 android:orientation="vertical"
                 android:background="#6CCECB"
                 tools:context=".MainActivity">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#6CCECB">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
         android:id="@+id/linearLayout"
         android:layout_alignParentTop="true">
 
-
-        <android.support.design.widget.TextInputLayout
-            style="@style/EditTextStandard"
+      <ImageView
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          android:layout_height="200dp"
+          android:src="@drawable/user_icon"
+          android:id="@+id/user_pic"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/nameText">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="@string/name"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            style="@style/EditTextStandard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/homeText">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:hint="@string/home_address"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            style="@style/EditTextStandard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/workText">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:hint="@string/Work_Address"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            style="@style/EditTextStandard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/schoolText">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:hint="@string/school_Address"/>
-
-        </android.support.design.widget.TextInputLayout>
-
+            android:text="Profile"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:layout_gravity="center"/>
     </LinearLayout>
 
-    <Button
-        style="@style/ButtonStandard"
-        android:layout_width="150dp"
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_weight="1">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="History"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:layout_gravity="center"/>
+    <ListView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/submit"
-        android:id="@+id/firstSubmit"
-        android:layout_marginBottom="28dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:id="@+id/pastFaveList">
+    </ListView>
+    </LinearLayout>
+</LinearLayout>
 
-</RelativeLayout>
+</ScrollView>

@@ -12,10 +12,16 @@
 
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="80dp"
     android:orientation="vertical">
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:id="@+id/search_field"
+        android:layout_weight="1">
+    </SearchView>
     <TextView
-        android:text="Search/Home"
+        android:text="Recommendations"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textSize="35sp"
@@ -24,12 +30,6 @@
         android:textColor="@color/AccentColor"
         android:layout_weight="1"
         />
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:id="@+id/search_field"
-        android:layout_weight="1">
-    </SearchView>
 </LinearLayout>
     <android.support.v7.widget.RecyclerView
        android:layout_width="match_parent"

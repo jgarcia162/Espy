@@ -106,6 +106,7 @@
     <orderEntry type="library" exported="" name="cardview-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="jackson-annotations-2.2.2" level="project" />
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -114,7 +115,10 @@
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
 >>>>>>> 00ae99aec81a60f17e739331d341eb15f196bf2c
     <orderEntry type="library" exported="" name="support-annotations-22.2.1" level="project" />
+=======
+>>>>>>> 04d2a5a850c9234c5169f32cedcb1ff346b239e0
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.9.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="jackson-core-2.2.2" level="project" />
