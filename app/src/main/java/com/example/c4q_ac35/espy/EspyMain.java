@@ -144,6 +144,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         });
 
         //ALARM TO HANDLE WEEKLY NOTIFICATIONS
+
         setNotificationAlarm();
 
     }
@@ -451,7 +452,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         mNotificationPendingIntent = notificationPendingIntent();
 
         mAlarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, Calendar.TUESDAY, 10000, mNotificationPendingIntent);
+        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, Calendar.WEDNESDAY, 10000, mNotificationPendingIntent);
     }
 
     @Override
