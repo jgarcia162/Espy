@@ -11,5 +11,4 @@
         android:id="@+id/map_box">
     </FrameLayout>
 
-
 </LinearLayout>

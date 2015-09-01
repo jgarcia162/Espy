@@ -5,11 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.app.PendingIntent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,8 +30,6 @@ import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-
-import java.sql.Time;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,13 +42,13 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status>{
+public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
     private final String TAG = "Espy Main";
     private static final String CLIENT_ID = "GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
     private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
-    private final long ALARM_WEEKLY_INTERVAL = 1000*60*60*24*7;
+    private final long ALARM_WEEKLY_INTERVAL = 1000 * 60 * 60 * 24 * 7;
     FragmentPagerAdapter adapterViewPager;
     private AlarmManager mAlarmManager;
 
@@ -57,9 +60,11 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
     private GoogleApiClient mGoogleApiClient;
     private static final int GOOGLE_API_CLIENT_ID = 0;
+
     private MenuItem mSearchAction;
-    private boolean isSearchOpened = false;
     private android.support.v7.widget.Toolbar mToolbar;
+    private FloatingActionButton FAB;
+
     ArrayList<Geofence> mGeofenceList;
     PendingIntent mGeofencePendingIntent;
     PendingIntent mNotificationPendingIntent;
@@ -73,13 +78,22 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome_back);
+        setContentView(R.layout.activity_home);
+
+
+        mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(mToolbar);
+
+        FAB = (FloatingActionButton) findViewById(R.id.fab);
+
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addApi(Places.GEO_DATA_API)
                 .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
                 .addOnConnectionFailedListener(this)
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
                 .addApi(LocationServices.API)
                 .build();
 
@@ -96,16 +110,26 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
         mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
         viewPager.getCurrentItem();
         viewPager.setCurrentItem(0);
+        viewPager.isFakeDragging();
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                final int width = viewPager.getWidth();
+                if (position == 0) { // represents transition from page 0 to page 1 (horizontal shift)
+                    int translationX = (int) ((-(width - FAB.getWidth()) / 2f) * positionOffset);
+                    FAB.setTranslationX(translationX);
+                    FAB.setTranslationY(0);
+                } else if (position == 1) { // represents transition from page 1 to page 2 (vertical shift)
+                    int translationY = (int) (FAB.getHeight() * positionOffset);
+                    FAB.setTranslationY(translationY);
+                    FAB.setTranslationX(-(width - FAB.getWidth()) / 2f);
+                }
             }
 
             @Override
@@ -115,6 +139,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
             @Override
             public void onPageScrollStateChanged(int state) {
+
             }
         });
 
@@ -124,7 +149,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     }
 
     class MyPagerAdapter extends FragmentPagerAdapter {
-        private int NUM_ITEMS = 3;
+        private int NUM_ITEMS = 4;
 
         public MyPagerAdapter(android.support.v4.app.FragmentManager fm) {
             super(fm);
@@ -139,75 +164,51 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return MyLIst.newInstance(0, "Page # 1");
+                    return HomeSearchActivity.newInstance(0, "Page # 1");
                 case 1:
-                    return SearchResultsActivity.newInstance(1, "Page # 2");
+                    return FavoriteActivity.newInstance(1, "Page # 2");
                 case 2:
                     return MapActivity.newInstance(2, "Page # 3");
+                case 3:
+                    return UserActivity.newInstance(3, "Page # 4");
                 default:
                     return null;
             }
 
         }
 
+        private int[] imageResId = {
+                R.drawable.house_icon,
+                R.drawable.heart_icon,
+                R.drawable.map_icon,
+                R.drawable.user_icon,
+        };
+
+
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Page " + position;
+            Drawable image = getResources().getDrawable(imageResId[position]);
+            assert image != null;
+            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+            SpannableString sb = new SpannableString(" ");
+            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return sb;
         }
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-//        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-        populateGeofenceList();
-        addGeofences();
-
-
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
-        }
-        Log.i(LOG_TAG, "Google Places API connected.");
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
-                + connectionResult.getErrorCode());
-
-        Toast.makeText(this,
-                "Google Places API connection failed with error code:" +
-                        connectionResult.getErrorCode(),
-                Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        mPlaceArrayAdapter.setGoogleApiClient(null);
-        Log.e(LOG_TAG, "Google Places API connection suspended.");
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("Marker"));
-    }
-
-    private void doSearch() {
 
 
     }
 
-    @Override
-    public void onBackPressed() {
-        if (isSearchOpened) {
-            // handleMenuSearch();
-            return;
-        }
-        super.onBackPressed();
-
-    }
+//
+//    @Override
+//    public void onBackPressed() {
+//        if (isSearchOpened) {
+//            // handleMenuSearch();
+//            return;
+//        }
+//        super.onBackPressed();
+//
+//    }
 
 
 //    @Override
@@ -335,12 +336,12 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private PendingIntent notificationPendingIntent(){
-        if(mNotificationPendingIntent != null){
+    private PendingIntent notificationPendingIntent() {
+        if (mNotificationPendingIntent != null) {
             return mNotificationPendingIntent;
         }
-        Intent notificationIntent = new Intent(this,NotificationsService.class);
-        return PendingIntent.getService(this,0,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent notificationIntent = new Intent(this, NotificationsService.class);
+        return PendingIntent.getService(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public void populateGeofenceList() {
@@ -446,11 +447,11 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
     }
 
-    private void setNotificationAlarm(){
+    private void setNotificationAlarm() {
         mNotificationPendingIntent = notificationPendingIntent();
 
         mAlarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, Calendar.TUESDAY,10000,mNotificationPendingIntent);
+        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, Calendar.TUESDAY, 10000, mNotificationPendingIntent);
     }
 
     @Override
@@ -469,12 +470,55 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent(EspyMain.this, SettingActivity.class);
+            Intent settingsIntent = new Intent(EspyMain.this, UserActivity.class);
             EspyMain.this.startActivity(settingsIntent);
-            return true;
+            switch (item.getItemId()) {
+                case R.id.action_settings:
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
+    @Override
+    public void onConnected(Bundle bundle) {
+//        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+        populateGeofenceList();
+        addGeofences();
+
+        if (mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
+        // mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+        Log.i(LOG_TAG, "Google Places API connected.");
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
+                + connectionResult.getErrorCode());
+
+        Toast.makeText(this,
+                "Google Places API connection failed with error code:" +
+                        connectionResult.getErrorCode(),
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        //  mPlaceArrayAdapter.setGoogleApiClient(null);
+        Log.e(LOG_TAG, "Google Places API connection suspended.");
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(0, 0))
+                .title("Marker"));
+    }
 
 }

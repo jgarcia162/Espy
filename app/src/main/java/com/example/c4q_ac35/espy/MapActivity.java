@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 
 
 public class MapActivity extends Fragment {
-    private String title;
-    private int page;
 
     public static MapActivity newInstance (int page, String title){
         MapActivity mapActivity = new MapActivity();
@@ -25,9 +23,8 @@ public class MapActivity extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        page = getArguments().getInt("mapPage", 2);
-        title = getArguments().getString("map");
+        int mapPage = getArguments().getInt("mapPage", 2);
+       String mapActivity = getArguments().getString("map");
 
     }
 

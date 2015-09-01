@@ -64,9 +64,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         holder.name.setText(venue.getName());
         holder.address.setText(venue.getLocation().getCity());
         holder.phone.setText(venue.getContact().phone);
-
         Log.w("TAG", "Called");
-
 
     }
 

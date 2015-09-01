@@ -4,8 +4,7 @@
                          android:title="Main">
     <SwitchPreference
                          android:title="Enable Notifications"
-                         android:key="EnabledNotif"
-                         android:summary="Check to enable Notification Settings"/>
+                         android:key="EnabledNotif"/>
     </PreferenceCategory>
     <PreferenceCategory
                         android:title="Notification Settings"/>
