@@ -23,8 +23,7 @@ import retrofit.android.AndroidLog;
 import retrofit.client.Response;
 
 
-public class SearchResultsActivity extends Fragment{
-
+public class HomeSearchActivity extends Fragment {
     private String title;
     private int page;
     private VenueAdapter adapter;
@@ -36,16 +35,16 @@ public class SearchResultsActivity extends Fragment{
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
+    private static final String LOG_TAG = "HomeSearchActivity";
 
-    public static SearchResultsActivity newInstance (int page, String title){
-        SearchResultsActivity searchResultsActivity = new SearchResultsActivity();
+    public static HomeSearchActivity newInstance(int page, String title) {
+        HomeSearchActivity homeSearchActivity = new HomeSearchActivity();
         Bundle args = new Bundle();
         args.putInt("homePage", page);
         args.putString("home", title);
-        searchResultsActivity.setArguments(args);
-        return searchResultsActivity;
+        homeSearchActivity.setArguments(args);
+        return homeSearchActivity;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,37 +60,34 @@ public class SearchResultsActivity extends Fragment{
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
         servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
 
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       View view = inflater.inflate(R.layout.activity_search_results,container,false);
-
+        View view = inflater.inflate(R.layout.activity_search_list, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
-        mSwipeRefreshLayout.setColorSchemeColors(android.R.color.holo_blue_bright);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
-            }
-        });
+//        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+//        mSwipeRefreshLayout.setColorSchemeColors(android.R.color.holo_blue_bright);
+//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
+//            }
+//        });
 
         return view;
     }
 
 
 
-    public class FourSquareCallback implements Callback<ResponseAPI> {
+    class FourSquareCallback implements Callback<ResponseAPI> {
 
 
-        @Override
-        public void success(final ResponseAPI responseAPI, Response response) {
+            @Override
+            public void success(final ResponseAPI responseAPI, Response response) {
 
-             venuee = new Venue[responseAPI.getResponse().getVenues().size()];
+                venuee = new Venue[responseAPI.getResponse().getVenues().size()];
 
 //            for (int i = 0; i <responseAPI.getResponse().getVenues().size(); i++) {
 //                Venue v = new Venue();
@@ -104,32 +100,31 @@ public class SearchResultsActivity extends Fragment{
 //                Log.d(TAG, name);
 //            }
 
-            resultsFound = true;
-            if (adapter == null) {
-                List<Venue> venueList = responseAPI.getResponse().getVenues();
+                resultsFound = true;
+                if (adapter == null) {
+                    List<Venue> venueList = responseAPI.getResponse().getVenues();
 
-                venuee = venueList.toArray(new Venue[venueList.size()]);
+                    venuee = venueList.toArray(new Venue[venueList.size()]);
 
-                adapter = new VenueAdapter(getActivity(),venuee);
-               // adapter = new CustomeAdapter(getApplicationContext(), R.layout.venue_layout, venuee);
-                mRecyclerView.setAdapter(adapter);
-                mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+                    adapter = new VenueAdapter(getActivity(), venuee);
+                    // adapter = new CustomeAdapter(getApplicationContext(), R.layout.venue_layout, venuee);
+                    mRecyclerView.setAdapter(adapter);
+                    mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
 
+                }
+
+                //adapter.setVenueses(venuee);
+                //  adapter.notifyDataSetChanged();
+
+
+                Log.d(TAG, "Success");
             }
 
-            //adapter.setVenueses(venuee);
-          //  adapter.notifyDataSetChanged();
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, "Failure");
 
-
-            Log.d(TAG, "Success");
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-            Log.d(TAG, "Failure");
-
-        }
+            }
     }
-
 
 }
