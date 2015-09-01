@@ -12,8 +12,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +21,7 @@ import java.util.List;
 public class GeofenceTransitionsIntentService extends IntentService {
 
     protected static final String TAG = "geofence-transitions-service";
+    private static int GEOFENCE_NOTIFICATION_ID = 0;
 
 
     public GeofenceTransitionsIntentService(){
@@ -55,11 +54,11 @@ public class GeofenceTransitionsIntentService extends IntentService {
                     triggeringGeofences
             );
 
+
             sendNotification(geofenceTransitionDetails);
 
             Log.i(TAG, getString(R.string.geofence_transition_invalid_type, geofenceTransition));
         }
-
     }
 
     private String getGeofenceTransitionDetails(
@@ -114,14 +113,14 @@ public class GeofenceTransitionsIntentService extends IntentService {
                 .setContentIntent(notificationPendingIntent);
 
         // Dismiss notification once the user touches it.
-        builder.setAutoCancel(true).setOnlyAlertOnce(true);
+        builder.setAutoCancel(true);
 
         // Get an instance of the Notification manager
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Issue the notification
-        mNotificationManager.notify(0, builder.build());
+        mNotificationManager.notify(GEOFENCE_NOTIFICATION_ID, builder.build());
     }
 
     /**
