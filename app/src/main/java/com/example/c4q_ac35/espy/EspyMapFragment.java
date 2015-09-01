@@ -27,12 +27,12 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mapGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mapGoogleApiClient.connect();
+//        mapGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this)
+//                .addApi(LocationServices.API)
+//                .build();
+//        mapGoogleApiClient.connect();
 
         googleMap = getMap(); // loads map
         googleMap.setMyLocationEnabled(true); //finds current location
@@ -54,24 +54,16 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
         if(myLocation==null){
             LocationRequest mLocationRequest = new LocationRequest();
             mLocationRequest.setInterval(10000);
-            mLocationRequest.setFastestInterval(5000);
-            mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         } else {
+            LocationRequest mLocationRequest = new LocationRequest();
+            mLocationRequest.setInterval(10000);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
             double latitude = myLocation.getLatitude();
             double longitude = myLocation.getLongitude();
-            //Geofence.Builder falchiGeofence = new
             LatLng latLng = new LatLng(latitude, longitude);
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         }
-
-        double latitude = myLocation.getLatitude();
-        double longitude = myLocation.getLongitude();
-
-        LatLng latLng = new LatLng(latitude,longitude);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(11)); // choose default zoom of map
-
-
 
         // Calls location service within context
 
@@ -92,6 +84,7 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
 
     @Override
     public void onConnected(Bundle bundle) {
+
 
     }
 

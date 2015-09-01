@@ -50,6 +50,10 @@
             android:name=".GeofenceTransitionsIntentService"
             android:exported="true">
         </service>
+        <service
+            android:name=".NotificationsService"
+            android:exported="true">
+        </service>
 
     </application>
 

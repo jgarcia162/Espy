@@ -56,6 +56,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
             );
 
             sendNotification(geofenceTransitionDetails);
+
             Log.i(TAG, getString(R.string.geofence_transition_invalid_type, geofenceTransition));
         }
 
@@ -113,7 +114,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
                 .setContentIntent(notificationPendingIntent);
 
         // Dismiss notification once the user touches it.
-        builder.setAutoCancel(true);
+        builder.setAutoCancel(true).setOnlyAlertOnce(true);
 
         // Get an instance of the Notification manager
         NotificationManager mNotificationManager =
