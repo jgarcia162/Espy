@@ -16,7 +16,7 @@
     <string name="name">Name</string>
     <string name="home_address">Home Address</string>
     <string name="Work_Address">Work Address</string>
-    <string name="submit">Submit</string>
+    <string name="submit">Save</string>
     <string name="school_Address">School Address</string>
     <string name="nameInstru">Enter full name.</string>
     <string name="homeInstru">Enter full home address with zip code.</string>
