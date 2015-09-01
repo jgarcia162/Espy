@@ -2,6 +2,7 @@ package com.example.c4q_ac35.espy;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,6 +34,7 @@ public class SearchResultsActivity extends Fragment{
     public Venue[] venuee = null;
     private boolean resultsFound = false;
     private RecyclerView mRecyclerView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
     public static SearchResultsActivity newInstance (int page, String title){
@@ -49,7 +51,7 @@ public class SearchResultsActivity extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        page = getArguments().getInt("homePage",0);
+        page = getArguments().getInt("homePage", 0);
         title = getArguments().getString("home");
 
         RestAdapter mRestAdapter = new RestAdapter.Builder()
@@ -59,6 +61,8 @@ public class SearchResultsActivity extends Fragment{
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
         servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
 
+
+
     }
 
     @Override
@@ -67,6 +71,14 @@ public class SearchResultsActivity extends Fragment{
 
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        mSwipeRefreshLayout.setColorSchemeColors(android.R.color.holo_blue_bright);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
+            }
+        });
 
         return view;
     }

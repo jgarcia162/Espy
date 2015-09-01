@@ -5,10 +5,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
 public class SettingActivity extends PreferenceActivity {
-    String hAddress;
-    String wAddress;
-    String sAddress;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

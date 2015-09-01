@@ -4,10 +4,6 @@
     <style name="AppTheme" parent="AppTheme.Base"/>
 
     <!-- the theme applied to the application or activity -->
-    <style name="CustomActionBarTheme"
-           parent="@android:style/Theme.Holo">
-        <item name="android:windowActionBarOverlay">true</item>
-    </style>
 
     <style name="AppTheme.Base" parent="Theme.AppCompat">
         <item name="colorPrimary">#6CCECB</item>

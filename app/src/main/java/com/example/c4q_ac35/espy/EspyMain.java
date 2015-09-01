@@ -92,8 +92,9 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         viewPager.setAdapter(adapterViewPager);
         viewPager.getCurrentItem();
         viewPager.setCurrentItem(0);
+        viewPager.isFakeDragging();
 
-        
+
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -164,15 +165,13 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         }
         //Todo: Vanice : insert drawable icons ids
         private int[] imageResId = {
-                // R.drawable. ,
-                // R.drawable. ,
-                // R.drawable. ,
-                // R.drawable. ,
+                R.drawable.house_icon,
+                 R.drawable.heart_icon,
+                 R.drawable.user_icon
         };
 
         @Override
         public CharSequence getPageTitle(int position) {
-
             Drawable image = getResources().getDrawable(imageResId[position]);
             image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
             SpannableString sb = new SpannableString(" ");
