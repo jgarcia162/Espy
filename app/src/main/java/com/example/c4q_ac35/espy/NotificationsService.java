@@ -1,6 +1,7 @@
 package com.example.c4q_ac35.espy;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -28,11 +29,15 @@ public class NotificationsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-                sendWeeklyNotification("Hey try something new this week!");
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification weeklyNotification = sendWeeklyNotification("Hey try something new this week!");
+
+        notificationManager.notify(WEEKLY_NOTIFICATION_ID, weeklyNotification);
+
     }
 
-    private void sendWeeklyNotification(String notificationDetails){
-        Intent notificationIntent = new Intent(getApplicationContext(),MyLIst.class);
+    private Notification sendWeeklyNotification(String notificationDetails){
+        Intent notificationIntent = new Intent(getApplicationContext(),EspyMain.class);
 
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
 
@@ -44,8 +49,8 @@ public class NotificationsService extends IntentService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
-        builder.setSmallIcon(R.drawable.ic_plusone_standard_off_client)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_plusone_tall_off_client))
+        builder.setSmallIcon(R.drawable.common_signin_btn_icon_focus_dark)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.common_signin_btn_icon_focus_dark))
                 .setColor(Color.GREEN)
                 .setContentTitle("Get Out And Explore!")
                 .setContentText(notificationDetails)
@@ -53,8 +58,6 @@ public class NotificationsService extends IntentService {
                 .setAutoCancel(true)
                 .setOnlyAlertOnce(true);
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(WEEKLY_NOTIFICATION_ID, builder.build());
+            return builder.build();
     }
 }

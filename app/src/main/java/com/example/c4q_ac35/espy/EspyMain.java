@@ -1,18 +1,14 @@
 package com.example.c4q_ac35.espy;
 
-import android.app.NotificationManager;
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.app.PendingIntent;
 import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
@@ -20,7 +16,6 @@ import android.view.MenuItem;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -36,13 +31,6 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -57,7 +45,9 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     private static final String CLIENT_ID = "GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
     private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
+    private final long ALARM_WEEKLY_INTERVAL = 1000*60*60*24*7;
     FragmentPagerAdapter adapterViewPager;
+    private AlarmManager mAlarmManager;
 
     //Todo: merge Elvis code
     private static final String LOG_TAG = "MainActivity";
@@ -99,6 +89,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
         mGeofencePendingIntent = null;
+        mNotificationPendingIntent = null;
 
         mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
 
@@ -127,8 +118,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             }
         });
 
-        //TIMER TO HANDLE WEEKLY NOTIFICATIONS
-        NotificationsService notificationsService = new NotificationsService();
+        //ALARM TO HANDLE WEEKLY NOTIFICATIONS
+        setNotificationAlarm();
 
     }
 
@@ -163,7 +154,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         public CharSequence getPageTitle(int position) {
             return "Page " + position;
         }
-
     }
 
     @Override
@@ -350,7 +340,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             return mNotificationPendingIntent;
         }
         Intent notificationIntent = new Intent(this,NotificationsService.class);
-        return PendingIntent.getService(this,1,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(this,0,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public void populateGeofenceList() {
@@ -457,7 +447,10 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     }
 
     private void setNotificationAlarm(){
+        mNotificationPendingIntent = notificationPendingIntent();
 
+        mAlarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, Calendar.TUESDAY,10000,mNotificationPendingIntent);
     }
 
     @Override
