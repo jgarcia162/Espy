@@ -38,12 +38,12 @@
             android:value="AIzaSyDDREe4DCpVa7J2EbvhQRsr-BSxaovc8Ms" />
 
         <activity
-            android:name=".SettingActivity"
+            android:name=".UserActivity"
             android:label="@string/title_activity_setting" >
         </activity>
 
         <activity
-            android:name=".SearchResultsActivity"
+            android:name=".HomeSearchActivity"
             android:label="SearchResultsActivity"/>
         <activity android:name=".UserInitalSetActivity"
             android:label="Initial Setup"/>

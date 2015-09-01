@@ -1,20 +1,15 @@
 package com.example.c4q_ac35.espy;
 
 import android.app.PendingIntent;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
@@ -22,10 +17,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -74,7 +67,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome_back);
+        setContentView(R.layout.activity_home);
 
 
         mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
@@ -107,7 +100,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
         viewPager.getCurrentItem();
-        viewPager.setCurrentItem(0);
+
 
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -136,8 +129,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             }
         });
 
-
-      //  todo: Elvis Code
+        //  todo: Elvis Code
         mAutocompleteTextView = (AutoCompleteTextView) findViewById(R.id.et_autocomplete_places);
         mAutocompleteTextView.setThreshold(2);
 
@@ -160,12 +152,12 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 //            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 //            googleMap.animateCamera(CameraUpdateFactory.zoomTo(11)); // choose default zoom of map
 
-        }
-//
-    };
+        }};
+
+
 
     class MyPagerAdapter extends FragmentPagerAdapter {
-        private int NUM_ITEMS = 3;
+        private int NUM_ITEMS = 4;
 
         public MyPagerAdapter(android.support.v4.app.FragmentManager fm) {
             super(fm);
@@ -180,11 +172,13 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return MyLIst.newInstance(0, "Page # 1");
+                    return HomeSearchActivity.newInstance(0, "Page # 1");
                 case 1:
-                    return SearchResultsActivity.newInstance(1, "Page # 2");
+                    return FavoriteActivity.newInstance(1, "Page # 2");
                 case 2:
                     return MapActivity.newInstance(2, "Page # 3");
+                case 3:
+                    return UserActivity.newInstance(3, "Page # 4");
                 default:
                     return null;
             }
@@ -192,8 +186,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         }
         private int[] imageResId = {
 
-                R.drawable.search_icon,
-                R.drawable.list_icon,
+                R.drawable.house_icon,
+                R.drawable.heart_icon,
                 R.drawable.map_icon,
                 R.drawable.user_icon,
         };
@@ -213,6 +207,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         }
 
     }
+
+
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -238,16 +234,13 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         Log.e(LOG_TAG, "Google Places API connection suspended.");
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
                 .title("Marker"));
     }
-
-
-
-
 
 //    @Override
 //    protected void onStart() {
@@ -468,11 +461,9 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Intent settingsIntent = new Intent(EspyMain.this, SettingActivity.class);
+                Intent settingsIntent = new Intent(EspyMain.this, UserActivity.class);
                 EspyMain.this.startActivity(settingsIntent);
                 return true;
-            case R.id.action_search:
-
             default:
                 return super.onOptionsItemSelected(item);
         }
