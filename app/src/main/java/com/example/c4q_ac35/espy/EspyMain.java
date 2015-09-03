@@ -100,8 +100,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
         viewPager.getCurrentItem();
-
-
+        viewPager.setCurrentItem(0);
+        viewPager.isFakeDragging();
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -190,13 +190,13 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                 R.drawable.heart_icon,
                 R.drawable.map_icon,
                 R.drawable.user_icon,
+
         };
 
 
 
         @Override
         public CharSequence getPageTitle(int position) {
-
             Drawable image = getResources().getDrawable(imageResId[position]);
             assert image != null;
             image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
