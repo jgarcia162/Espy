@@ -30,7 +30,8 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDDREe4DCpVa7J2EbvhQRsr-BSxaovc8Ms" />
+            android:value="AIzaSyB2Hv1wRfZ0DY01NXGaq4m1mSICX4FEWbI" />
+        <!--AIzaSyDDREe4DCpVa7J2EbvhQRsr-BSxaovc8Ms-->
 
         <activity android:name=".UserInitalSetActivity"
             android:label="Initial Setup"/>
@@ -42,6 +43,11 @@
             android:name=".NotificationsService"
             android:exported="true">
         </service>
+        <receiver android:name=".GeofenceReceiver">
+            <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 

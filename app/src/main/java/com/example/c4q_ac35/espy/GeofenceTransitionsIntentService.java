@@ -58,6 +58,9 @@ public class GeofenceTransitionsIntentService extends IntentService {
             sendNotification(geofenceTransitionDetails);
 
             Log.i(TAG, getString(R.string.geofence_transition_invalid_type, geofenceTransition));
+        }else if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL){
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            mNotificationManager.cancelAll();
         }
     }
 

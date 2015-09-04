@@ -5,10 +5,18 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+
+import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
+import com.example.c4q_ac35.espy.foursquare.Response;
+import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
+import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -16,7 +24,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import javax.security.auth.callback.Callback;
+
+import retrofit.RetrofitError;
 
 /**
  * Created by c4q-ac35 on 8/12/15.
@@ -27,18 +43,21 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
     Location myLocation;
     GoogleApiClient mapGoogleApiClient;
     List<Geofence> mGeofenceList;
+    FourSquareAPI servicesFoursquare;
     float GEOFENCE_RADIUS_IN_METERS = 1000;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-//        mapGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(LocationServices.API)
-//                .build();
-//        mapGoogleApiClient.connect();
+        mapGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mapGoogleApiClient.connect();
+//
+//        mGeofenceList = new ArrayList<Geofence>();
 
         googleMap = getMap(); // loads map
         googleMap.setMyLocationEnabled(true); //finds current location
@@ -58,6 +77,7 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
         double lat = 40.722695;
         double lon = -73.996545;
 
+
         //Adding a null check
         if(myLocation==null){
             LocationRequest mLocationRequest = new LocationRequest();
@@ -74,7 +94,21 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
         }
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(11)); // choose default zoom of map
 
+        ResponseAPI responseAPI = new ResponseAPI();
+        List<Venue> venueList = responseAPI.getResponse().getVenues();
 
+        for(int i =0;i<venueList.size();i++) {
+            com.example.c4q_ac35.espy.foursquare.Location location = venueList.get(i).getLocation();
+            final double venueLat = location.getLat();
+            final double venueLong = location.getLng();
+
+            Marker locationMarker = googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(venueLat, venueLong))
+                    .title(venueList.get(i).getName()));
+            locationMarker.setSnippet("Phone Number: " + venueList.get(i).getContact().getPhone());
+            locationMarker.isInfoWindowShown();
+            Log.i(venueList.get(i).getContact().getPhone(), venueList.get(i).getName());
+        }
         Marker marker = googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat,lon))
                 .title("Rice To Riches"));
@@ -84,19 +118,8 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
 
         // Calls location service within context
 
-//        //Loop for setting markers and geofences for each location in list
-//        for(Location location : mListOfLocations ){
-//            double lat = location.getLatitude();
-//            double lon = location.getLongitude();
-//            EspyGeofence locationFence = new EspyGeofence(location.getName().toString(),lat,lon,geofenceRadius,Constants.GEOFENCE_EXPIRATION_TIME,Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_DWELL | Geofence.GEOFENCE_TRANSITION_EXIT);
-//            locationFence.toGeofence();
-//
-//            Marker locationMarker = googleMap.addMarker(new MarkerOptions()
-//                    .position(new LatLng(location.getLatitude(),location.getLongitude()))
-//                    .title(location.getName()));
-//            locationMarker.setSnippet("Phone NUmber: " + location.getPhone().toString());
-//            locationMarker.isInfoWindowShown();
-//        }
+        //Loop for setting markers and geofences for each location in list
+
     }
 
     @Override
@@ -114,5 +137,7 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
+
+
 
 }

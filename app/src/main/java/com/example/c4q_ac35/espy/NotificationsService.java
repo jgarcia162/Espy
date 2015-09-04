@@ -20,7 +20,7 @@ import java.util.TimerTask;
  * Created by c4q-ac35 on 8/31/15.
  */
 public class NotificationsService extends IntentService {
-    int WEEKLY_NOTIFICATION_ID = 1;
+    public static int WEEKLY_NOTIFICATION_ID = 1;
     protected static final String TAG = "notifications-service";
 
     public NotificationsService() {
@@ -31,9 +31,7 @@ public class NotificationsService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Notification weeklyNotification = sendWeeklyNotification("Hey try something new this week!");
-
         notificationManager.notify(WEEKLY_NOTIFICATION_ID, weeklyNotification);
-
     }
 
     private Notification sendWeeklyNotification(String notificationDetails){
@@ -49,7 +47,8 @@ public class NotificationsService extends IntentService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
-        builder.setSmallIcon(R.drawable.common_signin_btn_icon_focus_dark)
+        builder.setPriority(NotificationCompat.PRIORITY_LOW)
+                .setSmallIcon(R.drawable.common_signin_btn_icon_focus_dark)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.common_signin_btn_icon_focus_dark))
                 .setColor(Color.GREEN)
                 .setContentTitle("Get Out And Explore!")
