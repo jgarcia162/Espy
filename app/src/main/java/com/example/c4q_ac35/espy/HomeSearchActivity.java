@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
@@ -73,6 +74,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     @Override
     public void onResume() {
         super.onResume();
+        searchPlaces();
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -89,7 +91,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
 
 
         if (location != null) {
-            Log.d(TAG, "date: " +(System.currentTimeMillis()-location.getTime()));
+            Log.d(TAG, "date: " + (System.currentTimeMillis() - location.getTime()));
             updateLocation(location);
         }
     }
@@ -230,5 +232,35 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
 
         return null;
     }
+
+
+    public void searchPlaces() {
+
+
+        SearchView searchView = new SearchView(getActivity());
+        searchView.getQueryHint();
+        searchView.getSuggestionsAdapter();
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+    }
+
+
+    /**
+     * Check FourSquare API and the email sent to me by HU
+     * in details I can find the rating
+     *
+     * Need to look for the time they close PLUS add the menu button
+     * to load the menu from foursquare
+     *
+     * 
+     *
+     */
+
+
 
 }
