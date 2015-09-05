@@ -43,11 +43,6 @@
             android:name=".NotificationsService"
             android:exported="true">
         </service>
-        <receiver android:name=".GeofenceReceiver">
-            <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
 
     </application>
 

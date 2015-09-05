@@ -23,7 +23,6 @@ public class GeofenceTransitionsIntentService extends IntentService {
     protected static final String TAG = "geofence-transitions-service";
     private static int GEOFENCE_NOTIFICATION_ID = 0;
 
-
     public GeofenceTransitionsIntentService(){
         super(TAG);
     }
@@ -54,13 +53,9 @@ public class GeofenceTransitionsIntentService extends IntentService {
                     triggeringGeofences
             );
 
-
             sendNotification(geofenceTransitionDetails);
 
             Log.i(TAG, getString(R.string.geofence_transition_invalid_type, geofenceTransition));
-        }else if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL){
-            NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            mNotificationManager.cancelAll();
         }
     }
 
@@ -105,11 +100,11 @@ public class GeofenceTransitionsIntentService extends IntentService {
         android.support.v4.app.NotificationCompat.Builder builder = new android.support.v4.app.NotificationCompat.Builder(this);
 
         // Define the notification settings.
-        builder.setSmallIcon(R.drawable.ic_plusone_standard_off_client)
+        builder.setSmallIcon(R.mipmap.espy_icon)
                 // In a real app, you may want to use a library like Volley
                 // to decode the Bitmap.
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),
-                        R.drawable.ic_plusone_tall_off_client))
+                        R.mipmap.espy_icon))
                 .setColor(Color.RED)
                 .setContentTitle("Check this out!")
                 .setContentText(notificationDetails)

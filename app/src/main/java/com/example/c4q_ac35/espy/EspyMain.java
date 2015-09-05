@@ -52,7 +52,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
     private final long ALARM_WEEKLY_INTERVAL = 1000 * 60 * 60 * 24 * 7;
     private AlarmManager mAlarmManager;
-    private GeofenceReceiver mGeofenceReceiver;
 
     //Todo: merge Elvis code
     private static final String LOG_TAG = "MainActivity";
@@ -120,7 +119,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     @Override
     protected void onPause() {
         super.onPause();
-        mGeofenceReceiver = new GeofenceReceiver();
     }
 
     @Override
@@ -460,7 +458,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent(EspyMain.this, UserActivity.class);
+            Intent settingsIntent = new Intent(EspyMain.this, UserInitalSetActivity.class);
             EspyMain.this.startActivity(settingsIntent);
             switch (item.getItemId()) {
                 case R.id.action_settings:
@@ -570,23 +568,5 @@ class MyPagerAdapter extends FragmentStatePagerAdapter {
         return sb;
     }
 
-
-
-//        private int[] imageResId = {
-//                R.drawable.house_icon,
-//                R.drawable.heart_icon,
-//                R.drawable.map_icon,
-//                R.drawable.user_icon,
-//        };
-//
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            Drawable image = getResources().getDrawable(imageResId[position]);
-//            assert image != null;
-//            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-//            SpannableString sb = new SpannableString(" ");
-//            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-//            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//            return sb;
 }
 }

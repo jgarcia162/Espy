@@ -5,11 +5,8 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
-import com.example.c4q_ac35.espy.foursquare.Response;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.common.ConnectionResult;
@@ -24,15 +21,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import javax.security.auth.callback.Callback;
-
-import retrofit.RetrofitError;
+import java.util.Timer;
 
 /**
  * Created by c4q-ac35 on 8/12/15.
@@ -73,42 +65,40 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); //Choose type of map, normal, terrain, satellite, none
 
-
         double lat = 40.722695;
         double lon = -73.996545;
-
 
         //Adding a null check
         if(myLocation==null){
             LocationRequest mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(10000);
+            mLocationRequest.setInterval(1000*60*10);
             mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         } else {
             LocationRequest mLocationRequest = new LocationRequest();
             mLocationRequest.setInterval(10000);
             mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-            double latitude = myLocation.getLatitude();
-            double longitude = myLocation.getLongitude();
-            LatLng latLng = new LatLng(latitude, longitude);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         }
+        double latitude = myLocation.getLatitude();
+        double longitude = myLocation.getLongitude();
+        LatLng latLng = new LatLng(latitude, longitude);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(11)); // choose default zoom of map
 
-        ResponseAPI responseAPI = new ResponseAPI();
-        List<Venue> venueList = responseAPI.getResponse().getVenues();
-
-        for(int i =0;i<venueList.size();i++) {
-            com.example.c4q_ac35.espy.foursquare.Location location = venueList.get(i).getLocation();
-            final double venueLat = location.getLat();
-            final double venueLong = location.getLng();
-
-            Marker locationMarker = googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(venueLat, venueLong))
-                    .title(venueList.get(i).getName()));
-            locationMarker.setSnippet("Phone Number: " + venueList.get(i).getContact().getPhone());
-            locationMarker.isInfoWindowShown();
-            Log.i(venueList.get(i).getContact().getPhone(), venueList.get(i).getName());
-        }
+//        ResponseAPI responseAPI = new ResponseAPI();
+//        List<Venue> venueList = responseAPI.getResponse().getVenues();
+//
+//        for(int i =0;i<venueList.size();i++) {
+//            com.example.c4q_ac35.espy.foursquare.Location location = venueList.get(i).getLocation();
+//            final double venueLat = location.getLat();
+//            final double venueLong = location.getLng();
+//
+//            Marker locationMarker = googleMap.addMarker(new MarkerOptions()
+//                    .position(new LatLng(venueLat, venueLong))
+//                    .title(venueList.get(i).getName()));
+//            locationMarker.setSnippet("Phone Number: " + venueList.get(i).getContact().getPhone());
+//            locationMarker.isInfoWindowShown();
+//            Log.i(venueList.get(i).getContact().getPhone(), venueList.get(i).getName());
+//        }
         Marker marker = googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat,lon))
                 .title("Rice To Riches"));
