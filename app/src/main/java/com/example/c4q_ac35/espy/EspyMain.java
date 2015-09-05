@@ -1,7 +1,6 @@
 package com.example.c4q_ac35.espy;
 
 import android.app.AlarmManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.app.PendingIntent;
@@ -35,6 +34,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.GoogleMap;
@@ -60,7 +60,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
             new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
     private GoogleApiClient mGoogleApiClient;
-    GoogleMap mGoogleMap;
     private static final int GOOGLE_API_CLIENT_ID = 0;
 
     private MenuItem mSearchAction;
@@ -96,6 +95,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         mGoogleApiClient.connect();
 
         mGeofenceList = new ArrayList<Geofence>();
+
         // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
         mGeofencePendingIntent = null;
         mNotificationPendingIntent = null;
@@ -113,17 +113,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         //ALARM TO HANDLE WEEKLY NOTIFICATIONS
 
+        //setNotificationAlarm();
 
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
     }
 
     private void setUpTab() {
@@ -336,7 +327,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         final double falchiLat = 40.742676;
         final double falchiLong = -73.935182;
 
-        final float geofenceRadius = 150;
+        final float geofenceRadius = 300;
         mGeofenceList.add(new Geofence.Builder()
                 .setRequestId("Doughnut Plant") //replace with place.getName()
 
@@ -422,7 +413,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
     protected void startLocationUpdates() {
         LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(60000*10);
+        mLocationRequest.setInterval(30000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationListener mLocationListener = new LocationListener() {
             @Override
@@ -438,8 +429,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         mNotificationPendingIntent = notificationPendingIntent();
 
         mAlarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-      mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, ALARM_WEEKLY_INTERVAL, ALARM_WEEKLY_INTERVAL, mNotificationPendingIntent);
-
+        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, Calendar.WEDNESDAY, 10000, mNotificationPendingIntent);
     }
 
     @Override
@@ -458,7 +448,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent(EspyMain.this, UserInitalSetActivity.class);
+            Intent settingsIntent = new Intent(EspyMain.this, UserActivity.class);
             EspyMain.this.startActivity(settingsIntent);
             switch (item.getItemId()) {
                 case R.id.action_settings:
@@ -473,10 +463,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     @Override
     public void onConnected(Bundle bundle) {
 //        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-        if(mGeofenceList.size() > 0){
         populateGeofenceList();
         addGeofences();
-        }
 
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
@@ -568,5 +556,21 @@ class MyPagerAdapter extends FragmentStatePagerAdapter {
         return sb;
     }
 
+//        private int[] imageResId = {
+//                R.drawable.house_icon,
+//                R.drawable.heart_icon,
+//                R.drawable.map_icon,
+//                R.drawable.user_icon,
+//        };
+//
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            Drawable image = getResources().getDrawable(imageResId[position]);
+//            assert image != null;
+//            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+//            SpannableString sb = new SpannableString(" ");
+//            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+//            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            return sb;
 }
 }
