@@ -115,20 +115,17 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         //ALARM TO HANDLE WEEKLY NOTIFICATIONS
 
 
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mGeofenceReceiver = new GeofenceReceiver();
-        mGeofenceReceiver.abortBroadcast();
     }
 
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        mGeofenceReceiver.clearAbortBroadcast();
     }
 
     private void setUpTab() {
