@@ -1,16 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.c4q_ac35.espy.WelcomeBackActivity">
-
-    <!--<android.support.design.widget.CoordinatorLayout-->
-        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.example.c4q_ac35.espy.WelcomeBackActivity">
 
     <include
         android:id="@+id/app_bar"
@@ -24,28 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-        <!--<android.support.v4.view.PagerTabStrip-->
-            <!--android:id="@+id/pager_header"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@color/PrimaryDarkColor"-->
-            <!--android:layout_gravity="top"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="15dp" />-->
 
-    <!--</android.support.v4.view.ViewPager>-->
-    <!--</android.support.design.widget.CoordinatorLayout>-->
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:src="@drawable/search_icon"-->
-        <!--android:id="@+id/fab"-->
-        <!--app:fabSize="normal"-->
-        <!--app:borderWidth="0dp"-->
-        <!--app:backgroundTint="@color/PrimaryColor"-->
-        <!--android:layout_marginEnd="59dp"-->
-        <!--android:layout_marginBottom="63dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentEnd="true" />-->
 
 </LinearLayout>

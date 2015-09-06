@@ -42,7 +42,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
 
-    //Todo: merge Elvis code
     private static final String LOG_TAG = "MainActivity";
     private AutoCompleteTextView mAutocompleteTextView;
     private PlacesAdapter mPlaceArrayAdapter;

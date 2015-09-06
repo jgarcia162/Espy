@@ -74,7 +74,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     @Override
     public void onResume() {
         super.onResume();
-        searchPlaces();
+
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -107,6 +107,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
         View view = inflater.inflate(R.layout.activity_search_list, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
+        searchPlaces();
 //        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 //        mSwipeRefreshLayout.setColorSchemeColors(android.R.color.holo_blue_bright);
 //        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -144,13 +145,11 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     public void onStatusChanged(String provider, int status, Bundle extras) {
         Log.d(TAG, "OnStatusChanged" + status + ", " + provider);
 
-
     }
 
     @Override
     public void onProviderEnabled(String provider) {
         Log.d(TAG, "OnProviderEnabled" + provider);
-
 
     }
 
@@ -158,12 +157,9 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     public void onProviderDisabled(String provider) {
         Log.d(TAG, "OnProviderDisabled" + provider);
 
-
     }
 
-
     class FourSquareCallback implements Callback<ResponseAPI> {
-
 
         @Override
         public void success(final ResponseAPI responseAPI, Response response) {
@@ -194,7 +190,6 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     public android.location.Location getLocation(LocationManager mLocationManager) {
 
         android.location.Location location = null;
-
 
         // getting GPS status
         boolean isGPSEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -229,13 +224,11 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
         if (isGPSEnabled)
             mLocationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
 
-
         return null;
     }
 
 
     public void searchPlaces() {
-
 
         SearchView searchView = new SearchView(getActivity());
         searchView.getQueryHint();
@@ -248,19 +241,5 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
         });
 
     }
-
-
-    /**
-     * Check FourSquare API and the email sent to me by HU
-     * in details I can find the rating
-     *
-     * Need to look for the time they close PLUS add the menu button
-     * to load the menu from foursquare
-     *
-     * 
-     *
-     */
-
-
 
 }

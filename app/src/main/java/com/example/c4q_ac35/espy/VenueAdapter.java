@@ -71,27 +71,38 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(VenueAdapter.ViewHolder holder, int position) {
         Venue venue = mVenues[position];
-        holder.name.setText(venue.getName());
-        holder.address.setText(venue.getLocation().getCity());
-        holder.phone.setText(venue.getContact().phone);
+
+        //if(venue.getCategories().equals("food") && venue.getCategories().equals("nightlife spot")) {
 
 
-        mLocation = venue.getLocation();
+            holder.name.setText(venue.getName());
+            holder.address.setText(venue.getLocation().getCity());
+            holder.phone.setText(venue.getContact().phone);
 
-        String urlString = PRE_ENDPOINT + mLocation.getLat() + "," + mLocation.getLng();
-        URL url = null;
-        try {
-            url = new URL(urlString);
-            Log.d(TAG, "Latitud:  " + mLocation.getLat());
-            Log.d(TAG, "Longitud:  " + mLocation.getLng());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
 
-        holder.mImageViewVenue.setImageBitmap(null);
-        Glide.with(mContext).load(url).centerCrop().into(holder.mImageViewVenue);
+            mLocation = venue.getLocation();
 
-        Log.w("TAG", "Called");
+            String urlString = PRE_ENDPOINT + mLocation.getLat() + "," + mLocation.getLng();
+            URL url = null;
+            try {
+                url = new URL(urlString);
+                Log.d(TAG, "Latitud:  " + mLocation.getLat());
+                Log.d(TAG, "Longitud:  " + mLocation.getLng());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+            holder.mImageViewVenue.setImageBitmap(null);
+            Glide.with(mContext).load(url).centerCrop().into(holder.mImageViewVenue);
+
+            Log.w("TAG", "Called");
+
+
+//        }else {
+//
+//        }
+
+
 
     }
 
