@@ -311,8 +311,11 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
         // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
         // addGeofences() and removeGeofences().
+
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
+
+
 
     private PendingIntent notificationPendingIntent() {
         if (mNotificationPendingIntent != null) {
@@ -556,21 +559,5 @@ class MyPagerAdapter extends FragmentStatePagerAdapter {
         return sb;
     }
 
-//        private int[] imageResId = {
-//                R.drawable.house_icon,
-//                R.drawable.heart_icon,
-//                R.drawable.map_icon,
-//                R.drawable.user_icon,
-//        };
-//
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            Drawable image = getResources().getDrawable(imageResId[position]);
-//            assert image != null;
-//            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-//            SpannableString sb = new SpannableString(" ");
-//            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-//            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//            return sb;
 }
 }
