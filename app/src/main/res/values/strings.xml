@@ -13,4 +13,42 @@
     </string-array>
     <string name="title_activity_welcome_back">WelcomeBackActivity</string>
     <string name="title_activity_setting">SettingActivity</string>
+    <string name="name">Name</string>
+    <string name="home_address">Home Address</string>
+    <string name="Work_Address">Work Address</string>
+    <string name="submit">Save</string>
+    <string name="school_Address">School Address</string>
+    <string name="nameInstru">Enter full name.</string>
+    <string name="homeInstru">Enter full home address with zip code.</string>
+    <string name="workInstru">Enter full work address with zip code.</string>
+    <string name="schoolInstru">Enter full school address with zip code.</string>
+    <string name="search">Search</string>
+    <string name="title_activity_user_inital_set">UserInitalSetActivity</string>
+
+    <string name="add_geofences">Add geofences</string>
+    <string name="remove_geofences">Remove geofences</string>
+
+    <string name="geofences_added">Geofences added</string>
+    <string name="geofences_removed">Geofences removed</string>
+
+    <!-- Error strings -->
+    <string name="not_connected">GoogleApiClient no yet connected. Try again.</string>
+    <string name="geofence_not_available">Geofence service is not available now</string>
+    <string name="geofence_too_many_geofences">Your app has registered too many geofences</string>
+    <string name="geofence_too_many_pending_intents">
+        You have provided too many PendingIntents to the addGeofences() call
+    </string>
+    <string name="unknown_geofence_error">
+        Unknown error: the Geofence service is not available now
+    </string>
+    <string name="geofence_transition_invalid_type">
+        Geofence transition error: invalid transition type %1$d
+    </string>
+
+    <!-- Transition type strings -->
+    <string name="geofence_transition_entered">Entered</string>
+    <string name="geofence_transition_exited">Exited</string>
+    <string name="unknown_geofence_transition">Unknown Transition</string>
+
+    <string name="geofence_transition_notification_text">Click notification to return to app</string>
 </resources>
