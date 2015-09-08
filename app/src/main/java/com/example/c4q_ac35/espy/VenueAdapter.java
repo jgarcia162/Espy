@@ -1,6 +1,7 @@
 package com.example.c4q_ac35.espy;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,9 +18,10 @@ import butterknife.ButterKnife;
  * Created by c4q-marbella on 8/22/15.
  */
 public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> {
-
     private Venue [] mVenues;
     private Context mContext;
+
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -27,6 +29,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Bind(R.id.item_name) TextView name;
         @Bind(R.id.item_address) TextView address;
         @Bind(R.id.item_phone) TextView phone;
+
 
 
         public ViewHolder(View itemView) {
@@ -56,6 +59,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.venue_layout,parent,false);
         return new VenueAdapter.ViewHolder(itemView);
+
     }
 
     @Override

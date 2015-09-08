@@ -1,91 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:orientation="vertical"
-                android:background="#6CCECB"
-                tools:context=".MainActivity">
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
         android:layout_gravity="center"
-        android:orientation="vertical"
-        android:id="@+id/linearLayout"
-        android:layout_alignParentTop="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/PrimaryColor"
+        android:layout_margin="5dp"
+        card_view:cardPreventCornerOverlap="false"
+        card_view:cardCornerRadius="7dp"
+        android:elevation="5dp">
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="30dp"
+      android:background="@color/PrimaryDarkColor">
 
 
-        <android.support.design.widget.TextInputLayout
-            style="@style/EditTextStandard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/nameText">
+      <de.hdodenhof.circleimageview.CircleImageView
+          xmlns:app="http://schemas.android.com/apk/res-auto"
+          android:id="@+id/profile_image"
+          android:layout_width="150dp"
+          android:layout_height="150dp"
+          android:src="@drawable/elvis_profile"
+          android:layout_margin="30dp"
+          app:border_width="2dp"
+          app:border_color="#FFFFFF"
+          android:layout_centerVertical="true"
+          android:layout_centerHorizontal="true" />
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="@string/name"/>
+  </RelativeLayout>
 
-        </android.support.design.widget.TextInputLayout>
+    </android.support.v7.widget.CardView>
 
-        <android.support.design.widget.TextInputLayout
-            style="@style/EditTextStandard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/homeText">
+</LinearLayout>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:hint="@string/home_address"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            style="@style/EditTextStandard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/workText">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:hint="@string/Work_Address"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            style="@style/EditTextStandard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/schoolText">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:hint="@string/school_Address"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-    </LinearLayout>
-
-    <Button
-        style="@style/ButtonStandard"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="@string/submit"
-        android:id="@+id/firstSubmit"
-        android:layout_marginBottom="28dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
-
-</RelativeLayout>

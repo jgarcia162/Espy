@@ -10,16 +10,29 @@
                 android:background="#FFFFFF"
                 tools:context=".MainActivity">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipeContainer"
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:orientation="vertical">
+    <SearchView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:id="@+id/search_field"
+        android:layout_weight="1">
+    </SearchView>
+    <TextView
+        android:text="Recommendations"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:textSize="35sp"
+        android:gravity="center"
+        android:id="@+id/results_search"
+        android:textColor="@color/PrimaryDarkColor"
+        android:layout_weight="1" />
+</LinearLayout>
+    <android.support.v7.widget.RecyclerView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/listView"/>
 </LinearLayout>
 

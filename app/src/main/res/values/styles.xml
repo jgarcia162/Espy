@@ -3,10 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="AppTheme.Base"/>
 
-    <!--<style name="CustomActionBarTheme"-->
-           <!--parent="@android:style/Theme.Holo">-->
-        <!--<item name="android:windowActionBarOverlay">true</item>-->
-    <!--</style>-->
+
+    <!-- the theme applied to the application or activity -->
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>

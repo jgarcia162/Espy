@@ -5,8 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 public class UserActivity extends Fragment {
+    ImageView userPic;
+
 
     public static UserActivity newInstance(int page, String title) {
        UserActivity userProfile= new UserActivity();
@@ -19,19 +22,14 @@ public class UserActivity extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getIntent();
-//        addPreferencesFromResource(R.xml.user_settings_layout);
-//        PreferenceManager.setDefaultValues(UserActivity.this, R.xml.user_settings_layout, false);
-
         int page = getArguments().getInt("myListPage", 1);
        String title = getArguments().getString("myList");
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.user_layout, container, false);
-
+        View view =inflater.inflate(R.layout.layout_user_setup, container, false);
+        //userPic = (ImageView) view.findViewById(R.id.user_pic);
         return view;
     }
 }

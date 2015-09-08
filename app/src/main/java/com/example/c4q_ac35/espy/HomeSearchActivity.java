@@ -1,5 +1,6 @@
 package com.example.c4q_ac35.espy;
 
+import android.graphics.*;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
@@ -24,6 +26,7 @@ import retrofit.client.Response;
 
 
 public class HomeSearchActivity extends Fragment {
+    protected TextView recommended;
     private String title;
     private int page;
     private VenueAdapter adapter;
@@ -46,7 +49,6 @@ public class HomeSearchActivity extends Fragment {
         return homeSearchActivity;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,17 +66,20 @@ public class HomeSearchActivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_favorite_list, container, false);
+        View view = inflater.inflate(R.layout.activity_search_list, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
-        mSwipeRefreshLayout.setColorSchemeColors(android.R.color.holo_blue_bright);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
-            }
-        });
+        this.recommended = (TextView) view.findViewById(R.id.results_search);
+        android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
+        this.recommended.setTypeface(font);
+//        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+//        mSwipeRefreshLayout.setColorSchemeColors(android.R.color.holo_blue_bright);
+//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
+//            }
+//        });
 
         return view;
     }
