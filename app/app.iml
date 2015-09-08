@@ -13,11 +13,16 @@
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
         <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleDebugAndroidTest" />
+<<<<<<< HEAD
+        <option name="SOURCE_GEN_TASK_NAME" value="generateDebugSources" />
+        <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateDebugAndroidTestSources" />
+=======
         <option name="COMPILE_JAVA_TEST_TASK_NAME" value="compileDebugAndroidTestSources" />
         <afterSyncTasks>
           <task>generateDebugAndroidTestSources</task>
           <task>generateDebugSources</task>
         </afterSyncTasks>
+>>>>>>> 04d2a5a850c9234c5169f32cedcb1ff346b239e0
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
@@ -26,7 +31,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/build/intermediates/classes/debug" />
     <output-test url="file://$MODULE_DIR$/build/intermediates/classes/androidTest/debug" />
     <exclude-output />
@@ -98,12 +103,22 @@
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="play-services-maps-7.5.0" level="project" />
+<<<<<<< HEAD
+    <orderEntry type="library" exported="" name="play-services-fitness-7.5.0" level="project" />
+    <orderEntry type="library" exported="" name="butterknife-7.0.1" level="project" />
+    <orderEntry type="library" exported="" name="play-services-7.5.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-analytics-7.5.0" level="project" />
+    <orderEntry type="library" exported="" name="mediarouter-v7-22.0.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-wallet-7.5.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-identity-7.5.0" level="project" />
+=======
     <orderEntry type="library" exported="" name="design-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-base-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="butterknife-7.0.1" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="tubesock-0.0.11" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-22.2.1" level="project" />
+>>>>>>> 04d2a5a850c9234c5169f32cedcb1ff346b239e0
     <orderEntry type="library" exported="" name="jackson-annotations-2.2.2" level="project" />
 <<<<<<< HEAD
 <<<<<<< HEAD

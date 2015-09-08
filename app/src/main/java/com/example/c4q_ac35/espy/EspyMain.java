@@ -1,6 +1,7 @@
 package com.example.c4q_ac35.espy;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.app.PendingIntent;
@@ -53,7 +54,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     private final long ALARM_WEEKLY_INTERVAL = 1000 * 60 * 60 * 24 * 7;
     private AlarmManager mAlarmManager;
 
-    //Todo: merge Elvis code
     private static final String LOG_TAG = "MainActivity";
     private AutoCompleteTextView mAutocompleteTextView;
     private PlacesAdapter mPlaceArrayAdapter;
@@ -81,7 +81,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addApi(Places.GEO_DATA_API)
@@ -92,7 +91,11 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                 .addApi(LocationServices.API)
                 .build();
 
+        if(!mGoogleApiClient.isConnected()){
         mGoogleApiClient.connect();
+        } else {
+
+        }
 
         mGeofenceList = new ArrayList<Geofence>();
 
@@ -491,7 +494,9 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     @Override
     public void onConnectionSuspended(int i) {
         //  mPlaceArrayAdapter.setGoogleApiClient(null);
-        Log.e(LOG_TAG, "Google Places API connection suspended.");
+        if (null != mGeofencePendingIntent) {
+            removeGeofences();
+        }
     }
 
 

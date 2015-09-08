@@ -32,6 +32,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDDREe4DCpVa7J2EbvhQRsr-BSxaovc8Ms" />
         <!--AIzaSyB2Hv1wRfZ0DY01NXGaq4m1mSICX4FEWbI-->
+            <!--android:value="AIzaSyAs0pUsczACKcZ44Hb9tjaLbwKqtlz48fo" />-->
 
         <activity android:name=".UserInitalSetActivity"
             android:label="Initial Setup"/>

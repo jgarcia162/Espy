@@ -31,7 +31,7 @@ import java.util.List;
 public class GeofenceTransitionsIntentService extends IntentService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
     protected static final String TAG = "geofence-transitions-service";
-    private static int GEOFENCE_NOTIFICATION_ID = 0;
+    public static int GEOFENCE_NOTIFICATION_ID = 0;
     private static final int GOOGLE_API_CLIENT_ID = 0;
     GoogleApiClient mGoogleApiClient;
 
@@ -49,7 +49,6 @@ public class GeofenceTransitionsIntentService extends IntentService implements G
                 .addApi(Places.GEO_DATA_API)
                 .addApi(LocationServices.API)
                 .build();
-
         mGoogleApiClient.connect();
     }
 
@@ -59,7 +58,6 @@ public class GeofenceTransitionsIntentService extends IntentService implements G
         GeofencingEvent geoFenceEvent = GeofencingEvent.fromIntent(intent);
         if (geoFenceEvent.hasError()) {
             String errorMessage = GeofenceErrorMessages.getErrorString(this, geoFenceEvent.getErrorCode());
-            Log.e(TAG,errorMessage);
             return;
         }
         int geofenceTransition = geoFenceEvent.getGeofenceTransition();
@@ -75,8 +73,6 @@ public class GeofenceTransitionsIntentService extends IntentService implements G
 
             sendNotification(geofenceTransitionDetails);
 
-
-            Log.i(TAG, getString(R.string.geofence_transition_invalid_type, geofenceTransition));
         } else if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT){
             geoNotificationManager.cancel(GEOFENCE_NOTIFICATION_ID);
         }

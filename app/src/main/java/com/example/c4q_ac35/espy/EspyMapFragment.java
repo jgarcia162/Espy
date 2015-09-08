@@ -6,6 +6,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
@@ -26,11 +28,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 /**
  * Created by c4q-ac35 on 8/12/15.
  */
 
-public class EspyMapFragment extends SupportMapFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class EspyMapFragment extends SupportMapFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Callback<ResponseAPI> {
     GoogleMap googleMap;
     Location myLocation;
     GoogleApiClient mapGoogleApiClient;
@@ -129,5 +135,26 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
     }
 
 
+    @Override
+    public void success(ResponseAPI responseAPI, Response response) {
+        List<Venue> venueList = responseAPI.getResponse().getVenues();
 
+        for(int i =0;i<venueList.size();i++) {
+            com.example.c4q_ac35.espy.foursquare.Location location = venueList.get(i).getLocation();
+            final double venueLat = location.getLat();
+            final double venueLong = location.getLng();
+
+            Marker locationMarker = googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(venueLat, venueLong))
+                    .title(venueList.get(i).getName()));
+            locationMarker.setSnippet("Phone Number: " + venueList.get(i).getContact().getPhone());
+            locationMarker.isInfoWindowShown();
+            Log.i(venueList.get(i).getContact().getPhone(), venueList.get(i).getName());
+        }
+    }
+
+    @Override
+    public void failure(RetrofitError error) {
+        Toast.makeText(getActivity(),"WHOOPS",Toast.LENGTH_SHORT).show();
+    }
 }

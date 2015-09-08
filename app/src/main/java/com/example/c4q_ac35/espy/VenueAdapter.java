@@ -24,11 +24,10 @@ import butterknife.ButterKnife;
  */
 public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> {
     private static final String PRE_ENDPOINT = "https://maps.googleapis.com/maps/api/streetview?&size=800x400&location=";
+    private static final String TAG = "VenueActivity";
     private Location mLocation;
     private Venue [] mVenues;
     private Context mContext;
-    private String TAG = "Venue Activity";
-
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -70,25 +69,38 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(VenueAdapter.ViewHolder holder, int position) {
         Venue venue = mVenues[position];
-        holder.name.setText(venue.getName());
-        holder.address.setText(venue.getLocation().getCity());
-        holder.phone.setText(venue.getContact().phone);
 
-        mLocation = venue.getLocation();
+        //if(venue.getCategories().equals("food") && venue.getCategories().equals("nightlife spot")) {
 
-        String urlString = PRE_ENDPOINT + mLocation.getLat() + "," + mLocation.getLng();
-        URL url = null;
-        try {
-            url = new URL(urlString);
-            Log.d(TAG, "Latitud:  " + mLocation.getLat());
-            Log.d(TAG, "Longitud:  " + mLocation.getLng());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
 
-        Glide.with(mContext).load(url).centerCrop().into(holder.mImageViewVenue);
+            holder.name.setText(venue.getName());
+            holder.address.setText(venue.getLocation().getCity());
+            holder.phone.setText(venue.getContact().phone);
 
-        Log.w("TAG", "Called");
+
+            mLocation = venue.getLocation();
+
+            String urlString = PRE_ENDPOINT + mLocation.getLat() + "," + mLocation.getLng();
+            URL url = null;
+            try {
+                url = new URL(urlString);
+                Log.d(TAG, "Latitud:  " + mLocation.getLat());
+                Log.d(TAG, "Longitud:  " + mLocation.getLng());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+            holder.mImageViewVenue.setImageBitmap(null);
+            Glide.with(mContext).load(url).centerCrop().into(holder.mImageViewVenue);
+
+            Log.w("TAG", "Called");
+
+
+//        }else {
+//
+//        }
+
+
     }
 
     @Override
