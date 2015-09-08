@@ -28,9 +28,6 @@ public class NotificationActivity extends AppCompatActivity {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         Button autocancelnotification = (Button) findViewById(R.id.cancel_action);
-        //TODO: add more details button
-        //ToDo: add snooze button
-       // Button snoozenotification = (Button) findViewById
 
 
         autocancelnotification.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +54,6 @@ public class NotificationActivity extends AppCompatActivity {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentTitle("ESPY");
         builder.setContentText("Explore a location nearby");
-        //TODO: Insert logo
         // builder.setSmallIcon(R.drawable.logo)
         Intent resultActivity = new Intent(getApplicationContext(),NotificationActivity.class);
         PendingIntent pendingResultActivity =
@@ -73,7 +69,6 @@ public class NotificationActivity extends AppCompatActivity {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentTitle("Espy");
         builder.setContentText("Explore a location nearby");
-       //TODO: Insert logo
        // builder.setSmallIcon(R.drawable.logo)
 
         Intent resultActivity = new Intent(getApplicationContext(),NotificationActivity.class);

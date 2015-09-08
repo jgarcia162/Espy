@@ -20,8 +20,7 @@
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:elevation="5dp"
-            android:background="@drawable/devicion" />
+            android:elevation="5dp" />
         <TextView
             android:id="@+id/item_name"
             android:text="Devicion"
