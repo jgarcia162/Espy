@@ -14,8 +14,13 @@
         <com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader
             android:id="@+id/header1"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="125dp"
             android:layout_gravity="center_horizontal|top">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <SearchView
                 android:layout_width="match_parent"
@@ -28,11 +33,14 @@
                 android:text="Nearby"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/search_field"
                 android:textSize="35sp"
                 android:layout_margin="5dp"
-                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
                 android:id="@+id/nearby_text"
                 android:textColor="@color/PrimaryDarkColor"/>
+
+        </RelativeLayout>
 
         </com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader>
 

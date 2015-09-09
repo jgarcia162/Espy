@@ -117,10 +117,9 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
         mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header1);
-
-    //    this.Nearby = (TextView) view.findViewById(R.id.nearby_text);
-    //    android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
-    //    this.Nearby.setTypeface(font);
+        this.Nearby = (TextView) view.findViewById(R.id.nearby_text);
+        android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
+        this.Nearby.setTypeface(font);
 
         searchPlaces();
 
