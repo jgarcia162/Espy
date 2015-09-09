@@ -1,8 +1,5 @@
 package com.example.c4q_ac35.espy;
 
-/**
- * Created by c4q-marbella on 8/25/15.
- */
 import android.content.Context;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -20,100 +17,66 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * Created by elvisboves on 8/22/15.
+ */
 public class PlacesAdapter extends ArrayAdapter<PlacesAdapter.PlaceAutocomplete> implements Filterable {
-    private static final String TAG = "PlaceArrayAdapter";
-    private GoogleApiClient mGoogleApiClient;
-    private AutocompleteFilter mPlaceFilter;
-    private LatLngBounds mBounds;
+    private static final String TAG = "AutocompleteAdapter";
     private ArrayList<PlaceAutocomplete> mResultList;
+    private GoogleApiClient mGoogleApiClient;
+    private LatLngBounds mBounds;
+    private AutocompleteFilter mPlaceFilter;
 
-    /**
-     * Constructor
-     *
-     * @param context  Context
-     * @param resource Layout resource
-     * @param bounds   Used to specify the search bounds
-     * @param filter   Used to specify place types
-     */
-    public PlacesAdapter(Context context, int resource, LatLngBounds bounds,
-                         AutocompleteFilter filter) {
+
+    public PlacesAdapter(Context context, int resource, GoogleApiClient googleApiClient,
+                         LatLngBounds bounds, AutocompleteFilter filter) {
         super(context, resource);
+        mGoogleApiClient = googleApiClient;
         mBounds = bounds;
         mPlaceFilter = filter;
     }
 
-    public void setGoogleApiClient(GoogleApiClient googleApiClient) {
-        if (googleApiClient == null || !googleApiClient.isConnected()) {
-            mGoogleApiClient = null;
-        } else {
-            mGoogleApiClient = googleApiClient;
-        }
+
+    // Sets the bounds for all subsequent queries.
+    public void setBounds(LatLngBounds bounds) {
+        mBounds = bounds;
     }
 
+
+    // Returns the number of results received in the last autocomplete query.
     @Override
     public int getCount() {
         return mResultList.size();
     }
 
+
+    // Returns an item from the last autocomplete query.
     @Override
     public PlaceAutocomplete getItem(int position) {
         return mResultList.get(position);
     }
 
-    private ArrayList<PlaceAutocomplete> getPredictions(CharSequence constraint) {
-        if (mGoogleApiClient != null) {
-            Log.i(TAG, "Executing autocomplete query for: " + constraint);
-            PendingResult<AutocompletePredictionBuffer> results =
-                    Places.GeoDataApi
-                            .getAutocompletePredictions(mGoogleApiClient, constraint.toString(),
-                                    mBounds, mPlaceFilter);
-            // Wait for predictions, set the timeout.
-            AutocompletePredictionBuffer autocompletePredictions = results
-                    .await(60, TimeUnit.SECONDS);
-            final Status status = autocompletePredictions.getStatus();
-            if (!status.isSuccess()) {
-                Toast.makeText(getContext(), "Error: " + status.toString(),
-                        Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Error getting place predictions: " + status
-                        .toString());
-                autocompletePredictions.release();
-                return null;
-            }
-            Log.i(TAG, "Query completed. Received " + autocompletePredictions.getCount()
-                    + " predictions.");
-            Iterator<AutocompletePrediction> iterator = autocompletePredictions.iterator();
-            ArrayList resultList = new ArrayList<>(autocompletePredictions.getCount());
-            while (iterator.hasNext()) {
-                AutocompletePrediction prediction = iterator.next();
-                resultList.add(new PlaceAutocomplete(prediction.getPlaceId(),
-                        prediction.getDescription()));
-            }
-            // Buffer release
-            autocompletePredictions.release();
-            return resultList;
-        }
-        Log.e(TAG, "Google API client is not connected.");
-        return null;
-    }
 
+    // Returns the filter for the current set of autocomplete results.
     @Override
     public Filter getFilter() {
         Filter filter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
+                // Skip the autocomplete query if no constraints are given.
                 if (constraint != null) {
-                    // Query the autocomplete API for the entered constraint
-                    mResultList = getPredictions(constraint);
+                    // Query the autocomplete API for the (constraint) search string.
+                    mResultList = getAutocomplete(constraint);
                     if (mResultList != null) {
-                        // Results
+                        // The API successfully returned results.
                         results.values = mResultList;
                         results.count = mResultList.size();
                     }
                 }
                 return results;
             }
+
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
@@ -129,19 +92,83 @@ public class PlacesAdapter extends ArrayAdapter<PlacesAdapter.PlaceAutocomplete>
         return filter;
     }
 
+
+    private ArrayList<PlaceAutocomplete> getAutocomplete(CharSequence constraint) {
+
+
+        if (mGoogleApiClient.isConnected()) {
+            Log.d(TAG, "Starting autocomplete query for: " + constraint);
+
+
+            // Submit the query to the autocomplete API and retrieve a PendingResult that will
+            // contain the results when the query completes.
+            PendingResult<AutocompletePredictionBuffer> results =
+                    Places.GeoDataApi
+                            .getAutocompletePredictions(mGoogleApiClient, constraint.toString(),
+                                    mBounds, mPlaceFilter);
+
+
+            // This method should have been called off the main UI thread. Block and wait for at most 60s
+            // for a result from the API.
+            AutocompletePredictionBuffer autocompletePredictions = results
+                    .await(60, TimeUnit.SECONDS);
+
+
+            // Confirm that the query completed successfully, otherwise return null
+            final Status status = autocompletePredictions.getStatus();
+            if (!status.isSuccess()) {
+                Log.e(TAG, "Error getting autocomplete prediction API call: " + status.toString());
+                autocompletePredictions.release();
+                return null;
+            }
+
+
+            Log.i(TAG, "Query completed. Received " + autocompletePredictions.getCount()
+                    + " predictions.");
+
+
+            // Copy the results into our own data structure, because we can't hold onto the buffer.
+            // AutocompletePrediction objects encapsulate the API response (place ID and description).
+
+
+            Iterator<AutocompletePrediction> iterator = autocompletePredictions.iterator();
+            ArrayList resultList = new ArrayList<>(autocompletePredictions.getCount());
+            while (iterator.hasNext()) {
+                AutocompletePrediction prediction = iterator.next();
+                // Get the details of this prediction and copy it into a new PlaceAutocomplete object.
+                resultList.add(new PlaceAutocomplete(prediction.getPlaceId(),
+                        prediction.getDescription()));
+            }
+
+
+            // Release the buffer now that all data has been copied.
+            autocompletePredictions.release();
+
+
+            return resultList;
+        }
+        Log.d(TAG, "Googleclient is not connected for autocomplete query");
+        return null;
+    }
+
+
+    // Holder for Places Geo Data Autocomplete API results.
     class PlaceAutocomplete {
+
+
         public CharSequence placeId;
         public CharSequence description;
+
 
         PlaceAutocomplete(CharSequence placeId, CharSequence description) {
             this.placeId = placeId;
             this.description = description;
         }
 
+
         @Override
         public String toString() {
             return description.toString();
         }
     }
-
 }

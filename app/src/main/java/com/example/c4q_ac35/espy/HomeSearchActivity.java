@@ -1,5 +1,6 @@
 package com.example.c4q_ac35.espy;
 
+import android.app.Activity;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
@@ -14,11 +15,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.SearchView;
 
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.List;
 
@@ -29,7 +37,7 @@ import retrofit.android.AndroidLog;
 import retrofit.client.Response;
 
 
-public class HomeSearchActivity extends Fragment implements LocationListener {
+public class HomeSearchActivity extends Fragment implements LocationListener, GoogleApiClient.OnConnectionFailedListener {
     private String title;
     private int page;
     private VenueAdapter adapter;
@@ -44,6 +52,15 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
 
     private static final String LOG_TAG = "HomeSearchActivity";
     private LocationManager locationManager;
+    private GoogleApiClient mGoogleApiClient;
+    private AutoCompleteTextView mAutocompleteTextView;
+    Context mContext;
+
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
+            new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
+    private static final int GOOGLE_API_CLIENT_ID = 1;
+    private PlacesAdapter mPlaceArrayAdapter;
+
 
     public static HomeSearchActivity newInstance(int page, String title) {
         HomeSearchActivity homeSearchActivity = new HomeSearchActivity();
@@ -52,6 +69,12 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
         args.putString("home", title);
         homeSearchActivity.setArguments(args);
         return homeSearchActivity;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mContext = activity;
     }
 
     @Override
@@ -67,6 +90,12 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
                 .setEndpoint(BASE_API).build();
 
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(getActivity(), GOOGLE_API_CLIENT_ID, this)
+               // .addConnectionCallbacks(this)
+                .build();
 
 
     }
@@ -106,8 +135,19 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_search_list, container, false);
 
+        mAutocompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.et_autocomplete_places);
+
+        mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
+
+        mPlaceArrayAdapter = new PlacesAdapter(mContext, android.R.layout.simple_list_item_1,
+                BOUNDS_MOUNTAIN_VIEW, null);
+
+        mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
+
+        mAutocompleteTextView.setThreshold(2);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
-        searchPlaces();
+        //searchPlaces();
 //        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 //        mSwipeRefreshLayout.setColorSchemeColors(android.R.color.holo_blue_bright);
 //        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -156,6 +196,11 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) {
         Log.d(TAG, "OnProviderDisabled" + provider);
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
 
@@ -228,18 +273,31 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     }
 
 
-    public void searchPlaces() {
+//    public void searchPlaces() {
+//
+//        SearchView searchView = new SearchView(getActivity());
+//        searchView.findViewById(R.id.search_field);
+//        searchView.getQueryHint();
+//        searchView.getSuggestionsAdapter();
+//        searchView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+//
+//            }
+//        });
 
-        SearchView searchView = new SearchView(getActivity());
-        searchView.getQueryHint();
-        searchView.getSuggestionsAdapter();
-        searchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//    }
 
-            }
-        });
+    private AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-    }
+
+        }
+
+    };
 
 }

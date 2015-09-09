@@ -79,7 +79,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             holder.address.setText(venue.getLocation().getCity());
             holder.phone.setText(venue.getContact().phone);
 
-
             mLocation = venue.getLocation();
 
             String urlString = PRE_ENDPOINT + mLocation.getLat() + "," + mLocation.getLng();
