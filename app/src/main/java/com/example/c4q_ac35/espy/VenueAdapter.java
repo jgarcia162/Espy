@@ -2,6 +2,7 @@ package com.example.c4q_ac35.espy;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,12 +28,14 @@ import butterknife.ButterKnife;
  * Created by c4q-marbella on 8/22/15.
  */
 public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> {
-    private static final String PRE_ENDPOINT = "https://maps.googleapis.com/maps/api/streetview?&size=800x400&location=";
+  private static final String PRE_ENDPOINT = "https://maps.googleapis.com/maps/api/streetview?&size=800x400&location=";
     private static final String TAG = "VenueActivity";
     private Location mLocation;
     private Venue [] mVenues;
     private Context mContext;
     SQLiteDatabase favorites;
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -40,8 +43,9 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Bind(R.id.item_address) TextView address;
         @Bind(R.id.item_phone) TextView phone;
         @Bind(R.id.venue_picture) ImageView mImageViewVenue;
-        @Bind(R.id.shareBt) ImageButton mShareButton;
-        @Bind(R.id.faveBt) ImageButton mFavoritesButton;
+//        @Bind(R.id.shareBt) ImageButton mShareButton;
+       // @Bind(R.id.faveBt) ImageButton mFavoritesButton;
+
 
 
         public ViewHolder(View itemView) {
@@ -70,6 +74,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.venue_layout,parent,false);
         return new VenueAdapter.ViewHolder(itemView);
+
     }
 
     @Override
@@ -83,14 +88,14 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             holder.address.setText(venue.getLocation().getCity());
             holder.phone.setText(venue.getContact().phone);
 
-        holder.mFavoritesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        //holder.mFavoritesButton.setOnClickListener(new View.OnClickListener() {
+            //@Override
+            //public void onClick(View view) {
 //                FavoritesHelper favoritesHelper = new FavoritesHelper(view.getContext());
 //                SQLiteDatabase database = favoritesHelper.getWritableDatabase();
 //                addToFavorites(venue.getName(),venue.getLocation().getCity(),venue.getContact().getPhone(), "Hours","Favorites", venue.getLocation().getLat(),venue.getLocation().getLng(),database);
-            }
-        });
+          //  }
+       // });
 
             mLocation = venue.getLocation();
 
@@ -125,6 +130,5 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     private void addToFavorites(String name,String address,String phone, String hours, String tableName, double lat,double lon,SQLiteDatabase database){
         FavoritesHelper.insertRow(name,address,phone,hours, tableName,lat,lon,database);
     }
-
 
 }
