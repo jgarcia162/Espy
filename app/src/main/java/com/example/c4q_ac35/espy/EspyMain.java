@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 
 public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
@@ -89,6 +90,14 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         setSupportActionBar(mToolbar);
 //        FAB = (FloatingActionButton) findViewById(R.id.fab);
         setUpTab();
+//
+//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+//                        .setDefaultFontPath("fonts/poiret_one.ttf")
+//                        .setFontAttrId(R.attr.fontPath)
+//                        .build()
+//            );
+
+
 
     }
 
