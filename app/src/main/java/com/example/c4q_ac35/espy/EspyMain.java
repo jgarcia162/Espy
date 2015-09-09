@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.app.PendingIntent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -114,7 +115,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 //        FAB = (FloatingActionButton) findViewById(R.id.fab);
         setUpTab();
 
-        //ALARM TO HANDLE WEEKLY NOTIFICATIONS
+        //TODO ALARM TO HANDLE WEEKLY NOTIFICATIONS
 
         //setNotificationAlarm();
 

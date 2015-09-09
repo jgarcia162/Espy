@@ -111,11 +111,9 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
         marker.setSnippet("Phone Number: (212) 274-0008");
         marker.isInfoWindowShown();
 
-
         // Calls location service within context
 
         //Loop for setting markers and geofences for each location in list
-
     }
 
     @Override

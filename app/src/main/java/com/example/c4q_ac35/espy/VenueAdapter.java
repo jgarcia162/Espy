@@ -1,15 +1,19 @@
 package com.example.c4q_ac35.espy;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.c4q_ac35.espy.db.FavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Location;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 
@@ -28,6 +32,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     private Location mLocation;
     private Venue [] mVenues;
     private Context mContext;
+    SQLiteDatabase favorites;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -35,6 +40,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Bind(R.id.item_address) TextView address;
         @Bind(R.id.item_phone) TextView phone;
         @Bind(R.id.venue_picture) ImageView mImageViewVenue;
+        @Bind(R.id.shareBt) ImageButton mShareButton;
+        @Bind(R.id.faveBt) ImageButton mFavoritesButton;
 
 
         public ViewHolder(View itemView) {
@@ -52,7 +59,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         }
     }
 
-
     public VenueAdapter(Context context, Venue[] venues) {
         this.mContext = context;
         this.mVenues = venues;
@@ -67,8 +73,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(VenueAdapter.ViewHolder holder, int position) {
-        Venue venue = mVenues[position];
+    public void onBindViewHolder(final VenueAdapter.ViewHolder holder, int position) {
+        final Venue venue = mVenues[position];
 
         //if(venue.getCategories().equals("food") && venue.getCategories().equals("nightlife spot")) {
 
@@ -77,6 +83,14 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             holder.address.setText(venue.getLocation().getCity());
             holder.phone.setText(venue.getContact().phone);
 
+        holder.mFavoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                FavoritesHelper favoritesHelper = new FavoritesHelper(view.getContext());
+//                SQLiteDatabase database = favoritesHelper.getWritableDatabase();
+//                addToFavorites(venue.getName(),venue.getLocation().getCity(),venue.getContact().getPhone(), "Hours","Favorites", venue.getLocation().getLat(),venue.getLocation().getLng(),database);
+            }
+        });
 
             mLocation = venue.getLocation();
 
@@ -106,6 +120,10 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return mVenues.length;
+    }
+
+    private void addToFavorites(String name,String address,String phone, String hours, String tableName, double lat,double lon,SQLiteDatabase database){
+        FavoritesHelper.insertRow(name,address,phone,hours, tableName,lat,lon,database);
     }
 
 

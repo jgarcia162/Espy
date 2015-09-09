@@ -174,7 +174,6 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
                 adapter = new VenueAdapter(getActivity(), venuee);
                 mRecyclerView.setAdapter(adapter);
                 mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
-
             }
 
             Log.d(TAG, "Success");
