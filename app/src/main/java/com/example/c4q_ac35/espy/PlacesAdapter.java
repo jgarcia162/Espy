@@ -36,6 +36,9 @@ public class PlacesAdapter extends ArrayAdapter<PlacesAdapter.PlaceAutocomplete>
         mPlaceFilter = filter;
     }
 
+    public void setGoogleApiClient(GoogleApiClient googleApiClient) {
+        mGoogleApiClient = googleApiClient;
+    }
 
     // Sets the bounds for all subsequent queries.
     public void setBounds(LatLngBounds bounds) {

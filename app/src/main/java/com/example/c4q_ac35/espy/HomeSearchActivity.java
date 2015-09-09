@@ -2,7 +2,10 @@ package com.example.c4q_ac35.espy;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -12,12 +15,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
@@ -25,6 +32,10 @@ import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
+import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
@@ -37,7 +48,9 @@ import retrofit.android.AndroidLog;
 import retrofit.client.Response;
 
 
-public class HomeSearchActivity extends Fragment implements LocationListener, GoogleApiClient.OnConnectionFailedListener {
+public class HomeSearchActivity extends Fragment
+        implements LocationListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, OnStreetViewPanoramaReadyCallback
+{
     private String title;
     private int page;
     private VenueAdapter adapter;
@@ -54,7 +67,9 @@ public class HomeSearchActivity extends Fragment implements LocationListener, Go
     private LocationManager locationManager;
     private GoogleApiClient mGoogleApiClient;
     private AutoCompleteTextView mAutocompleteTextView;
-    Context mContext;
+    GoogleMap map;
+    Typeface ndad;
+    //Context mContext;
 
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
             new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
@@ -71,11 +86,11 @@ public class HomeSearchActivity extends Fragment implements LocationListener, Go
         return homeSearchActivity;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mContext = activity;
-    }
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        mContext = activity;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -135,30 +150,72 @@ public class HomeSearchActivity extends Fragment implements LocationListener, Go
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_search_list, container, false);
 
+
+
+
         mAutocompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.et_autocomplete_places);
+
+        mAutocompleteTextView.setThreshold(3);
 
         mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
 
-        mPlaceArrayAdapter = new PlacesAdapter(mContext, android.R.layout.simple_list_item_1,
-                BOUNDS_MOUNTAIN_VIEW, null);
+        mPlaceArrayAdapter = new PlacesAdapter(view.getContext(), android.R.layout.simple_list_item_1,
+                mGoogleApiClient, BOUNDS_MOUNTAIN_VIEW, null);
 
         mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
-
-        mAutocompleteTextView.setThreshold(2);
-
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
-        //searchPlaces();
-//        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
-//        mSwipeRefreshLayout.setColorSchemeColors(android.R.color.holo_blue_bright);
-//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//        mAutocompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 //            @Override
-//            public void onRefresh() {
-//                servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                boolean handled = false;
+//                LatLng latLng;
+//                if ( actionId == EditorInfo.IME_ACTION_GO){
+//                    latLng = getLocationFromAddress(mAutocompleteTextView.getText().toString());
+//                    setViewToLocation(latLng);
+//                    handled = true;
+//                }
+//
+//                return handled;
 //            }
 //        });
 
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
+
         return view;
     }
+
+    ///////// from sufei /////////
+
+    public LatLng getLocationFromAddress(String strAddress) {
+        Geocoder coder = new Geocoder(getActivity());
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+            location.getLatitude();
+            location.getLongitude();
+
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return p1;
+    }
+
+    private void setViewToLocation(LatLng latLng) {
+        if (map != null) {
+            // Sets initial view to current location
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f));
+        }
+    }
+
+
+    /////////////// from sufei ////////
 
     @Override
     public void onLocationChanged(android.location.Location location) {
@@ -201,6 +258,33 @@ public class HomeSearchActivity extends Fragment implements LocationListener, Go
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+
+        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
+                + connectionResult.getErrorCode());
+
+        Toast.makeText(getActivity(),
+                "Google Places API connection failed with error code:" +
+                        connectionResult.getErrorCode(),
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+        Log.i(LOG_TAG, "Google Places API connected.");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+        mPlaceArrayAdapter.setGoogleApiClient(null);
+        Log.e(LOG_TAG, "Google Places API connection suspended.");
+    }
+
+    @Override
+    public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
+
+        streetViewPanorama.setPosition(new LatLng(-33.87365, 151.20689));
 
     }
 
