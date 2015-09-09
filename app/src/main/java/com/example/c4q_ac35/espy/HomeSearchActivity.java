@@ -1,5 +1,6 @@
 package com.example.c4q_ac35.espy;
 
+import android.graphics.*;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
@@ -14,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import android.widget.SearchView;
 
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
@@ -30,6 +33,8 @@ import retrofit.client.Response;
 
 
 public class HomeSearchActivity extends Fragment implements LocationListener {
+
+    protected TextView recommended;
     private String title;
     private int page;
     private VenueAdapter adapter;
@@ -42,8 +47,10 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private static final long MIN_LOCATION_TIME = 1 * 1000;
 
+
     private static final String LOG_TAG = "HomeSearchActivity";
     private LocationManager locationManager;
+
 
     public static HomeSearchActivity newInstance(int page, String title) {
         HomeSearchActivity homeSearchActivity = new HomeSearchActivity();
@@ -67,6 +74,9 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
                 .setEndpoint(BASE_API).build();
 
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
+
+        servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
+
 
 
     }
@@ -100,6 +110,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     public void onPause() {
         super.onPause();
         locationManager.removeUpdates(this);
+
     }
 
     @Override
@@ -107,7 +118,13 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
         View view = inflater.inflate(R.layout.activity_search_list, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
+
+        this.recommended = (TextView) view.findViewById(R.id.results_search);
+        android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
+        this.recommended.setTypeface(font);
+
         searchPlaces();
+
 //        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 //        mSwipeRefreshLayout.setColorSchemeColors(android.R.color.holo_blue_bright);
 //        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

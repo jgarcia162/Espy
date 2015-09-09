@@ -30,12 +30,12 @@
         android:textSize="35sp"
         android:gravity="center"
         android:id="@+id/results_search"
-        android:textColor="@color/AccentColor"
-        android:layout_weight="1"
-        />
+        android:textColor="@color/PrimaryDarkColor"
+        android:layout_weight="1" />
 </LinearLayout>
     <android.support.v7.widget.RecyclerView
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        android:id="@+id/listView"/>
 </LinearLayout>
+
