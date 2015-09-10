@@ -43,10 +43,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
 
     private static final String LOG_TAG = "MainActivity";
-    private AutoCompleteTextView mAutocompleteTextView;
-    private PlacesAdapter mPlaceArrayAdapter;
-    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
-            new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
     private GoogleApiClient mGoogleApiClient;
     private static final int GOOGLE_API_CLIENT_ID = 0;
 
@@ -70,7 +66,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                 .addOnConnectionFailedListener(this)
                 .addApi(Places.GEO_DATA_API)
                 .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
-                .addApi(LocationServices.API)
+                //.addApi(LocationServices.API)
                 .build();
 
         mGoogleApiClient.connect();
@@ -464,6 +460,10 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    public GoogleApiClient getGoogleApiClient() {
+        return mGoogleApiClient;
     }
 }
 

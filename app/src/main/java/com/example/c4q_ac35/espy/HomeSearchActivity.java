@@ -10,6 +10,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,8 +52,9 @@ import retrofit.client.Response;
 
 
 public class HomeSearchActivity extends Fragment
-        implements LocationListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, OnStreetViewPanoramaReadyCallback
+        implements LocationListener, GoogleApiClient.OnConnectionFailedListener, OnStreetViewPanoramaReadyCallback
 {
+
     private String title;
     private int page;
     private VenueAdapter adapter;
@@ -61,21 +65,15 @@ public class HomeSearchActivity extends Fragment
     private boolean resultsFound = false;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private static final long MIN_LOCATION_TIME = 1 * 1000;
+    private static final long MIN_LOCATION_TIME = DateTimeUtils.ONE_HOUR;
 
     private static final String LOG_TAG = "HomeSearchActivity";
     private LocationManager locationManager;
-    private GoogleApiClient mGoogleApiClient;
     private AutoCompleteTextView mAutocompleteTextView;
-    GoogleMap map;
-    Typeface ndad;
-    //Context mContext;
 
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
             new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
-    private static final int GOOGLE_API_CLIENT_ID = 1;
     private PlacesAdapter mPlaceArrayAdapter;
-
 
     public static HomeSearchActivity newInstance(int page, String title) {
         HomeSearchActivity homeSearchActivity = new HomeSearchActivity();
@@ -86,16 +84,9 @@ public class HomeSearchActivity extends Fragment
         return homeSearchActivity;
     }
 
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        mContext = activity;
-//    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         page = getArguments().getInt("homePage", 0);
         title = getArguments().getString("home");
@@ -106,37 +97,51 @@ public class HomeSearchActivity extends Fragment
 
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addApi(Places.GEO_DATA_API)
-                .enableAutoManage(getActivity(), GOOGLE_API_CLIENT_ID, this)
-               // .addConnectionCallbacks(this)
-                .build();
+    }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
+        mPlaceArrayAdapter = new PlacesAdapter(getActivity(), android.R.layout.simple_list_item_1,
+                ((EspyMain)getActivity()).getGoogleApiClient(), BOUNDS_MOUNTAIN_VIEW, null);
+
+        mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        if (locationManager == null) {
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        }
 
+        updateFeed();
+    }
 
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        String provider = locationManager.getBestProvider(criteria, true);
-        Log.d(TAG, "provider: " + provider);
+    private void updateFeed() {
 
-        android.location.Location location = getLocation(locationManager);
+        Location location = getLocation(locationManager, MIN_LOCATION_TIME);
 
         Log.d(TAG, "Location: " + location);
-
 
         if (location != null) {
             Log.d(TAG, "date: " + (System.currentTimeMillis() - location.getTime()));
             updateLocation(location);
+        } else {
+
+            // getting GPS status
+            boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            // getting network status
+            boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+
+        if (isNetworkEnabled)
+            locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+        if (isGPSEnabled)
+            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
+
         }
     }
 
@@ -147,11 +152,8 @@ public class HomeSearchActivity extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_search_list, container, false);
-
-
-
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mAutocompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.et_autocomplete_places);
 
@@ -159,63 +161,37 @@ public class HomeSearchActivity extends Fragment
 
         mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
 
-        mPlaceArrayAdapter = new PlacesAdapter(view.getContext(), android.R.layout.simple_list_item_1,
-                mGoogleApiClient, BOUNDS_MOUNTAIN_VIEW, null);
 
-        mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
-//        mAutocompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                boolean handled = false;
-//                LatLng latLng;
-//                if ( actionId == EditorInfo.IME_ACTION_GO){
-//                    latLng = getLocationFromAddress(mAutocompleteTextView.getText().toString());
-//                    setViewToLocation(latLng);
-//                    handled = true;
-//                }
-//
-//                return handled;
-//            }
-//        });
+        mAutocompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if ( actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+                    performSearch (v.getText().toString(), 10);
+                    return true;
+
+                }
+                return false;
+            }
+        });
+
+    }
+
+    private void performSearch(@NonNull String query, int limit) {
+
+            servicesFourSquare.search(query, limit, new FourSquareCallback());
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_search_list, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
 
         return view;
     }
-
-    ///////// from sufei /////////
-
-    public LatLng getLocationFromAddress(String strAddress) {
-        Geocoder coder = new Geocoder(getActivity());
-        List<Address> address;
-        LatLng p1 = null;
-
-        try {
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
-                return null;
-            }
-            Address location = address.get(0);
-            location.getLatitude();
-            location.getLongitude();
-
-            p1 = new LatLng(location.getLatitude(), location.getLongitude());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return p1;
-    }
-
-    private void setViewToLocation(LatLng latLng) {
-        if (map != null) {
-            // Sets initial view to current location
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f));
-        }
-    }
-
-
-    /////////////// from sufei ////////
 
     @Override
     public void onLocationChanged(android.location.Location location) {
@@ -268,18 +244,6 @@ public class HomeSearchActivity extends Fragment
                 Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
-        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-        Log.i(LOG_TAG, "Google Places API connected.");
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-        mPlaceArrayAdapter.setGoogleApiClient(null);
-        Log.e(LOG_TAG, "Google Places API connection suspended.");
-    }
 
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
@@ -293,18 +257,18 @@ public class HomeSearchActivity extends Fragment
         @Override
         public void success(final ResponseAPI responseAPI, Response response) {
 
-            venuee = new Venue[responseAPI.getResponse().getVenues().size()];
+            //venuee = new Venue[responseAPI.getResponse().getVenues().size()];
 
             resultsFound = true;
-            if (adapter == null) {
+            //if (adapter == null) {
                 List<Venue> venueList = responseAPI.getResponse().getVenues();
 
-                venuee = venueList.toArray(new Venue[venueList.size()]);
-                adapter = new VenueAdapter(getActivity(), venuee);
+                //venuee = venueList.toArray(new Venue[venueList.size()]);
+                adapter = new VenueAdapter(getActivity(), venueList);
                 mRecyclerView.setAdapter(adapter);
                 mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
 
-            }
+            //}
 
             Log.d(TAG, "Success");
         }
@@ -316,7 +280,9 @@ public class HomeSearchActivity extends Fragment
         }
     }
 
-    public android.location.Location getLocation(LocationManager mLocationManager) {
+
+    @Nullable public android.location.Location getLocation(LocationManager mLocationManager, long maxAge) {
+
 
         android.location.Location location = null;
 
@@ -333,7 +299,7 @@ public class HomeSearchActivity extends Fragment
             if (isNetworkEnabled) {
                 Log.d("Network", "Network");
                 location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                if (location != null && (System.currentTimeMillis() - location.getTime()) < MIN_LOCATION_TIME) {
+                if (location != null && (System.currentTimeMillis() - location.getTime()) < maxAge) {
                     return location;
                 }
             }
@@ -342,46 +308,27 @@ public class HomeSearchActivity extends Fragment
 
                 Log.d("GPS Enabled", "GPS Enabled");
                 location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (location != null && (System.currentTimeMillis() - location.getTime()) < MIN_LOCATION_TIME) {
+                if (location != null && (System.currentTimeMillis() - location.getTime()) < maxAge) {
                     return location;
                 }
             }
         }
-
-        if (isNetworkEnabled)
-            mLocationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-        if (isGPSEnabled)
-            mLocationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-
         return null;
     }
-
-
-//    public void searchPlaces() {
-//
-//        SearchView searchView = new SearchView(getActivity());
-//        searchView.findViewById(R.id.search_field);
-//        searchView.getQueryHint();
-//        searchView.getSuggestionsAdapter();
-//        searchView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//
-//
-//            }
-//        });
-
-//    }
 
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+            performSearch(parent.getItemAtPosition(position).toString(), 1);
 
         }
 
     };
+
+    // Todo: Hide the keyboard
+    //Todo: Hide the AutoComplete
+    //Todo: The AsynTask if the searching is null "saying that is loading"
 
 }
