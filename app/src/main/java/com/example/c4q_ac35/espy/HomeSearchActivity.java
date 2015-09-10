@@ -65,7 +65,6 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         page = getArguments().getInt("homePage", 0);
         title = getArguments().getString("home");
 
@@ -75,7 +74,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
 
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
 
-        servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
+//        servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
 
 
 
@@ -123,7 +122,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
         android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
         this.recommended.setTypeface(font);
 
-        searchPlaces();
+       // searchPlaces();
 
 //        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 //        mSwipeRefreshLayout.setColorSchemeColors(android.R.color.holo_blue_bright);

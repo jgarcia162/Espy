@@ -39,6 +39,7 @@ public class NotificationsService extends IntentService {
 
     private Notification sendWeeklyNotification(String notificationDetails){
         Intent notificationIntent = new Intent(getApplicationContext(),EspyMain.class);
+        notificationIntent.setAction("OPEN_FAVORITES");
 
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
 

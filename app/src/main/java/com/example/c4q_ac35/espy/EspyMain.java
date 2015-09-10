@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.graphics.*;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -24,9 +25,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
+
+import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
+import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -40,21 +43,23 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
+public class EspyMain extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
     private final String TAG = "Espy Main";
     private static final String CLIENT_ID = "GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
     private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
-    private final long ALARM_WEEKLY_INTERVAL = 1000 * 60 * 60 * 24 * 7;
     private AlarmManager mAlarmManager;
 
     private static final String LOG_TAG = "MainActivity";
@@ -70,7 +75,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     private FloatingActionButton FAB;
     TabViewPager viewPager;
     MyPagerAdapter adapterViewPager;
-    ArrayList<Geofence> mGeofenceList;
+    public static ArrayList<Geofence> mGeofenceList = new ArrayList<>();
     PendingIntent mGeofencePendingIntent;
     PendingIntent mNotificationPendingIntent;
     private boolean mGeofencesAdded;
@@ -78,7 +83,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     private boolean mRequestingLocationUpdates = true;
     Location mCurrentLocation;
     private String mLastUpdateTime;
-    int WEEKLY_NOTIFICATION_ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +93,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                 .addApi(Places.GEO_DATA_API)
                 .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
                 .addOnConnectionFailedListener(this)
-                .addApi(Places.GEO_DATA_API)
-                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
                 .addApi(LocationServices.API)
                 .build();
 
@@ -100,8 +102,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         }
 
-        mGeofenceList = new ArrayList<Geofence>();
-
+        if(mGeofenceList.isEmpty()){
         // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
         mGeofencePendingIntent = null;
         mNotificationPendingIntent = null;
@@ -111,6 +112,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
         mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
+        }
 
 
         mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
@@ -118,10 +120,14 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 //        FAB = (FloatingActionButton) findViewById(R.id.fab);
         setUpTab();
 
+
+        if(getIntent().getAction().equals("OPEN_MAP")){
+            viewPager.setCurrentItem(2);
+        }else if(getIntent().getAction().equals("OPEN_FAVORITES")){
+            viewPager.setCurrentItem(1);
+        }
         //TODO ALARM TO HANDLE WEEKLY NOTIFICATIONS
-
         //setNotificationAlarm();
-
     }
 
     private void setUpTab() {
@@ -252,6 +258,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                     // transition is observed.
                     getGeofencePendingIntent()
             ).setResultCallback(this); // Result processed in onResult().
+            mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY,true);
+
         } catch (SecurityException securityException) {
             // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
             logSecurityException(securityException);
@@ -299,7 +307,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             // Update state and save in shared preferences.
             SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.putBoolean(Constants.GEOFENCES_ADDED_KEY, mGeofencesAdded);
-            editor.commit();
+            editor.apply();
 
             // Update the UI. Adding geofences enables the Remove Geofences button, and removing
             // geofences enables the Add Geofences button.
@@ -316,15 +324,15 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         // Reuse the PendingIntent if we already have it.
         if (mGeofencePendingIntent != null) {
             return mGeofencePendingIntent;
-        }
+        } else{
         Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
         // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
         // addGeofences() and removeGeofences().
 
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
     }
-
-
 
     private PendingIntent notificationPendingIntent() {
         if (mNotificationPendingIntent != null) {
@@ -333,6 +341,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         Intent notificationIntent = new Intent(this, NotificationsService.class);
         return PendingIntent.getService(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
+
 
     public void populateGeofenceList() {
 
@@ -412,8 +421,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
                         // Set the circular region of this geofence.
                 .setCircularRegion(
-                        metLat, //Replace with place.getLat()
-                        metLong, // Replace with place.getLong()
+                        owoLat, //Replace with place.getLat()
+                        owoLong, // Replace with place.getLong()
                         geofenceRadius
                 )
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
@@ -422,16 +431,16 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                 .build());
     }
 
-
     protected void startLocationUpdates() {
         LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(30000);
+        mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationListener mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 mCurrentLocation = location;
                 mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+                Toast.makeText(getApplicationContext(),mLastUpdateTime,Toast.LENGTH_SHORT).show();
             }
         };
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
@@ -465,15 +474,22 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     @Override
     public void onConnected(Bundle bundle) {
 //        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-        populateGeofenceList();
-        addGeofences();
+        AsyncTask geofence = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                populateGeofenceList();
+                addGeofences();
+                return null;
+            }
+        };
 
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
-        }
+        geofence.execute();
+
+//        if (mRequestingLocationUpdates) {
+//            startLocationUpdates();
+//        }
         // mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
         Log.i(LOG_TAG, "Google Places API connected.");
-
 
     }
 
@@ -494,14 +510,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         if (null != mGeofencePendingIntent) {
             removeGeofences();
         }
-    }
-
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("Marker"));
     }
 
 class MyPagerAdapter extends FragmentStatePagerAdapter {

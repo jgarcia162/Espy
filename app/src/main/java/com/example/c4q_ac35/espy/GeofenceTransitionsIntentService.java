@@ -23,6 +23,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +35,9 @@ public class GeofenceTransitionsIntentService extends IntentService implements G
     public static int GEOFENCE_NOTIFICATION_ID = 0;
     private static final int GOOGLE_API_CLIENT_ID = 0;
     GoogleApiClient mGoogleApiClient;
+    List<GeofenceNotificationsHistory> oldNotifications = new ArrayList<>();
+    public static List<Geofence> triggeredFences;
+    private boolean isAlreadyNotified = false;
 
     public GeofenceTransitionsIntentService(){
         super(TAG);
@@ -42,14 +46,19 @@ public class GeofenceTransitionsIntentService extends IntentService implements G
     @Override
     public void onCreate() {
         super.onCreate();
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
-                .addApi(Places.GEO_DATA_API)
                 .addOnConnectionFailedListener(this)
-                .addApi(Places.GEO_DATA_API)
                 .addApi(LocationServices.API)
                 .build();
-        mGoogleApiClient.connect();
+
+        if(!mGoogleApiClient.isConnected()){
+            mGoogleApiClient.connect();
+        } else {
+
+        }
+
     }
 
     @Override
@@ -62,20 +71,64 @@ public class GeofenceTransitionsIntentService extends IntentService implements G
         }
         int geofenceTransition = geoFenceEvent.getGeofenceTransition();
 
+        //TODO ADD MARKERS FROM TRIGGERED GEOFENCE
         if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
             List<Geofence> triggeringGeofences = geoFenceEvent.getTriggeringGeofences();
+            for(int i = 0;i < triggeringGeofences.size();i++){
+                  triggeredFences = new ArrayList<>();
+               Geofence trigger =  triggeringGeofences.get(i);
+                triggeredFences.add(trigger);
+                trigger.getRequestId();
+            }
 
             String geofenceTransitionDetails = getGeofenceTransitionDetails(
                     this,
                     geofenceTransition,
                     triggeringGeofences
             );
-
-            sendNotification(geofenceTransitionDetails);
+//            if(isNotified(geofenceTransitionDetails)){
+//
+//            }else if(!isNotified(geofenceTransitionDetails)){
+//                addNotificationToList(geofenceTransitionDetails);
+            if(!isAlreadyNotified){
+                sendNotification(geofenceTransitionDetails);
+                isAlreadyNotified = true;
+            }
+//            }
 
         } else if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT){
             geoNotificationManager.cancel(GEOFENCE_NOTIFICATION_ID);
+            isAlreadyNotified = false;
         }
+    }
+
+    private void addNotificationToList(String geofenceTransitionDetails) {
+        boolean prevNotified = false;
+        for (GeofenceNotificationsHistory item : oldNotifications) {
+            if (item.getGeofenceTransitionDetails().equals(geofenceTransitionDetails)){
+                item.setNotifiedAt(new Date());
+                prevNotified = true;
+                break;
+            }
+        }
+        if (!prevNotified){
+            GeofenceNotificationsHistory newItem = new GeofenceNotificationsHistory();
+            newItem.setNotifiedAt(new Date());
+            newItem.setGeofenceTransitionDetails(geofenceTransitionDetails);
+            oldNotifications.add(newItem);
+        }
+    }
+    private boolean isNotified(String notificationIds) {
+        for (GeofenceNotificationsHistory item : oldNotifications)  {
+            if (item.getGeofenceTransitionDetails().equals(notificationIds)){
+                Date now = new Date();
+                if (now.getTime() - item.getNotifiedAt().getTime() < Constants.GEOFENCE_NOTIFICATION_TIME) {
+                    return true;
+                }
+                break;
+            }
+        }
+        return false;
     }
 
     private String getGeofenceTransitionDetails(
@@ -101,6 +154,7 @@ public class GeofenceTransitionsIntentService extends IntentService implements G
     private void sendNotification(String notificationDetails) {
         // Create an explicit content Intent that starts the main Activity.
         Intent notificationIntent = new Intent(getApplicationContext(), EspyMain.class);
+        notificationIntent.setAction("OPEN_MAP");
 
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -113,7 +167,7 @@ public class GeofenceTransitionsIntentService extends IntentService implements G
 
         // Get a PendingIntent containing the entire back stack.
         PendingIntent notificationPendingIntent =
-                stackBuilder.getPendingIntent(0,PendingIntent.FLAG_ONE_SHOT);
+                stackBuilder.getPendingIntent(GEOFENCE_NOTIFICATION_ID, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Get a notification builder that's compatible with platform versions >= 4
         android.support.v4.app.NotificationCompat.Builder builder = new android.support.v4.app.NotificationCompat.Builder(this);
@@ -158,6 +212,11 @@ public class GeofenceTransitionsIntentService extends IntentService implements G
     }
 
     @Override
+    public void onResult(Status status) {
+
+    }
+
+    @Override
     public void onConnected(Bundle bundle) {
 
     }
@@ -169,11 +228,6 @@ public class GeofenceTransitionsIntentService extends IntentService implements G
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onResult(Status status) {
 
     }
 }
