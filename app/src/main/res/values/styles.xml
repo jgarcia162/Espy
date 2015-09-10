@@ -13,9 +13,9 @@
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
-        <item name="colorPrimary">@color/PrimaryColor</item>
-        <item name="colorPrimaryDark">@color/PrimaryDarkColor</item>
-        <item name="colorAccent">@color/AccentColor</item>
+        <item name="colorPrimary">@color/PrimaryColor2</item>
+        <item name="colorPrimaryDark">@color/PrimaryDarkColor2</item>
+        <item name="colorAccent">@color/AccentColor2</item>
     </style>
 
 

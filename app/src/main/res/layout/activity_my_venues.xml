@@ -7,13 +7,13 @@
         android:layout_width="match_parent"
         android:layout_height="65dp">
         <TextView
-            android:text="Search/Home"
+            android:text="Favorites"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textSize="35sp"
             android:gravity="center"
             android:id="@+id/results_search"
-            android:textColor="@color/AccentColor"
+            android:textColor="@color/AccentColor2"
             />
     </LinearLayout>
     <android.support.v7.widget.RecyclerView

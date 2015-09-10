@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+
+
+    <android.support.design.widget.TextInputLayout
+        style="@style/EditTextStandard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/email">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="Email address"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        style="@style/EditTextStandard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passwordText">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            style="@style/ButtonStandard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log in"
+            android:layout_gravity="left"
+            android:id="@+id/login_button"
+            android:layout_marginBottom="28dp"/>
+
+        <Button
+            style="@style/ButtonStandard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign up"
+            android:id="@+id/signup_button"
+            android:layout_gravity="right"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="google login"
+        android:id="@+id/googleLoginButton"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="twitter login"
+        android:id="@+id/twitterLoginButton"/>
+
+   <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="facebook login"
+        android:id="@+id/facebookLoginButton"/>
+
+</LinearLayout>

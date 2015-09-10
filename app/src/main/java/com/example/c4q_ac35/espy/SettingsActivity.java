@@ -6,15 +6,9 @@ import android.preference.PreferenceManager;
 
 import butterknife.ButterKnife;
 
-public class UserInitalSetActivity extends PreferenceActivity {
+public class SettingsActivity extends PreferenceActivity {
 
-//    @Bind(R.id.nameText) TextInputLayout nameTxt;
-//    @Bind(R.id.firstSubmit) Button submitBt;
 
-    String userName;
-    String hAddress;
-    String wAddress;
-    String sAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

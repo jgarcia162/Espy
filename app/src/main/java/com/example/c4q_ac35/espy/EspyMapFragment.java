@@ -5,41 +5,39 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by c4q-ac35 on 8/12/15.
  */
 
-public class EspyMapFragment extends SupportMapFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class EspyMapFragment extends SupportMapFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
     GoogleMap googleMap;
     Location myLocation;
     GoogleApiClient mapGoogleApiClient;
     List<Geofence> mGeofenceList;
     float GEOFENCE_RADIUS_IN_METERS = 1000;
+    private Venue[] mVenues;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-//        mapGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(LocationServices.API)
-//                .build();
-//        mapGoogleApiClient.connect();
 
         googleMap = getMap(); // loads map
         googleMap.setMyLocationEnabled(true); //finds current location
@@ -61,18 +59,19 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
         //Adding a null check
         if(myLocation==null){
             LocationRequest mLocationRequest = new LocationRequest();
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
             mLocationRequest.setInterval(10000);
             mLocationRequest.setFastestInterval(5000);
-            mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+
         } else {
             double latitude = myLocation.getLatitude();
             double longitude = myLocation.getLongitude();
             //Geofence.Builder falchiGeofence = new
             LatLng latLng = new LatLng(latitude, longitude);
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(11)); // choose default zoom of map
         }
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(11)); // choose default zoom of map
-
+       googleMap.animateCamera(CameraUpdateFactory.zoomTo(11)); // choose default zoom of map
 
         Marker marker = googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat,lon))
@@ -80,30 +79,49 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
         marker.setSnippet("Phone Number: (212) 274-0008");
         marker.isInfoWindowShown();
 
+      //  populateMap(mVenues);
+
+    }
 
 
+    // Task to decode current location
+    public void populateMap() {
 
+        List<LatLng> latLngs = new ArrayList<LatLng>();
+        int count = 1;
 
+    //    Venue [] venues= new Venue[];
 
-        // Calls location service within context
-
-//        //Loop for setting markers and geofences for each location in list
-//        for(Location location : mListOfLocations ){
-//            double lat = location.getLatitude();
-//            double lon = location.getLongitude();
-//            EspyGeofence locationFence = new EspyGeofence(location.getName().toString(),lat,lon,geofenceRadius,Constants.GEOFENCE_EXPIRATION_TIME,Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_DWELL | Geofence.GEOFENCE_TRANSITION_EXIT);
-//            locationFence.toGeofence();
+//        for (Venue venue : venues) {
 //
-//            Marker locationMarker = googleMap.addMarker(new MarkerOptions()
-//                    .position(new LatLng(location.getLatitude(),location.getLongitude()))
-//                    .title(location.getName()));
-//            locationMarker.setSnippet("Phone NUmber: " + location.getPhone().toString());
-//            locationMarker.isInfoWindowShown();
+//            LatLng latLng = new LatLng(venue.getLocation().getLat(), venue.getLocation().getLng());
+//
+//            latLngs.add(latLng);
+//
+//            googleMap.addMarker(new MarkerOptions()
+//                    .position(latLng)
+//                    .title(venue.getName()));
+//            count++;
 //        }
+
+        Log.d("Map", "Fix Zoom");
+       // fixZoomForLatLngs(googleMap, latLngs);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.getUiSettings().setMapToolbarEnabled(true);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.getUiSettings().setCompassEnabled(true);
+        googleMap.getUiSettings().setScrollGesturesEnabled(true);
+        googleMap.getUiSettings().setRotateGesturesEnabled(true);
+       // googleMap.setMyLocationEnabled(true);
+        //googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
     @Override
     public void onConnected(Bundle bundle) {
+
 
     }
 
@@ -114,7 +132,6 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
     }
 
 }

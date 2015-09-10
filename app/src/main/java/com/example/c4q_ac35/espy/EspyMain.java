@@ -34,15 +34,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 
-
 public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
     private final String TAG = "Espy Main";
-    private static final String CLIENT_ID ="GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
+    private static final String CLIENT_ID = "GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
     private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
-
-    //Todo: merge Elvis code
     private static final String LOG_TAG = "MainActivity";
     private AutoCompleteTextView mAutocompleteTextView;
     private PlacesAdapter mPlaceArrayAdapter;
@@ -101,7 +98,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.map_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user_icon));
 
-        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapterViewPager);
 //        tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -151,18 +148,10 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
     class MyPagerAdapter extends FragmentStatePagerAdapter {
         int num_tabs = 4;
-        Fragment [] mFragments;
-
 
         public MyPagerAdapter(FragmentManager fm, int num_tabs) {
             super(fm);
             this.num_tabs = num_tabs;
-
-            mFragments = new Fragment[4];
-            mFragments[0] = new HomeSearchActivity();
-            mFragments [1] = new FavoriteActivity();
-            mFragments [2] = new MapActivity();
-            mFragments [3] = new UserActivity();
 
         }
 
@@ -175,43 +164,24 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return HomeSearchActivity.newInstance(0,"Home");
+                    return HomeSearchActivity.newInstance(0, "Home");
                 case 1:
-                    return FavoriteActivity.newInstance(1,"Favorites");
+                    return FavoriteActivity.newInstance(1, "Favorites");
                 case 2:
-                    return MapActivity.newInstance(2,"Map");
-                case 3:
-                    return UserActivity.newInstance(3, "User");
+                    return MapActivity.newInstance(2, "Map");
+//                case 3:
+//                    return UserSignUpActivity.newInstance(3, "User");
                 default:
                     return null;
             }
         }
 
-//        private int[] imageResId = {
-//                R.drawable.house_icon,
-//                R.drawable.heart_icon,
-//                R.drawable.map_icon,
-//                R.drawable.user_icon,
-//        };
-//
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            Drawable image = getResources().getDrawable(imageResId[position]);
-//            assert image != null;
-//            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-//            SpannableString sb = new SpannableString(" ");
-//            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-//            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//            return sb;
-//        }
-
     }
-
 
 
     @Override
     public void onConnected(Bundle bundle) {
-       // mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+        // mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
         Log.i(LOG_TAG, "Google Places API connected.");
 
     }
@@ -229,7 +199,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
     @Override
     public void onConnectionSuspended(int i) {
-      //  mPlaceArrayAdapter.setGoogleApiClient(null);
+        //  mPlaceArrayAdapter.setGoogleApiClient(null);
         Log.e(LOG_TAG, "Google Places API connection suspended.");
     }
 
@@ -254,7 +224,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         super.onStop();
         mGoogleApiClient.disconnect();
     }
-
 
     /**
      * Builds and returns a GeofencingRequest. Specifies the list of geofences to be monitored.
@@ -330,7 +299,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     /**
      * Runs when the result of calling addGeofences() and removeGeofences() becomes available.
      * Either method can complete successfully or with an error.
-     *
+     * <p/>
      * Since this activity implements the {@link ResultCallback} interface, we are required to
      * define this method.
      *
