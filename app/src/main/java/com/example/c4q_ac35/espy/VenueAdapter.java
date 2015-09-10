@@ -1,6 +1,7 @@
 package com.example.c4q_ac35.espy;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,18 +64,28 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
     @Override
     public VenueAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.venue_layout, parent, false);
+
         return new VenueAdapter.ViewHolder(itemView);
+
     }
 
     @Override
     public void onBindViewHolder(VenueAdapter.ViewHolder holder, int position) {
-        final Venue venue = mVenues[position];
+
+        Venue venue = mVenues[position];
+
+        //if(venue.getCategories().equals("food") && venue.getCategories().equals("nightlife spot")) {
+
+
         holder.name.setText(venue.getName());
         holder.address.setText(venue.getLocation().getCity());
         holder.phone.setText(venue.getContact().phone);
 
+
         mLocation = venue.getLocation();
+
         String urlString = PRE_ENDPOINT + mLocation.getLat() + "," + mLocation.getLng();
         URL url = null;
         try {
@@ -84,9 +95,17 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
         holder.mImageViewVenue.setImageBitmap(null);
         Glide.with(mContext).load(url).centerCrop().into(holder.mImageViewVenue);
+
         Log.w("TAG", "Called");
+
+
+//        }else {
+//
+//        }
+
     }
 
     @Override

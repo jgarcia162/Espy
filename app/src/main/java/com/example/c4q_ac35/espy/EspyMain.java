@@ -1,8 +1,10 @@
 package com.example.c4q_ac35.espy;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.*;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -14,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
@@ -33,14 +36,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
+    private final String LOG_TAG = "Espy Main";
     private final String TAG = "Espy Main";
     private static final String CLIENT_ID = "GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
     private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
-    private static final String LOG_TAG = "MainActivity";
+
     private AutoCompleteTextView mAutocompleteTextView;
     private PlacesAdapter mPlaceArrayAdapter;
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
@@ -80,11 +86,24 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
         mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
 
+
         mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
 //        FAB = (FloatingActionButton) findViewById(R.id.fab);
         setUpTab();
+//
+//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+//                        .setDefaultFontPath("fonts/poiret_one.ttf")
+//                        .setFontAttrId(R.attr.fontPath)
+//                        .build()
+//            );
 
+    }
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     private void setUpTab() {
@@ -92,16 +111,18 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.house_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.heart_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.map_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user_icon));
 
-        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(adapterViewPager);
 //        tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 //                final int width = viewPager.getWidth();
@@ -164,7 +185,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return HomeSearchActivity.newInstance(0, "Home");
+//                    return HomeSearchActivity.newInstance(0, "Home");
                 case 1:
                     return FavoriteActivity.newInstance(1, "Favorites");
                 case 2:
@@ -175,7 +196,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                     return null;
             }
         }
-
     }
 
 
@@ -426,13 +446,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-            default:
                 return super.onOptionsItemSelected(item);
-        }
+
 
     }
 }

@@ -1,92 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
-    android:id="@+id/card_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="5dp"
-    android:elevation="5dp"
-    app:theme="@style/CardList">
 
-    <LinearLayout
-        android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:app="http://schemas.android.com/tools"
+        android:id="@+id/card_view"
+        android:elevation="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-        <ImageView
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        card_view:cardCornerRadius="7dp"
+        card_view:cardPreventCornerOverlap="false"
+        app:theme="@style/CardList">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+        <com.joooonho.SelectableRoundedImageView
             android:id="@+id/venue_picture"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:elevation="5dp"
+            android:layout_height="match_parent"
+            app:sriv_left_top_corner_radius="7dip"
+            app:sriv_right_top_corner_radius="7dip"
+            app:sriv_left_bottom_corner_radius="0dip"
+            app:sriv_right_bottom_corner_radius="0dip"
             android:background="@drawable/devicion" />
-        <TextView
-            android:id="@+id/item_name"
-            android:text="Devicion"
-            android:textColor="#218C8D"
-            android:textSize="24sp"
-            android:paddingLeft="16dp"
-            android:paddingTop="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <TextView
-            android:id="@+id/item_address"
-            android:text="*****"
-            android:textColor="#218C8D"
-            android:textSize="14sp"
-            android:paddingLeft="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-        <TextView
-            android:id="@+id/item_phone"
-            android:text="(718) 285-6180"
-            android:textColor="#218C8D"
-            android:textSize="14sp"
-            android:paddingLeft="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-        <TextView
-            android:id="@+id/item_hours"
-            android:text=".21 mi"
-            android:textColor="#218C8D"
-            android:textSize="14sp"
-            android:paddingLeft="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+
+        </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <TextView
+                tools:ignore="MissingPrefix"
+                android:id="@+id/item_name"
+                android:textStyle="bold"
+                android:text="Devicion"
+                android:textColor="#218C8D"
+                android:textSize="36sp"
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fontPath="fonts/poiret_one.ttf"/>
+
+                <RatingBar
+                    android:id="@+id/ratingBar1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/item_name"
+                    android:isIndicator="true"
+                    android:max="100"
+                    android:numStars="5"
+                    android:stepSize="0.1" />
+
+            <TextView
+                tools:ignore="MissingPrefix"
+                android:id="@+id/item_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ratingBar1"
+                android:text="69 Grand St, Brooklyn, NY 11249"
+                android:textColor="#218C8D"
+                android:textSize="14sp"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                fontPath="fonts/poiret_one.ttf"/>
+
+            <TextView
+                tools:ignore="MissingPrefix"
+                android:id="@+id/item_phone"
+                android:text="(718) 285-6180"
+                android:layout_below="@id/item_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#218C8D"
+                android:textSize="14sp"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                fontPath="fonts/poiret_one.ttf"/>
+
+        </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/layout_icons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_weight="1"
             android:padding="8dp">
 
-            <ImageButton
+            <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/faveBt"
-                android:padding="8dp"
+                android:layout_margin="10dp"
+                android:layout_gravity="bottom|right"
                 android:src="@drawable/heart_icon"/>
 
-            <ImageButton
+            <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:id="@+id/shareBt"
-                android:padding="8dp"
+                android:layout_gravity="bottom|right"
                 android:src="@drawable/share_icon"/>
-
-            <!--<ImageButton-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/menubt"-->
-                <!--android:padding="8dp"/>-->
         </LinearLayout>
+
     </LinearLayout>
 
 
 </android.support.v7.widget.CardView>
+
+</LinearLayout>

@@ -30,7 +30,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDDREe4DCpVa7J2EbvhQRsr-BSxaovc8Ms" />
+            android:value="AIzaSyAs0pUsczACKcZ44Hb9tjaLbwKqtlz48fo" />
 
         <activity android:name=".UserInitalSetActivity"
             android:label="Initial Setup"/>

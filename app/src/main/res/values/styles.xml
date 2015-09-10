@@ -6,12 +6,8 @@
 
     <!-- the theme applied to the application or activity -->
 
-    <!--<style name="CustomActionBarTheme"-->
-           <!--parent="@android:style/Theme.Holo">-->
-        <!--<item name="android:windowActionBarOverlay">true</item>-->
-    <!--</style>-->
-
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="fontPath">fonts/poiret_one.ttf</item>
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/PrimaryColor2</item>
         <item name="colorPrimaryDark">@color/PrimaryDarkColor2</item>
