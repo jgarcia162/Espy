@@ -99,8 +99,12 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 //                        .build()
 //            );
 
+    }
 
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     private void setUpTab() {

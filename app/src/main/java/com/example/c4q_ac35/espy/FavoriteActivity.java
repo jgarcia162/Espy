@@ -34,10 +34,6 @@ public class FavoriteActivity extends Fragment {
     public static final String TAG = "Main Activity";
     FourSquareAPI servicesFourSquare = null;
     public Venue[] venuee = null;
-    protected TextView name;
-    protected TextView address;
-    protected TextView phone;
-    protected TextView favorite;
     private String title;
     private int page;
     RecyclerView mRecyclerView;
@@ -47,6 +43,7 @@ public class FavoriteActivity extends Fragment {
     List favList= null;
     private boolean resultsFound = false;
     Context context;
+    protected TextView favorite;
     // newInstance constructor for creating fragment with arguments
 
     public static FavoriteActivity newInstance(int page, String title) {
@@ -83,6 +80,9 @@ public class FavoriteActivity extends Fragment {
 
             mRecyclerView = (RecyclerView) view.findViewById(R.id.favelist);
             mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header);
+            this.favorite = (TextView) view.findViewById(R.id.favorite_text);
+            android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
+            this.favorite.setTypeface(font);
 
             Log.d(TAG,"recycleviwerHeader");
       //  this.favorite = (EspyFont) view.findViewById(R.id.favorite_text);

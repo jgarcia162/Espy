@@ -30,6 +30,7 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.android.AndroidLog;
 import retrofit.client.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 
 public class HomeSearchActivity extends Fragment implements LocationListener {
@@ -74,7 +75,6 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
 
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
         servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
-
 
 
     }
@@ -133,6 +133,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
 //        });
 
         return view;
+
     }
 
     @Override
