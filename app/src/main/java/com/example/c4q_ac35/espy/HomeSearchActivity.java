@@ -17,14 +17,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,6 +78,8 @@ public class HomeSearchActivity extends Fragment
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
             new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
     private PlacesAdapter mPlaceArrayAdapter;
+    private Context mContext;
+    Button mButtonClear;
 
     public static HomeSearchActivity newInstance(int page, String title) {
         HomeSearchActivity homeSearchActivity = new HomeSearchActivity();
@@ -155,6 +161,8 @@ public class HomeSearchActivity extends Fragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mButtonClear = (Button) view.findViewById(R.id.buttonClear);
+
         mAutocompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.et_autocomplete_places);
 
         mAutocompleteTextView.setThreshold(3);
@@ -176,6 +184,24 @@ public class HomeSearchActivity extends Fragment
             }
         });
 
+        mButtonClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mAutocompleteTextView.setText(" ");
+
+                mAutocompleteTextView.setVisibility(View.GONE);
+                mAutocompleteTextView.setVisibility(View.VISIBLE);
+                // hide the keyboard
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mAutocompleteTextView.getWindowToken(), 0);
+
+            }
+        });
+
+//        InputMethodManager imm=
+//                (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+//        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void performSearch(@NonNull String query, int limit) {
@@ -276,6 +302,7 @@ public class HomeSearchActivity extends Fragment
         @Override
         public void failure(RetrofitError error) {
             Log.d(TAG, "Failure");
+            error.printStackTrace();
 
         }
     }
@@ -322,6 +349,7 @@ public class HomeSearchActivity extends Fragment
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             performSearch(parent.getItemAtPosition(position).toString(), 1);
+
 
         }
 

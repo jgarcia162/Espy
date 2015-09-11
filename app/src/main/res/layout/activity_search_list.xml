@@ -15,14 +15,25 @@
     android:layout_height="80dp"
     android:orientation="vertical">
 
+
     <AutoCompleteTextView
         android:id="@+id/et_autocomplete_places"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:imeOptions="actionSearch"
         android:singleLine="true"
+
+        android:dropDownVerticalOffset="30dp"
+        android:dropDownWidth="wrap_content"
+
         android:layout_gravity="center_horizontal"
         android:hint="Search Places" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonClear"
+        android:text="Clear"/>
 
     <TextView
         android:text="Recommendations"
