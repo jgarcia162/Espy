@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
  */
 public class FavoritesHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "locations.db";
+    private static final String DB_NAME = "my-favorite-places.db";
     private static final int DB_VERSION = 1;
 
     private static FavoritesHelper INSTANCE;

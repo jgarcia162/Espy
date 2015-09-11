@@ -1,6 +1,5 @@
 package com.example.c4q_ac35.espy;
 
-import android.graphics.*;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 
 import android.widget.SearchView;
 
+import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
@@ -34,7 +34,7 @@ import retrofit.client.Response;
 
 public class HomeSearchActivity extends Fragment implements LocationListener {
 
-    protected TextView recommended;
+    protected TextView Nearby;
     private String title;
     private int page;
     private VenueAdapter adapter;
@@ -44,6 +44,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     public Venue[] venuee = null;
     private boolean resultsFound = false;
     private RecyclerView mRecyclerView;
+    private RecyclerViewHeader mRecyclerViewHeader;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private static final long MIN_LOCATION_TIME = 1 * 1000;
 
@@ -64,7 +65,6 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         page = getArguments().getInt("homePage", 0);
         title = getArguments().getString("home");
 
@@ -73,8 +73,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
                 .setEndpoint(BASE_API).build();
 
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
-
-//        servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
+        servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
 
 
 
@@ -117,21 +116,10 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
         View view = inflater.inflate(R.layout.activity_search_list, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
-
-        this.recommended = (TextView) view.findViewById(R.id.results_search);
+        mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header1);
+        this.Nearby = (TextView) view.findViewById(R.id.nearby_text);
         android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
-        this.recommended.setTypeface(font);
-
-       // searchPlaces();
-
-//        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
-//        mSwipeRefreshLayout.setColorSchemeColors(android.R.color.holo_blue_bright);
-//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
-//            }
-//        });
+        this.Nearby.setTypeface(font);
 
         return view;
     }
@@ -190,8 +178,8 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
                 adapter = new VenueAdapter(getActivity(), venuee);
                 mRecyclerView.setAdapter(adapter);
                 mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+                mRecyclerViewHeader.attachTo(mRecyclerView,true);
             }
-
             Log.d(TAG, "Success");
         }
 

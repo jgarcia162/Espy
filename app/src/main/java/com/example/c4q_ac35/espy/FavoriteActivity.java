@@ -1,5 +1,6 @@
 package com.example.c4q_ac35.espy;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,12 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -34,25 +33,28 @@ public class FavoriteActivity extends Fragment {
     public static final String TAG = "Main Activity";
     FourSquareAPI servicesFourSquare = null;
     public Venue[] venuee = null;
-    private boolean resultsFound = false;
     protected TextView name;
     protected TextView address;
     protected TextView phone;
+    protected TextView favorite;
     private String title;
     private int page;
     RecyclerView mRecyclerView;
+    RecyclerViewHeader mRecyclerViewHeader;
     private VenueAdapter adapter;
     public Venue[] fav = null;
     List favList= null;
+    private boolean resultsFound = false;
+    Context context;
     // newInstance constructor for creating fragment with arguments
 
     public static FavoriteActivity newInstance(int page, String title) {
-        FavoriteActivity fragmentFirst = new FavoriteActivity();
+        FavoriteActivity faveActivity = new FavoriteActivity();
         Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
-        fragmentFirst.setArguments(args);
-        return fragmentFirst;
+        args.putInt("favePage", page);
+        args.putString("Favorites", title);
+        faveActivity.setArguments(args);
+        return faveActivity;
     }
 
     // Store instance variables based on arguments passed
@@ -62,34 +64,28 @@ public class FavoriteActivity extends Fragment {
         page = getArguments().getInt("myListPage", 1);
         title = getArguments().getString("myList");
 
-
-       // adapter = new VenueAdapter(getActivity(), favList);
-      //  mRecyclerView.setAdapter(adapter);
-       // mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
         RestAdapter mRestAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog(TAG))
                 .setEndpoint(BASE_API).build();
-
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
         servicesFourSquare.getFeed("40.756296,-73.923944", new FourSquareCallback());
     }
+
 
     // Inflate the view for the fragment based on layout XML
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_my_venues, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.favelist);
-//        this.name = (TextView) view.findViewById(R.id.item_name);
-//        this.address = (TextView) view.findViewById(R.id.item_address);
-//        this.phone = (TextView) view.findViewById(R.id.item_phone);
-//        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
-//        this.name.setTypeface(font);
-//        this.address.setTypeface(font);
-//        this.phone.setTypeface(font);
+        View view = inflater.inflate(R.layout.activity_favorites, container, false);
+
+            mRecyclerView = (RecyclerView) view.findViewById(R.id.favelist);
+            mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header);
+
+            Log.d(TAG,"recycleviwerHeader");
 
         return view;
     }
+
 
     public static final void setAppFont(ViewGroup mContainer, Typeface mFont) {
         if (mContainer == null || mFont == null) return;
@@ -132,9 +128,9 @@ public class FavoriteActivity extends Fragment {
                 venuee = venueList.toArray(new Venue[venueList.size()]);
 
                 adapter = new VenueAdapter(getActivity(), venuee);
-                // adapter = new CustomeAdapter(getApplicationContext(), R.layout.venue_layout, venuee);
                 mRecyclerView.setAdapter(adapter);
                 mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+                mRecyclerViewHeader.attachTo(mRecyclerView,true);
 
             }
 
@@ -149,6 +145,7 @@ public class FavoriteActivity extends Fragment {
             Log.d(TAG, "Failure");
 
         }
+
     }
 
 }

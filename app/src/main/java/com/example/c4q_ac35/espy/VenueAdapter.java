@@ -14,7 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.c4q_ac35.espy.db.FavoritesData;
 import com.example.c4q_ac35.espy.db.FavoritesHelper;
+import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Location;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 
@@ -39,12 +41,13 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+
         @Bind(R.id.item_name) TextView name;
         @Bind(R.id.item_address) TextView address;
         @Bind(R.id.item_phone) TextView phone;
         @Bind(R.id.venue_picture) ImageView mImageViewVenue;
 //        @Bind(R.id.shareBt) ImageButton mShareButton;
-       // @Bind(R.id.faveBt) ImageButton mFavoritesButton;
+        @Bind(R.id.faveBt) ImageButton mFavoritesButton;
 
 
 
@@ -73,6 +76,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public VenueAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.venue_layout,parent,false);
+
         return new VenueAdapter.ViewHolder(itemView);
 
     }
@@ -87,15 +91,16 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             holder.name.setText(venue.getName());
             holder.address.setText(venue.getLocation().getCity());
             holder.phone.setText(venue.getContact().phone);
+            final double venueLat = venue.getLocation().getLat();
+            final double venueLon = venue.getLocation().getLng();
 
-        //holder.mFavoritesButton.setOnClickListener(new View.OnClickListener() {
-            //@Override
-            //public void onClick(View view) {
-//                FavoritesHelper favoritesHelper = new FavoritesHelper(view.getContext());
-//                SQLiteDatabase database = favoritesHelper.getWritableDatabase();
-//                addToFavorites(venue.getName(),venue.getLocation().getCity(),venue.getContact().getPhone(), "Hours","Favorites", venue.getLocation().getLat(),venue.getLocation().getLng(),database);
-          //  }
-       // });
+        holder.mFavoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MyFavoritesHelper favoritesHelper =  MyFavoritesHelper.getInstance(view.getContext());
+                FavoritesData favoritesData = new FavoritesData(venue.getName(),venueLat,venueLon);
+            }
+        });
 
             mLocation = venue.getLocation();
 

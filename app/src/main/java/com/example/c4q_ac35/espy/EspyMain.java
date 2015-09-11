@@ -2,6 +2,7 @@ package com.example.c4q_ac35.espy;
 
 import android.app.AlarmManager;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.app.PendingIntent;
@@ -52,9 +53,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-
-public class EspyMain extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
+public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
     private final String TAG = "Espy Main";
     private static final String CLIENT_ID = "GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
@@ -119,6 +121,14 @@ public class EspyMain extends AppCompatActivity implements GoogleApiClient.Conne
         setSupportActionBar(mToolbar);
 //        FAB = (FloatingActionButton) findViewById(R.id.fab);
         setUpTab();
+//
+//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+//                        .setDefaultFontPath("fonts/poiret_one.ttf")
+//                        .setFontAttrId(R.attr.fontPath)
+//                        .build()
+//            );
+
+
 
 
         if(getIntent().getAction().equals("OPEN_MAP")){
@@ -190,28 +200,6 @@ public class EspyMain extends AppCompatActivity implements GoogleApiClient.Conne
         });
     }
 
-
-
-//
-//    @Override
-//    public void onBackPressed() {
-//        if (isSearchOpened) {
-//            // handleMenuSearch();
-//            return;
-//        }
-//        super.onBackPressed();
-//
-//    }
-
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        mGoogleApiClient.connect();
-//        populateGeofenceList();
-//        addGeofences();
-//    }
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -257,7 +245,7 @@ public class EspyMain extends AppCompatActivity implements GoogleApiClient.Conne
                     // pending intent is used to generate an intent when a matched geofence
                     // transition is observed.
                     getGeofencePendingIntent()
-            ).setResultCallback(this); // Result processed in onResult().
+            ).setResultCallback(this); // Result processed in onResult//().
             mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY,true);
 
         } catch (SecurityException securityException) {
@@ -512,7 +500,12 @@ public class EspyMain extends AppCompatActivity implements GoogleApiClient.Conne
         }
     }
 
-class MyPagerAdapter extends FragmentStatePagerAdapter {
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+    }
+
+    class MyPagerAdapter extends FragmentStatePagerAdapter {
     int num_tabs = 4;
     Fragment[] mFragments;
 
