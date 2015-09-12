@@ -62,9 +62,8 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        page = getArguments().getInt("homePage", 0);
-        title = getArguments().getString("home");
-
+//        page = getArguments().getInt("homePage", 0);
+//        title = getArguments().getString("home");
 
         RestAdapter mRestAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog(TAG))
@@ -77,7 +76,6 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     @Override
     public void onResume() {
         super.onResume();
-
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -181,6 +179,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
                 adapter = new VenueAdapter(getActivity(), venuee);
                 mRecyclerView.setAdapter(adapter);
                 mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+                mRecyclerViewHeader.attachTo(mRecyclerView,true);
             }
             Log.d(TAG, "Success");
         }
@@ -242,6 +241,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
             }
         });
     }

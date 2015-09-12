@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-                        android:title="Notification Settings"/>
-    <CheckBoxPreference android:title="Weekly"
-                        android:key="EnabledWeekly"
-                        android:dependency="EnabledNotif"/>
-    <CheckBoxPreference android:title="Bi-Weekly"
-                        android:key="EnabledBi-Weekly"
-                        android:dependency="EnabledNotif"/>
-    <RingtonePreference android:title="Ringtone Preference"
-                        android:summary="Select Ringtone"
-                        android:ringtoneType="all"
-                        android:key="Ringtone"
-                        android:dependency="EnabledNotif"/>
-    <PreferenceCategory
-                        android:title="Location Settings">
-    <EditTextPreference android:title="Home Address"
-                        android:key="Home"
-                        android:summary="Enter your home address"
-                        android:dialogTitle="Enter Home Address"/>
-    <EditTextPreference android:title="Work Address"
-                        android:key="Work"
-                        android:summary="Enter your work address"
-                        android:dialogTitle="Enter Work Address"/>
-    <EditTextPreference android:title="Other Address"
-                        android:key="Other"
-                        android:summary="Enter your other address"
-                        android:dialogTitle="Enter other Address"/>
+        android:title="Notification Service">
+        <SwitchPreference
+            android:key="EnabledNotif"
+            android:title="Notifications"
+            android:checked="true"/>
     </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Notifications and Sounds"/>
+    <CheckBoxPreference
+        android:dependency="EnabledNotif"
+        android:key="EnabledNearby"
+        android:title="Nearby Location"/>
+    <CheckBoxPreference
+        android:dependency="EnabledNotif"
+        android:key="EnabledWeekly"
+        android:title="Weekly"/>
+    <CheckBoxPreference
+        android:dependency="EnabledNotif"
+        android:key="EnabledBi-Weekly"
+        android:title="Bi-Weekly"/>
+    <RingtonePreference
+        android:dependency="EnabledNotif"
+        android:key="Ringtone"
+        android:ringtoneType="all"
+        android:summary="Select Ringtone"
+        android:title="Ringtone Preference"/>
 </PreferenceScreen>
