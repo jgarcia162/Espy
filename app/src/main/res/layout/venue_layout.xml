@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:background="@color/PrimaryColor">
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -15,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        card_view:cardCornerRadius="7dp"
+        card_view:cardCornerRadius="10dp"
         card_view:cardPreventCornerOverlap="false"
         app:theme="@style/CardList">
 
@@ -26,19 +27,21 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="222dp"
             android:layout_weight="1">
 
         <com.joooonho.SelectableRoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/venue_picture"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:sriv_left_top_corner_radius="7dip"
-            app:sriv_right_top_corner_radius="7dip"
+            android:background="@drawable/espy_icon"
+            android:adjustViewBounds="true"
+            app:sriv_left_top_corner_radius="10dip"
+            app:sriv_right_top_corner_radius="10dip"
             app:sriv_left_bottom_corner_radius="0dip"
-            app:sriv_right_bottom_corner_radius="0dip"
-            android:background="@drawable/devicion" />
+            app:sriv_right_bottom_corner_radius="0dip" />
 
         </LinearLayout>
 
@@ -58,17 +61,18 @@
                 android:layout_margin="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fontPath="fonts/poiret_one.ttf"/>
+                fontPath="fonts/JosefinSans-Bold.ttf"/>
 
                 <RatingBar
                     android:id="@+id/ratingBar1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/item_name"
-                    android:isIndicator="true"
                     android:max="100"
                     android:numStars="5"
-                    android:stepSize="0.1" />
+                    android:stepSize="0.1"
+                    android:layout_margin="5dp"
+                    style="?android:attr/ratingBarStyleSmall" />
 
             <TextView
                 tools:ignore="MissingPrefix"
@@ -78,10 +82,10 @@
                 android:layout_below="@id/ratingBar1"
                 android:text="69 Grand St, Brooklyn, NY 11249"
                 android:textColor="#218C8D"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:padding="5dp"
                 android:layout_margin="5dp"
-                fontPath="fonts/poiret_one.ttf"/>
+                fontPath="fonts/JosefinSans-Bold.ttf"/>
 
             <TextView
                 tools:ignore="MissingPrefix"
@@ -91,19 +95,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#218C8D"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:padding="5dp"
                 android:layout_margin="5dp"
-                fontPath="fonts/poiret_one.ttf"/>
+                fontPath="fonts/JosefinSans-Bold.ttf"/>
 
         </RelativeLayout>
 
-        <LinearLayout
+         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/layout_icons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="1"
             android:padding="8dp">
 
             <android.support.design.widget.FloatingActionButton
@@ -114,16 +116,20 @@
                 android:layout_gravity="bottom|right"
                 android:src="@drawable/heart_icon"/>
 
+
+
             <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:id="@+id/shareBt"
-                android:layout_gravity="bottom|right"
-                android:src="@drawable/share_icon"/>
-        </LinearLayout>
+                android:id="@+id/plus"
+                android:layout_gravity="bottom|right|end"
+                android:src="@drawable/plus_icon"
+                android:layout_weight="1" />
 
-    </LinearLayout>
+         </android.support.design.widget.CoordinatorLayout>
+
+        </LinearLayout>
 
 
 </android.support.v7.widget.CardView>

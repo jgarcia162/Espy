@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import android.widget.SearchView;
@@ -22,6 +23,7 @@ import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
+import com.joooonho.SelectableRoundedImageView;
 
 import java.util.List;
 
@@ -74,7 +76,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
                 .setEndpoint(BASE_API).build();
 
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
-        servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
+        //servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
 
 
     }
@@ -117,9 +119,10 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
         mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header1);
-        this.Nearby = (TextView) view.findViewById(R.id.nearby_text);
-        android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
-        this.Nearby.setTypeface(font);
+//        this.Nearby = (TextView) view.findViewById(R.id.nearby_text);
+//        android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
+//        this.Nearby.setTypeface(font);
+
 
         searchPlaces();
 
