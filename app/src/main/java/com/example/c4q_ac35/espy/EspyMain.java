@@ -225,6 +225,12 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         return builder.build();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.i("Intent Message","N");
+    }
+
     /**
      * Adds geofences, which sets alerts to be notified when the device enters or exits one of the
      * specified geofences. Handles the success or failure results returned by addGeofences().
@@ -294,7 +300,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             // Update state and save in shared preferences.
             SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.putBoolean(Constants.GEOFENCES_ADDED_KEY, mGeofencesAdded);
-            editor.apply();
+            editor.commit();
 
             // Update the UI. Adding geofences enables the Remove Geofences button, and removing
             // geofences enables the Add Geofences button.
