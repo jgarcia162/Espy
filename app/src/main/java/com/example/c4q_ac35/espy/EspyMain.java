@@ -90,6 +90,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addApi(Places.GEO_DATA_API)
@@ -97,7 +98,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
-
         if(!mGoogleApiClient.isConnected()){
         mGoogleApiClient.connect();
         } else {
@@ -111,7 +111,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
         mGeofencePendingIntent = null;
-        mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
         mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
         }
@@ -314,6 +313,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             return mGeofencePendingIntent;
         } else{
         Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
         // addGeofences() and removeGeofences().
 

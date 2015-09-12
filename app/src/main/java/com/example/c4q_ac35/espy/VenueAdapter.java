@@ -47,7 +47,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Bind(R.id.item_phone) TextView phone;
         @Bind(R.id.venue_picture) ImageView mImageViewVenue;
 //        @Bind(R.id.shareBt) ImageButton mShareButton;
-        @Bind(R.id.faveBt) ImageButton mFavoritesButton;
+       // @Bind(R.id.faveBt) ImageButton mFavoritesButton;
 
 
 
@@ -91,16 +91,16 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             holder.name.setText(venue.getName());
             holder.address.setText(venue.getLocation().getCity());
             holder.phone.setText(venue.getContact().phone);
-            final double venueLat = venue.getLocation().getLat();
-            final double venueLon = venue.getLocation().getLng();
+//            final double venueLat = venue.getLocation().getLat();
+//            final double venueLon = venue.getLocation().getLng();
 
-        holder.mFavoritesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MyFavoritesHelper favoritesHelper =  MyFavoritesHelper.getInstance(view.getContext());
-                FavoritesData favoritesData = new FavoritesData(venue.getName(),venueLat,venueLon);
-            }
-        });
+//        holder.mFavoritesButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //MyFavoritesHelper favoritesHelper =  MyFavoritesHelper.getInstance(view.getContext());
+//                //FavoritesData favoritesData = new FavoritesData(venue.getName(),venueLat,venueLon);
+//            }
+//        });
 
             mLocation = venue.getLocation();
 
