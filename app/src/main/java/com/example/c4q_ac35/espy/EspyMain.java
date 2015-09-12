@@ -1,6 +1,7 @@
 package com.example.c4q_ac35.espy;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -228,7 +229,10 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.i("Intent Message","N");
+        NotificationManager pushNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        pushNotificationManager.cancel(GeofenceTransitionsIntentService.PUSH_NOTIFICATION_ID);
+
+        Log.i("Intent Message","NEW INTENT");
     }
 
     /**
@@ -319,7 +323,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             return mGeofencePendingIntent;
         } else{
         Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT|Intent.FLAG_ACTIVITY_SINGLE_TOP|Notification.FLAG_AUTO_CANCEL);
         // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
         // addGeofences() and removeGeofences().
 

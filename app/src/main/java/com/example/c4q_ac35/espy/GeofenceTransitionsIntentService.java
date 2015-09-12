@@ -32,7 +32,8 @@ import java.util.List;
 public class GeofenceTransitionsIntentService extends IntentService {
 
     protected static final String TAG = "geofence-transitions-service";
-    public static int GEOFENCE_NOTIFICATION_ID = 0;
+    public static int GEOFENCE_NOTIFICATION_ID = 101;
+    public static int PUSH_NOTIFICATION_ID = 102;
     private static final int GOOGLE_API_CLIENT_ID = 0;
     List<GeofenceNotificationsHistory> oldNotifications = new ArrayList<>();
     public static List<Geofence> triggeredFences = new ArrayList<>();
@@ -138,7 +139,6 @@ public class GeofenceTransitionsIntentService extends IntentService {
     private void sendNotification(String notificationDetails) {
         // Create an explicit content Intent that starts the main Activity.
         Intent notificationIntent = new Intent(getApplicationContext(), EspyMain.class);
-        notificationIntent.setAction("OPEN_MAP");
 
         // Construct a task stack.
 
@@ -169,7 +169,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Issue the notification
-        mNotificationManager.notify(GEOFENCE_NOTIFICATION_ID, builder.build());
+        mNotificationManager.notify(PUSH_NOTIFICATION_ID, builder.build());
     }
 
     /**
