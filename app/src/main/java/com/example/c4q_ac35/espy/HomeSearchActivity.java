@@ -29,6 +29,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.List;
+import java.util.logging.Handler;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -78,8 +80,10 @@ public class HomeSearchActivity extends Fragment
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
             new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
     private PlacesAdapter mPlaceArrayAdapter;
-    private Context mContext;
     Button mButtonClear;
+    private SwipeRefreshLayout swipeLayout;
+    EditText mEditTextSearch;
+
 
     public static HomeSearchActivity newInstance(int page, String title) {
         HomeSearchActivity homeSearchActivity = new HomeSearchActivity();
@@ -103,7 +107,13 @@ public class HomeSearchActivity extends Fragment
 
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
 
+
+
+       // servicesFourSquare.getFeed("40.742472, -73.935381", new FourSquareCallback());
+
     }
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -112,7 +122,7 @@ public class HomeSearchActivity extends Fragment
         mPlaceArrayAdapter = new PlacesAdapter(getActivity(), android.R.layout.simple_list_item_1,
                 ((EspyMain)getActivity()).getGoogleApiClient(), BOUNDS_MOUNTAIN_VIEW, null);
 
-        mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
+        //mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
     }
 
     @Override
@@ -161,50 +171,61 @@ public class HomeSearchActivity extends Fragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mEditTextSearch = (EditText) view.findViewById(R.id.edit_search);
+
         mButtonClear = (Button) view.findViewById(R.id.buttonClear);
-
-        mAutocompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.et_autocomplete_places);
-
-        mAutocompleteTextView.setThreshold(3);
-
-        mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
-
-
-        mAutocompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mEditTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performSearch(v.getText().toString(),10);
 
-                if ( actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(mEditTextSearch.getWindowToken(), 0);
 
-                    performSearch (v.getText().toString(), 10);
                     return true;
-
                 }
                 return false;
             }
         });
 
+        //mAutocompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.et_autocomplete_places);
+
+//        mAutocompleteTextView.setThreshold(0);
+
+        //mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
+
+
+//        mAutocompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//
+//                if ( actionId == EditorInfo.IME_ACTION_SEARCH) {
+//
+//                    performSearch (v.getText().toString(), 10);
+//                    return true;
+//
+//                }
+//                return false;
+//            }
+//        });
+
         mButtonClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                mAutocompleteTextView.setText(" ");
-
-                mAutocompleteTextView.setVisibility(View.GONE);
-                mAutocompleteTextView.setVisibility(View.VISIBLE);
-                // hide the keyboard
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(mAutocompleteTextView.getWindowToken(), 0);
+                mEditTextSearch.setText(" ");
 
             }
         });
 
-//        InputMethodManager imm=
-//                (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-//        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        //swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
+
+
     }
 
-    private void performSearch(@NonNull String query, int limit) {
+    private void performSearch(String query, int limit) {
+
 
             servicesFourSquare.search(query, limit, new FourSquareCallback());
 
@@ -270,7 +291,7 @@ public class HomeSearchActivity extends Fragment
                 Toast.LENGTH_LONG).show();
     }
 
-
+//Todo
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
 
@@ -283,18 +304,12 @@ public class HomeSearchActivity extends Fragment
         @Override
         public void success(final ResponseAPI responseAPI, Response response) {
 
-            //venuee = new Venue[responseAPI.getResponse().getVenues().size()];
-
             resultsFound = true;
-            //if (adapter == null) {
                 List<Venue> venueList = responseAPI.getResponse().getVenues();
 
-                //venuee = venueList.toArray(new Venue[venueList.size()]);
                 adapter = new VenueAdapter(getActivity(), venueList);
                 mRecyclerView.setAdapter(adapter);
                 mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
-
-            //}
 
             Log.d(TAG, "Success");
         }
@@ -308,8 +323,8 @@ public class HomeSearchActivity extends Fragment
     }
 
 
-    @Nullable public android.location.Location getLocation(LocationManager mLocationManager, long maxAge) {
-
+     public android.location.Location getLocation(LocationManager mLocationManager, long maxAge) {
+         //@Nullable  this goes in the front of the method
 
         android.location.Location location = null;
 
@@ -340,20 +355,25 @@ public class HomeSearchActivity extends Fragment
                 }
             }
         }
+
+        if (isNetworkEnabled)
+            mLocationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+        if (isGPSEnabled)
+            mLocationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
         return null;
     }
 
-    private AdapterView.OnItemClickListener mAutocompleteClickListener
-            = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            performSearch(parent.getItemAtPosition(position).toString(), 1);
-
-
-        }
-
-    };
+//    private AdapterView.OnItemClickListener mAutocompleteClickListener
+//            = new AdapterView.OnItemClickListener() {
+//        @Override
+//        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//            performSearch(parent.getItemAtPosition(position).toString(), 1);
+//
+//
+//        }
+//
+//    };
 
     // Todo: Hide the keyboard
     //Todo: Hide the AutoComplete

@@ -10,24 +10,41 @@
                 android:background="#FFFFFF"
                 tools:context=".MainActivity">
 
-<LinearLayout
+        <!--<android.support.v4.widget.SwipeRefreshLayout-->
+       <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/swipeRefresh"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+
+
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:orientation="vertical">
 
 
-    <AutoCompleteTextView
-        android:id="@+id/et_autocomplete_places"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:imeOptions="actionSearch"
-        android:singleLine="true"
+    <!--<AutoCompleteTextView-->
+        <!--android:id="@+id/et_autocomplete_places"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:imeOptions="actionSearch"-->
+        <!--android:singleLine="true"-->
 
-        android:dropDownVerticalOffset="30dp"
-        android:dropDownWidth="wrap_content"
+        <!--android:dropDownVerticalOffset="30dp"-->
+        <!--android:dropDownWidth="wrap_content"-->
 
-        android:layout_gravity="center_horizontal"
-        android:hint="Search Places" />
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:hint="Search Places" />-->
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_search"
+            android:hint="Search Places"
+            android:inputType="textCapSentences"
+            android:selectAllOnFocus="true"
+            android:imeOptions="actionSearch"
+           />
 
     <Button
         android:layout_width="wrap_content"
@@ -50,4 +67,6 @@
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        android:id="@+id/listView"/>
+
+        <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 </LinearLayout>
