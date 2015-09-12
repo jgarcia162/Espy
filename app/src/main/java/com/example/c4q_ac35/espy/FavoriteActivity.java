@@ -80,9 +80,9 @@ public class FavoriteActivity extends Fragment {
 
             mRecyclerView = (RecyclerView) view.findViewById(R.id.favelist);
             mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header);
-            this.favorite = (TextView) view.findViewById(R.id.favorite_text);
-            android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
-            this.favorite.setTypeface(font);
+//            this.favorite = (TextView) view.findViewById(R.id.favorite_text);
+//            android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
+//            this.favorite.setTypeface(font);
 
             Log.d(TAG,"recycleviwerHeader");
       //  this.favorite = (EspyFont) view.findViewById(R.id.favorite_text);
