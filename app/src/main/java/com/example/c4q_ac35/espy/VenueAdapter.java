@@ -1,6 +1,7 @@
 package com.example.c4q_ac35.espy;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,12 +33,16 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     private Context mContext;
 
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
 
         @Bind(R.id.item_name) TextView name;
         @Bind(R.id.item_address) TextView address;
         @Bind(R.id.item_phone) TextView phone;
         @Bind(R.id.venue_picture) ImageView mImageViewVenue;
+
 
 
         public ViewHolder(View itemView) {
@@ -66,7 +71,9 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public VenueAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.venue_layout,parent,false);
+
         return new VenueAdapter.ViewHolder(itemView);
+
     }
 
     @Override
@@ -101,6 +108,5 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public int getItemCount() {
         return mVenues.size();
     }
-
 
 }

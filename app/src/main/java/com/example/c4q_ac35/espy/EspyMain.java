@@ -1,8 +1,10 @@
 package com.example.c4q_ac35.espy;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.*;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -14,7 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -30,9 +34,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.ArrayList;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static android.support.design.widget.FloatingActionButton.*;
 
 
 public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
@@ -48,7 +58,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
     private MenuItem mSearchAction;
     private android.support.v7.widget.Toolbar mToolbar;
-    private FloatingActionButton FAB;
+    private FloatingActionButton mFab;
     TabViewPager viewPager;
     MyPagerAdapter adapterViewPager;
     ArrayList<Geofence> mGeofenceList;
@@ -60,6 +70,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -78,11 +89,33 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
         mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
 
+
         mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
-//        FAB = (FloatingActionButton) findViewById(R.id.fab);
         setUpTab();
 
+//        mFab = (FloatingActionButton) findViewById(R.id.plus);
+//
+//        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
+//        ImageView heartIcon = new ImageView(this);
+//        heartIcon.setImageResource(R.drawable.heart_icon);
+//        SubActionButton button1 = itemBuilder.setContentView(heartIcon).build();
+//
+//        ImageView shareIcon = new ImageView(this);
+//        shareIcon.setImageResource(R.drawable.share_icon);
+//        SubActionButton button2 = itemBuilder.setContentView(shareIcon).build();
+//
+//        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
+//                                            .addSubActionView(button1)
+//                                            .addSubActionView(button2)
+//                                            .attachTo(mFab)
+//                                            .build();
+
+    }
+
+        @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     private void setUpTab() {
@@ -90,16 +123,18 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.house_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.heart_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.map_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user_icon));
 
+
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(adapterViewPager);
 //        tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 //                final int width = viewPager.getWidth();
@@ -182,23 +217,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             }
         }
 
-//        private int[] imageResId = {
-//                R.drawable.house_icon,
-//                R.drawable.heart_icon,
-//                R.drawable.map_icon,
-//                R.drawable.user_icon,
-//        };
-//
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            Drawable image = getResources().getDrawable(imageResId[position]);
-//            assert image != null;
-//            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-//            SpannableString sb = new SpannableString(" ");
-//            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-//            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//            return sb;
-//        }
+
+
 
     }
 
@@ -452,13 +472,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-            default:
                 return super.onOptionsItemSelected(item);
-        }
+
 
     }
 

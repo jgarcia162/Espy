@@ -14,10 +14,9 @@
     </include>
 
     <com.example.c4q_ac35.espy.TabViewPager
+        app:tabIndicatorHeight="10dp"
         android:id="@+id/vpPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-
 
 </LinearLayout>

@@ -30,10 +30,14 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
@@ -46,6 +50,7 @@ import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.joooonho.SelectableRoundedImageView;
 
 import java.util.List;
 import java.util.logging.Handler;
@@ -55,12 +60,15 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.android.AndroidLog;
 import retrofit.client.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 
 public class HomeSearchActivity extends Fragment
         implements LocationListener, GoogleApiClient.OnConnectionFailedListener, OnStreetViewPanoramaReadyCallback
 {
 
+
+    protected TextView Nearby;
     private String title;
     private int page;
     private VenueAdapter adapter;
@@ -70,6 +78,7 @@ public class HomeSearchActivity extends Fragment
     public Venue[] venuee = null;
     private boolean resultsFound = false;
     private RecyclerView mRecyclerView;
+    private RecyclerViewHeader mRecyclerViewHeader;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private static final long MIN_LOCATION_TIME = DateTimeUtils.ONE_HOUR;
 
@@ -80,10 +89,8 @@ public class HomeSearchActivity extends Fragment
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
             new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
     private PlacesAdapter mPlaceArrayAdapter;
-    Button mButtonClear;
     private SwipeRefreshLayout swipeLayout;
     EditText mEditTextSearch;
-
 
     public static HomeSearchActivity newInstance(int page, String title) {
         HomeSearchActivity homeSearchActivity = new HomeSearchActivity();
@@ -107,13 +114,7 @@ public class HomeSearchActivity extends Fragment
 
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
 
-
-
-       // servicesFourSquare.getFeed("40.742472, -73.935381", new FourSquareCallback());
-
     }
-
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -165,21 +166,20 @@ public class HomeSearchActivity extends Fragment
     public void onPause() {
         super.onPause();
         locationManager.removeUpdates(this);
+
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mEditTextSearch = (EditText) view.findViewById(R.id.edit_search);
-
-        mButtonClear = (Button) view.findViewById(R.id.buttonClear);
+        mEditTextSearch = (EditText) view.findViewById(R.id.search_field_final);
         mEditTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    performSearch(v.getText().toString(),10);
 
+                    performSearch(v.getText().toString(), 10);
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(mEditTextSearch.getWindowToken(), 0);
 
@@ -189,46 +189,11 @@ public class HomeSearchActivity extends Fragment
             }
         });
 
-        //mAutocompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.et_autocomplete_places);
-
-//        mAutocompleteTextView.setThreshold(0);
-
-        //mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
-
-
-//        mAutocompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//
-//                if ( actionId == EditorInfo.IME_ACTION_SEARCH) {
-//
-//                    performSearch (v.getText().toString(), 10);
-//                    return true;
-//
-//                }
-//                return false;
-//            }
-//        });
-
-        mButtonClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mEditTextSearch.setText(" ");
-
-            }
-        });
-
-        //swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
-
-
     }
 
     private void performSearch(String query, int limit) {
 
-
             servicesFourSquare.search(query, limit, new FourSquareCallback());
-
     }
 
     @Override
@@ -236,8 +201,10 @@ public class HomeSearchActivity extends Fragment
         View view = inflater.inflate(R.layout.activity_search_list, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
+        mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header1);
 
         return view;
+
     }
 
     @Override
@@ -310,18 +277,16 @@ public class HomeSearchActivity extends Fragment
                 adapter = new VenueAdapter(getActivity(), venueList);
                 mRecyclerView.setAdapter(adapter);
                 mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
-
-            Log.d(TAG, "Success");
-        }
+                mRecyclerViewHeader.attachTo(mRecyclerView,true);
+            }
 
         @Override
         public void failure(RetrofitError error) {
             Log.d(TAG, "Failure");
             error.printStackTrace();
-
         }
-    }
 
+    }
 
      public android.location.Location getLocation(LocationManager mLocationManager, long maxAge) {
          //@Nullable  this goes in the front of the method
@@ -362,21 +327,5 @@ public class HomeSearchActivity extends Fragment
             mLocationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
         return null;
     }
-
-//    private AdapterView.OnItemClickListener mAutocompleteClickListener
-//            = new AdapterView.OnItemClickListener() {
-//        @Override
-//        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//            performSearch(parent.getItemAtPosition(position).toString(), 1);
-//
-//
-//        }
-//
-//    };
-
-    // Todo: Hide the keyboard
-    //Todo: Hide the AutoComplete
-    //Todo: The AsynTask if the searching is null "saying that is loading"
 
 }

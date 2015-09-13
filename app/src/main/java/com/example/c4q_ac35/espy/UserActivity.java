@@ -29,7 +29,7 @@ public class UserActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.layout_user_setup, container, false);
-        userPic = (ImageView) view.findViewById(R.id.user_pic);
+        //userPic = (ImageView) view.findViewById(R.id.user_pic);
         return view;
     }
 }
