@@ -7,17 +7,12 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -27,11 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Timer;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -81,9 +72,8 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
         double latitude = myLocation.getLatitude();
         double longitude = myLocation.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+       googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(13)); // choose default zoom of map
-
 
         //Set custom icon for markers
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(),
@@ -92,16 +82,16 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
 
         //Loop for setting markers and geofences for each location in results and or favorites list
         List<Venue> favoriteVenuesList;
-        if(FavoriteActivity.venueList!= null){
+        if (FavoriteActivity.venueList != null) {
             favoriteVenuesList = FavoriteActivity.venueList;
-        }else{
+        } else {
             favoriteVenuesList = HomeSearchActivity.venueList;
         }
-        for(Venue venue: favoriteVenuesList){
+        for (Venue venue : favoriteVenuesList) {
             double lati = venue.getLocation().getLat();
             double longi = venue.getLocation().getLng();
             Marker mark = googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(lati,longi))
+                    .position(new LatLng(lati, longi))
                     .title(venue.getName()));
             mark.setSnippet("Phone Number: " + venue.getContact().getPhone());
             mark.isInfoWindowShown();
@@ -129,6 +119,6 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
 
     @Override
     public void failure(RetrofitError error) {
-        Toast.makeText(getActivity(),"WHOOPS",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "WHOOPS", Toast.LENGTH_SHORT).show();
     }
 }
