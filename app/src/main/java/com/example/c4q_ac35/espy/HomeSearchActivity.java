@@ -41,7 +41,6 @@ import retrofit.RetrofitError;
 import retrofit.android.AndroidLog;
 import retrofit.client.Response;
 
-
 public class HomeSearchActivity extends Fragment
         implements LocationListener, GoogleApiClient.OnConnectionFailedListener, OnStreetViewPanoramaReadyCallback {
 
@@ -57,7 +56,6 @@ public class HomeSearchActivity extends Fragment
     private RecyclerViewHeader mRecyclerViewHeader;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private static final long MIN_LOCATION_TIME = DateTimeUtils.ONE_HOUR;
-
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
             new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
     private PlacesAdapter mPlaceArrayAdapter;
@@ -104,7 +102,6 @@ public class HomeSearchActivity extends Fragment
         if (locationManager == null) {
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         }
-
         updateFeed();
     }
 
@@ -276,13 +273,13 @@ public class HomeSearchActivity extends Fragment
         public void success(final ResponseAPI responseAPI, Response response) {
 
             resultsFound = true;
-
             venueList = responseAPI.getResponse().getVenues();
 
             adapter = new VenueAdapter(getActivity(), venueList);
             mRecyclerView.setAdapter(adapter);
             mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
             mRecyclerViewHeader.attachTo(mRecyclerView, true);
+
         }
 
         @Override
@@ -290,6 +287,7 @@ public class HomeSearchActivity extends Fragment
             Log.d(TAG, "Failure");
             error.printStackTrace();
         }
+
     }
 
     public android.location.Location getLocation(LocationManager mLocationManager, long maxAge) {

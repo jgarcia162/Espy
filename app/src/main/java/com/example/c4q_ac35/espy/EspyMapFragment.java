@@ -68,7 +68,7 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
 //            LocationRequest mLocationRequest = new LocationRequest();
 //            mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
 //            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-//        }
+////        }
         double latitude = myLocation.getLatitude();
         double longitude = myLocation.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);

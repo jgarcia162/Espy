@@ -19,8 +19,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/map_box">
         </FrameLayout>
-
-
         </RelativeLayout>
 
     <TextView

@@ -36,7 +36,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     private Location mLocation;
     private List<Venue> mVenues;
     private Context mContext;
-    SQLiteDatabase favorites;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
