@@ -1,6 +1,8 @@
 package com.example.c4q_ac35.espy;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,8 +23,10 @@ import com.example.c4q_ac35.espy.db.FavoritesData;
 import com.example.c4q_ac35.espy.db.FavoritesHelper;
 import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Location;
+import com.example.c4q_ac35.espy.foursquare.Menu;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -44,6 +51,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Bind(R.id.item_address) TextView address;
         @Bind(R.id.item_phone) TextView phone;
         @Bind(R.id.item_menu) TextView menu;
+        @Bind(R.id.menu) Button mButtonMenu;
         @Bind(R.id.venue_picture) ImageView mImageViewVenue;
 
 
@@ -78,19 +86,21 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
     }
 
-    @Override
-    public void onBindViewHolder(VenueAdapter.ViewHolder holder, int position) {
 
-        Venue venue = mVenues.get(position);
+
+    @Override
+    public void onBindViewHolder(final VenueAdapter.ViewHolder holder, int position) {
+
+        final Venue venue = mVenues.get(position);
 
             holder.name.setText(venue.getName());
             holder.address.setText(venue.getLocation().getCity());
             holder.phone.setText(venue.getContact().phone);
-            holder.menu.setText(venue.getUrl());
+            holder.menu.setText(venue.getMenu().getMobileUrl());
 
             mLocation = venue.getLocation();
 
-            String urlString = PRE_ENDPOINT + mLocation.getLat() + "," + mLocation.getLng();
+        String urlString = PRE_ENDPOINT + mLocation.getLat() + "," + mLocation.getLng();
             URL url = null;
             try {
                 url = new URL(urlString);
@@ -104,6 +114,37 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             Glide.with(mContext).load(url).centerCrop().into(holder.mImageViewVenue);
 
             Log.w("TAG", "Called");
+
+        holder.mButtonMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                alert.setTitle("Espy's Menu");
+
+                WebView wv = new WebView(mContext);
+                wv.loadUrl(holder.menu.getText().toString());
+                wv.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        view.loadUrl(url);
+
+                        return true;
+                    }
+                });
+
+                alert.setView(wv);
+                alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+
+            }
+        });
 
     }
 

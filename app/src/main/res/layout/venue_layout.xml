@@ -123,6 +123,12 @@
                     android:textSize="20sp"
                     fontPath="fonts/JosefinSans-Regular.ttf"/>
 
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/menu"
+                    android:text="menu"/>
+
             </LinearLayout>
 
         </LinearLayout>
