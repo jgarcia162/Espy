@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 
 /**
@@ -23,6 +25,8 @@ public class MyFavoritesHelper extends OrmLiteSqliteOpenHelper {
         return helper;
     }
 
+    private Dao<FavoritesData, Integer> simpleDao = null;
+    private RuntimeExceptionDao<FavoritesData, Integer> simpleRuntimeDao = null;
 
     private MyFavoritesHelper(Context context) {
         super(context, MYDB, null, VERSION);
