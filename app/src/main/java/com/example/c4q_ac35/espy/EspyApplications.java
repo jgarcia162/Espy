@@ -12,6 +12,8 @@ public class EspyApplications extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+//    Parse.initialize(this, "yOhhtZQhLjtWKhtacswgAMDkvvrjOS6gIF4VYnLa", "5Yg14PDRkGHKvDSerI8NLveKwUwpupUVzSD4lVfk");
+
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                         .setDefaultFontPath("fonts/Roboto-ThinItalic.ttf")
                         .setFontAttrId(R.attr.fontPath)
