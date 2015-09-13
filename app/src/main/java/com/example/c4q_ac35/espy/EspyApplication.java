@@ -252,7 +252,6 @@ public class EspyApplication extends Application implements
 
     }
 
-
     private void logSecurityException(SecurityException securityException) {
         Log.e(LOG_TAG, "Invalid location permission. " +
                 "You need to use ACCESS_FINE_LOCATION with geofences", securityException);

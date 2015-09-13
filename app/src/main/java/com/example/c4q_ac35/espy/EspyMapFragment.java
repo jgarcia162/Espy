@@ -37,7 +37,6 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
     Location myLocation;
     List<Geofence> mGeofenceList;
     FourSquareAPI servicesFoursquare;
-    float GEOFENCE_RADIUS_IN_METERS = 1000;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -55,9 +54,6 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
         myLocation = locationManager.getLastKnownLocation(provider);
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); //Choose type of map, normal, terrain, satellite, none
-
-        double lat = 40.722695;
-        double lon = -73.996545;
 
         //Adding a null check
 //        if(myLocation==null){
