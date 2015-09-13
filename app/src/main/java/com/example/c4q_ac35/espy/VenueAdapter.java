@@ -3,7 +3,11 @@ package com.example.c4q_ac35.espy;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+
 import android.net.Uri;
+
+import android.graphics.Typeface;
+import android.location.LocationManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -86,28 +90,28 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(final VenueAdapter.ViewHolder holder, int position) {
         final Venue venue = mVenues.get(position);
+
         //if(venue.getCategories().equals("food") && venue.getCategories().equals("nightlife spot")) {
         holder.name.setText(venue.getName());
         holder.address.setText(venue.getLocation().getCity());
         holder.phone.setText(venue.getContact().phone);
 //        holder.ratingBar.setText("" + venue.getStats().getUsersCount());
-
-
         holder.favButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (FavoriteActivity.venueList != null) {
+                @Override
+                public void onClick(View view) {
+                    if(FavoriteActivity.venueList != null){
                     FavoriteActivity.venueList.add(venue);
-                } else {
-                    FavoriteActivity.venueList = new ArrayList<Venue>();
-                    FavoriteActivity.venueList.add(venue);
-                    Toast.makeText(view.getContext(), FavoriteActivity.venueList.size() + " Favorites ", Toast.LENGTH_SHORT).show();
-                    holder.favButton.setVisibility(View.INVISIBLE);
+                    }else{
+                        FavoriteActivity.venueList = new ArrayList<Venue>();
+                        FavoriteActivity.venueList.add(venue);
+                        Toast.makeText(view.getContext(),FavoriteActivity.venueList.size() + " Favorites ",Toast.LENGTH_SHORT).show();
+                        holder.favButton.setVisibility(View.INVISIBLE);
+                    }
                 }
-            }
         });
 
-        // Log.d(TAG,"venue rating:"+ venue.getStats().getUsersCount());
+//            final double venueLat = venue.getLocation().getLat();
+//            final double venueLon = venue.getLocation().getLng();
 
         holder.phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,7 +159,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         holder.mImageViewVenue.setImageBitmap(null);
         Glide.with(mContext).load(url).centerCrop().into(holder.mImageViewVenue);
         Log.w("TAG", "Called");
-
     }
 
     @Override
@@ -166,9 +169,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         FavoritesHelper.insertRow(name,address,phone,hours, tableName,lat,lon,database);
     }
 
-
     private void addToFaves(View v,int position){
-
 
     }
 }
+
