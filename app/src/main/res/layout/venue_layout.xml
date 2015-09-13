@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/faveBt"
                 android:layout_margin="10dp"
-                android:layout_gravity="bottom|right"
+                app:layout_anchorGravity="top|left"
                 android:src="@drawable/heart_icon"/>
 
 
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:id="@+id/plus"
-                android:layout_gravity="bottom|right|end"
+                app:layout_anchorGravity="top|left|end"
                 android:src="@drawable/plus_icon"
                 android:layout_weight="1" />
 
