@@ -1,16 +1,22 @@
 package com.example.c4q_ac35.espy;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.c4q_ac35.espy.db.FavoritesData;
+import com.example.c4q_ac35.espy.db.FavoritesHelper;
+import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Location;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 
@@ -25,12 +31,12 @@ import butterknife.ButterKnife;
  * Created by c4q-marbella on 8/22/15.
  */
 public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> {
-
-    private static final String PRE_ENDPOINT = "https://maps.googleapis.com/maps/api/streetview?&size=800x400&location=";
+  private static final String PRE_ENDPOINT = "https://maps.googleapis.com/maps/api/streetview?&size=800x400&location=";
     private static final String TAG = "VenueActivity";
     private Location mLocation;
     private List<Venue> mVenues;
     private Context mContext;
+    SQLiteDatabase favorites;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -78,7 +84,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
         Venue venue = mVenues.get(position);
 
-
             holder.name.setText(venue.getName());
             holder.address.setText(venue.getLocation().getCity());
             holder.phone.setText(venue.getContact().phone);
@@ -106,5 +111,10 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return mVenues.size();
+
+    }
+
+    private void addToFavorites(String name,String address,String phone, String hours, String tableName, double lat,double lon,SQLiteDatabase database){
+        FavoritesHelper.insertRow(name,address,phone,hours, tableName,lat,lon,database);
     }
 }
