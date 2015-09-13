@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,8 +41,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         TextView phone;
         @Bind(R.id.venue_picture)
         ImageView mImageViewVenue;
-        @Bind(R.id.menubt)
-        ImageButton menuBt;
+//        @Bind(R.id.menubt)
+//        ImageButton menuBt;
         @Bind(R.id.faveBt)
         ImageView mFavoritesButton;
         @Bind(R.id.shareBt)
@@ -80,8 +79,10 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         holder.name.setText(venue.getName());
         holder.address.setText(venue.getLocation().getCity());
         holder.phone.setText(venue.getContact().phone);
+        holder.ratingBar.setText("" + venue.getStats().getUsersCount());
 
-        //todo: add share button, map and menu intent
+       // Log.d(TAG,"venue rating:"+ venue.getStats().getUsersCount());
+
         holder.phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,16 +106,13 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
                 Log.d(TAG, "share button:" + venue.getName() + venue.getLocation().getFormattedAddress());
             }
         });
-
-        holder.menuBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Todo: create a webview for menu items
-            }
-        });
-
-
-
+//
+//        holder.menuBt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //Todo: create a webview for menu items
+//            }
+//        });
 
         mLocation = venue.getLocation();
 
@@ -130,14 +128,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
         holder.mImageViewVenue.setImageBitmap(null);
         Glide.with(mContext).load(url).centerCrop().into(holder.mImageViewVenue);
-
         Log.w("TAG", "Called");
-
-
-//        }else {
-//
-//        }
-
     }
 
     @Override

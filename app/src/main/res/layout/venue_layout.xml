@@ -66,12 +66,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/item_name"
-                    android:isIndicator="true"
                     android:textColor="#218C8D"
-                    android:textSize="36sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    tools:ignore="MissingPrefix"
-                    android:background="#000000"/>
+                    tools:ignore="MissingPrefix"/>
 
                 <TextView
                     android:id="@+id/item_address"

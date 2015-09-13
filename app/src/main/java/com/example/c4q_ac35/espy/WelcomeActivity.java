@@ -23,7 +23,7 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
         ButterKnife.bind(this);
 
-//        Parse.initialize(this, "yOhhtZQhLjtWKhtacswgAMDkvvrjOS6gIF4VYnLa", "5Yg14PDRkGHKvDSerI8NLveKwUwpupUVzSD4lVfk");
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

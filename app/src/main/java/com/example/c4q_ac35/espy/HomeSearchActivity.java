@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
@@ -72,7 +73,6 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
     }
 
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -121,6 +121,7 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
 //                servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
 //            }
 //        });
+
         return view;
 
     }
@@ -173,13 +174,14 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
             venuee = new Venue[responseAPI.getResponse().getVenues().size()];
             resultsFound = true;
             if (adapter == null) {
-                List<Venue> venueList = responseAPI.getResponse().getVenues();
+                final List<Venue> venueList = responseAPI.getResponse().getVenues();
 
                 venuee = venueList.toArray(new Venue[venueList.size()]);
                 adapter = new VenueAdapter(getActivity(), venuee);
                 mRecyclerView.setAdapter(adapter);
                 mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
-                mRecyclerViewHeader.attachTo(mRecyclerView,true);
+                mRecyclerViewHeader.attachTo(mRecyclerView, true);
+
             }
             Log.d(TAG, "Success");
         }
@@ -187,10 +189,9 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
         @Override
         public void failure(RetrofitError error) {
             Log.d(TAG, "Failure");
+            Toast.makeText(getActivity(), "ERROR: Please connect to internet", Toast.LENGTH_LONG).show();
         }
     }
-
-
 
 
     public android.location.Location getLocation(LocationManager mLocationManager) {
@@ -217,7 +218,6 @@ public class HomeSearchActivity extends Fragment implements LocationListener {
             }
             //get the location by gps
             if (isGPSEnabled) {
-
                 Log.d("GPS Enabled", "GPS Enabled");
                 location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (location != null && (System.currentTimeMillis() - location.getTime()) < MIN_LOCATION_TIME) {

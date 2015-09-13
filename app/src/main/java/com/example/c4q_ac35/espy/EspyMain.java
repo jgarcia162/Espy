@@ -87,7 +87,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         setSupportActionBar(mToolbar);
         setUpTab();
 
-
     }
 
 
