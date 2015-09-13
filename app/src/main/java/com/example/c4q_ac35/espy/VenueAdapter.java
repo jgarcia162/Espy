@@ -96,7 +96,15 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             holder.name.setText(venue.getName());
             holder.address.setText(venue.getLocation().getCity());
             holder.phone.setText(venue.getContact().phone);
-            holder.menu.setText(venue.getMenu().getMobileUrl());
+            if (venue.getMenu() != null) {
+                holder.menu.setText(venue.getMenu().getMobileUrl());
+                holder.menu.setVisibility(View.INVISIBLE);
+
+            }else {
+                holder.menu.setText("No Menu Available");
+                //holder.mButtonMenu.
+            }
+
 
             mLocation = venue.getLocation();
 

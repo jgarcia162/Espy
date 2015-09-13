@@ -115,7 +115,6 @@
                 <TextView
                     tools:ignore="MissingPrefix"
                     android:id="@+id/item_menu"
-                    android:text="(718) 285-6180"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="3dp"
