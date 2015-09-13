@@ -38,7 +38,9 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Bind(R.id.item_name) TextView name;
         @Bind(R.id.item_address) TextView address;
         @Bind(R.id.item_phone) TextView phone;
+        @Bind(R.id.item_menu) TextView menu;
         @Bind(R.id.venue_picture) ImageView mImageViewVenue;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -80,6 +82,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             holder.name.setText(venue.getName());
             holder.address.setText(venue.getLocation().getCity());
             holder.phone.setText(venue.getContact().phone);
+            holder.menu.setText(venue.getUrl());
 
             mLocation = venue.getLocation();
 

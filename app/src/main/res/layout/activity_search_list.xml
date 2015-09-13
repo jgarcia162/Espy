@@ -11,6 +11,8 @@
                 tools:context=".MainActivity">
 
 
+    <include layout="@layout/app_bar" />
+
     <android.support.v7.widget.RecyclerView
        android:layout_width="match_parent"
        android:layout_height="match_parent"
@@ -60,9 +62,10 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
+                android:layout_margin="10dp"
+                android:text="Menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="menu"
                 android:id="@+id/button_menu"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"/>
