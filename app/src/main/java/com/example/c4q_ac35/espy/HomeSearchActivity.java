@@ -65,7 +65,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 
 public class HomeSearchActivity extends Fragment
-        implements LocationListener, GoogleApiClient.OnConnectionFailedListener, OnStreetViewPanoramaReadyCallback {
+        implements LocationListener,OnStreetViewPanoramaReadyCallback {
     protected TextView Nearby;
 
 
@@ -80,7 +80,7 @@ public class HomeSearchActivity extends Fragment
     private RecyclerView mRecyclerView;
     private RecyclerViewHeader mRecyclerViewHeader;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private static final long MIN_LOCATION_TIME = DateTimeUtils.ONE_HOUR;
+    private static final long MIN_LOCATION_TIME = DateTimeUtils.ONE_MINUTE;
     private LocationManager locationManager;
     private AutoCompleteTextView mAutocompleteTextView;
 
@@ -240,17 +240,17 @@ public class HomeSearchActivity extends Fragment
 
     }
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-        Log.e(TAG, "Google Places API connection failed with error code: "
-                + connectionResult.getErrorCode());
-
-        Toast.makeText(getActivity(),
-                "Google Places API connection failed with error code:" +
-                        connectionResult.getErrorCode(),
-                Toast.LENGTH_LONG).show();
-    }
+//    @Override
+//    public void onConnectionFailed(ConnectionResult connectionResult) {
+//
+//        Log.e(TAG, "Google Places API connection failed with error code: "
+//                + connectionResult.getErrorCode());
+//
+//        Toast.makeText(getActivity(),
+//                "Google Places API connection failed with error code:" +
+//                        connectionResult.getErrorCode(),
+//                Toast.LENGTH_LONG).show();
+//    }
 
     //Todo
     @Override

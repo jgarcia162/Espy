@@ -68,10 +68,7 @@ public class FavoriteActivity extends Fragment {
 //                .setEndpoint(BASE_API).build();
 //        servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
         //servicesFourSquare.getFeed("40.756296,-73.923944", new FourSquareCallback());
-
-
     }
-
 
     // Inflate the view for the fragment based on layout XML
     @Override

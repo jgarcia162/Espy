@@ -3,6 +3,7 @@ package com.example.c4q_ac35.espy;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.location.LocationManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -95,7 +96,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
                         Toast.makeText(view.getContext(),FavoriteActivity.venueList.size() + " Favorites ",Toast.LENGTH_SHORT).show();
                         holder.favButton.setVisibility(View.INVISIBLE);
                     }
-
                 }
             });
 
