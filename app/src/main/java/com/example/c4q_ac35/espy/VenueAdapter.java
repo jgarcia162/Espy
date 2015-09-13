@@ -1,24 +1,24 @@
 package com.example.c4q_ac35.espy;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Typeface;
-import android.location.LocationManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.c4q_ac35.espy.db.FavoritesData;
 import com.example.c4q_ac35.espy.db.FavoritesHelper;
-import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Location;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 
@@ -48,8 +48,11 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Bind(R.id.item_name) TextView name;
         @Bind(R.id.item_address) TextView address;
         @Bind(R.id.item_phone) TextView phone;
+        @Bind(R.id.item_menu)TextView menu;
         @Bind(R.id.venue_picture) ImageView mImageViewVenue;
         @Bind(R.id.plus) FloatingActionButton favButton;
+        @Bind(R.id.menu) Button mButtonMenu;
+
 
 
         public ViewHolder(View itemView) {
@@ -88,17 +91,20 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             holder.favButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(FavoriteActivity.venueList != null){
-                    FavoriteActivity.venueList.add(venue);
+                    if(FavoritesFragment.venueList != null){
+                    FavoritesFragment.venueList.add(venue);
                     }else{
-                        FavoriteActivity.venueList = new ArrayList<Venue>();
-                        FavoriteActivity.venueList.add(venue);
-                        Toast.makeText(view.getContext(),FavoriteActivity.venueList.size() + " Favorites ",Toast.LENGTH_SHORT).show();
+                        FavoritesFragment.venueList = new ArrayList<Venue>();
+                        FavoritesFragment.venueList.add(venue);
+                        Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ",Toast.LENGTH_SHORT).show();
                         holder.favButton.setVisibility(View.INVISIBLE);
                     }
                 }
             });
-
+        if (venue.getMenu() != null) {
+            holder.menu.setText(venue.getMenu().getMobileUrl());
+            holder.menu.setVisibility(View.INVISIBLE);
+        }
 //            final double venueLat = venue.getLocation().getLat();
 //            final double venueLon = venue.getLocation().getLng();
 
@@ -119,6 +125,37 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
             Log.w("TAG", "Called");
 
+        holder.mButtonMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                alert.setTitle("Espy's Menu");
+
+                WebView wv = new WebView(mContext);
+                wv.loadUrl(holder.menu.getText().toString());
+                wv.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        view.loadUrl(url);
+
+                        return true;
+                    }
+                });
+
+                alert.setView(wv);
+                alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+
+            }
+        });
+
     }
 
     @Override
@@ -127,7 +164,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     }
 
     private void addToFavorites(String name,String address,String phone, String hours, String tableName, double lat,double lon,SQLiteDatabase database){
-        FavoritesHelper.insertRow(name,address,phone,hours, tableName,lat,lon,database);
+        FavoritesHelper.insertRow(name, address, phone, hours, tableName, lat, lon, database);
     }
 
     private void addToFaves(View v,int position){

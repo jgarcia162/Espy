@@ -6,13 +6,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.app.PendingIntent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.graphics.*;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -20,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
@@ -29,45 +24,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+
 import java.util.List;
 
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
-import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
-
-import java.util.ArrayList;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
-import static android.support.design.widget.FloatingActionButton.*;
 
 public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -125,10 +91,9 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
             viewPager.setCurrentItem(1);
         }
         //TODO ALARM TO HANDLE WEEKLY NOTIFICATIONS
-        //setNotificationAlarm();
+       // setNotificationAlarm();
 
         mFab = (FloatingActionButton) findViewById(R.id.faveBt);
-
     }
 
         @Override
@@ -195,13 +160,12 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         });
     }
 
-
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         NotificationManager pushNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         pushNotificationManager.cancel(GeofenceTransitionsIntentService.PUSH_NOTIFICATION_ID);
+        pushNotificationManager.cancel(NotificationsService.WEEKLY_NOTIFICATION_ID);
 
         Log.i("Intent Message", "NEW INTENT");
     }
@@ -217,10 +181,9 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
             return mNotificationPendingIntent;
         }
         Intent notificationIntent = new Intent(this, NotificationsService.class);
-        return PendingIntent.getService(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP | Notification.FLAG_AUTO_CANCEL);
+        return PendingIntent.getService(this, Constants.WEEKLY_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
-
-
 
 //    protected void startLocationUpdates() {
 //        LocationRequest mLocationRequest = new LocationRequest();
@@ -237,12 +200,12 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 //        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
 //    }
 
-    private void setNotificationAlarm() {
-        mNotificationPendingIntent = notificationPendingIntent();
-
-        mAlarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, Calendar.WEDNESDAY, 10000, mNotificationPendingIntent);
-    }
+//    private void setNotificationAlarm() {
+//        mNotificationPendingIntent = notificationPendingIntent();
+//
+//        mAlarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+//        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, Calendar.WEDNESDAY, 10000, mNotificationPendingIntent);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -286,9 +249,9 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
             mFragments = new Fragment[4];
             mFragments[0] = new HomeSearchActivity();
-            mFragments[1] = new FavoriteActivity();
+            mFragments[1] = new FavoritesFragment();
             mFragments[2] = new MapActivity();
-            mFragments[3] = new UserActivity();
+            mFragments[3] = new UserFragment();
 
         }
 
@@ -303,11 +266,11 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
                 case 0:
                     return HomeSearchActivity.newInstance(0, "Home");
                 case 1:
-                    return FavoriteActivity.newInstance(1, "Favorites");
+                    return FavoritesFragment.newInstance(1, "Favorites");
                 case 2:
                     return MapActivity.newInstance(2, "Map");
                 case 3:
-                    return UserActivity.newInstance(3, "User");
+                    return UserFragment.newInstance(3, "User");
                 default:
                     return null;
             }
@@ -337,7 +300,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
     //ADD TO FAVORITES WHEN BUTTON ON HOLDER IS CLICKED
     public void addToFavorites(View view){
         mVenueList = HomeSearchActivity.venueList;
-        //favoritesList = FavoriteActivity.venueList;
+        //favoritesList = FavoritesFragment.venueList;
         //TODO FIND HOLDER POSITION
         //view.
 //        Venue venue = mVenueList.get(position);

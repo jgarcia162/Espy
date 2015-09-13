@@ -122,6 +122,21 @@
                     android:textColor="#218C8D"
                     android:textSize="20sp"
                     fontPath="fonts/JosefinSans-Regular.ttf"/>
+                <TextView
+                    tools:ignore="MissingPrefix"
+                    android:id="@+id/item_menu"
+                    android:text="(718) 285-6180"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:textColor="#218C8D"
+                    android:textSize="20sp"
+                    fontPath="fonts/JosefinSans-Regular.ttf"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/menu"
+                    android:text="menu"/>
 
             </LinearLayout>
 

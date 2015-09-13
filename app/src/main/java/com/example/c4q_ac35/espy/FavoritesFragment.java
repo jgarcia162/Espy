@@ -15,21 +15,14 @@ import android.widget.Toast;
 
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
-import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.android.AndroidLog;
-import retrofit.client.Response;
-
 /**
  * Created by c4q-marbella on 8/24/15.
  */
-public class FavoriteActivity extends Fragment {
+public class FavoritesFragment extends Fragment {
 
     public static final String BASE_API = "https://api.foursquare.com/v2";
     public static final String TAG = "Main Activity";
@@ -47,8 +40,8 @@ public class FavoriteActivity extends Fragment {
     protected TextView favorite;
     // newInstance constructor for creating fragment with arguments
 
-    public static FavoriteActivity newInstance(int page, String title) {
-        FavoriteActivity faveActivity = new FavoriteActivity();
+    public static FavoritesFragment newInstance(int page, String title) {
+        FavoritesFragment faveActivity = new FavoritesFragment();
         Bundle args = new Bundle();
         args.putInt("favePage", page);
         args.putString("Favorites", title);
@@ -147,8 +140,6 @@ public class FavoriteActivity extends Fragment {
 //        }
 //
 //    }
-
 //
-
 
 }
