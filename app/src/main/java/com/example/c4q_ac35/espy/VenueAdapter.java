@@ -32,9 +32,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     private List<Venue> mVenues;
     private Context mContext;
 
-
-
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
@@ -42,20 +39,20 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Bind(R.id.item_address) TextView address;
         @Bind(R.id.item_phone) TextView phone;
         @Bind(R.id.venue_picture) ImageView mImageViewVenue;
+       // @Bind(R.id.menu_final) TextView menu;
+
 
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
         }
 
         @Override
         public void onClick(View v) {
             int position = getLayoutPosition();
-
-            //Venue venue = mVenues[position];
-            //place intent to connect user with venue website
 
         }
     }
@@ -71,19 +68,20 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public VenueAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.venue_layout,parent,false);
-
         return new VenueAdapter.ViewHolder(itemView);
 
     }
 
     @Override
     public void onBindViewHolder(VenueAdapter.ViewHolder holder, int position) {
+
         Venue venue = mVenues.get(position);
 
 
             holder.name.setText(venue.getName());
             holder.address.setText(venue.getLocation().getCity());
             holder.phone.setText(venue.getContact().phone);
+          // holder.menu.setText(venue.getMenu().getUrl());
 
             mLocation = venue.getLocation();
 
@@ -108,5 +106,4 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public int getItemCount() {
         return mVenues.size();
     }
-
 }

@@ -37,7 +37,7 @@
 
                 <EditText
                     android:id="@+id/search_field_final"
-                    android:layout_width="match_parent"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionSearch"
                     android:ems="10"
@@ -56,17 +56,16 @@
                     android:textColor="#FFFFFF"
                     fontPath="fonts/JosefinSans-Bold.ttf"/>
 
+
             </android.support.design.widget.TextInputLayout>
 
-
-            <!--<SearchView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="45dp"-->
-                <!--android:id="@+id/search_field_final"-->
-                <!--android:layout_margin="5dp">-->
-            <!--</SearchView>-->
-
-
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="menu"
+                android:id="@+id/button_menu"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
 
         </RelativeLayout>
 

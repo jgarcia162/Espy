@@ -1,7 +1,9 @@
 package com.example.c4q_ac35.espy;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Criteria;
@@ -26,6 +28,8 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -39,6 +43,7 @@ import android.widget.Toast;
 
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
+import com.example.c4q_ac35.espy.foursquare.Menu;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.common.ConnectionResult;
@@ -91,6 +96,7 @@ public class HomeSearchActivity extends Fragment
     private PlacesAdapter mPlaceArrayAdapter;
     private SwipeRefreshLayout swipeLayout;
     EditText mEditTextSearch;
+    Button mButtonMenu;
 
     public static HomeSearchActivity newInstance(int page, String title) {
         HomeSearchActivity homeSearchActivity = new HomeSearchActivity();
@@ -129,6 +135,26 @@ public class HomeSearchActivity extends Fragment
     @Override
     public void onResume() {
         super.onResume();
+
+
+//        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+//        Criteria criteria = new Criteria();
+//        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+//        criteria.setAltitudeRequired(false);
+//        criteria.setBearingRequired(false);
+//        criteria.setPowerRequirement(Criteria.POWER_LOW);
+//        String provider = locationManager.getBestProvider(criteria, true);
+//        Log.d(TAG, "provider: " + provider);
+//
+//        android.location.Location location = getLocation(locationManager, 2);
+//
+//        Log.d(TAG, "Location: " + location);
+//
+//        if (location != null) {
+//            Log.d(TAG, "date: " + (System.currentTimeMillis() - location.getTime()));
+//            updateLocation(location);
+//        }
+
         if (locationManager == null) {
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         }
@@ -172,6 +198,42 @@ public class HomeSearchActivity extends Fragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mButtonMenu = (Button) view.findViewById(R.id.button_menu);
+        mButtonMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Menu menu = new Menu();
+
+
+
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Espy's Menu");
+
+                WebView wv = new WebView(getActivity());
+                wv.loadUrl("https://www.google.com/");
+                wv.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        view.loadUrl(url);
+
+                        return true;
+                    }
+                });
+
+                alert.setView(wv);
+                alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+
+            }
+        });
 
         mEditTextSearch = (EditText) view.findViewById(R.id.search_field_final);
         mEditTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
