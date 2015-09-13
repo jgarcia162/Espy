@@ -39,14 +39,11 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Bind(R.id.item_address) TextView address;
         @Bind(R.id.item_phone) TextView phone;
         @Bind(R.id.venue_picture) ImageView mImageViewVenue;
-       // @Bind(R.id.menu_final) TextView menu;
-
-
-
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            Log.d(TAG, "K Mierda: " + itemView);
 
         }
 
@@ -68,6 +65,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public VenueAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.venue_layout,parent,false);
+        Log.d(TAG, "K Mierda ma loca esta: " + itemView);
+
         return new VenueAdapter.ViewHolder(itemView);
 
     }
@@ -81,7 +80,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             holder.name.setText(venue.getName());
             holder.address.setText(venue.getLocation().getCity());
             holder.phone.setText(venue.getContact().phone);
-          // holder.menu.setText(venue.getMenu().getUrl());
 
             mLocation = venue.getLocation();
 

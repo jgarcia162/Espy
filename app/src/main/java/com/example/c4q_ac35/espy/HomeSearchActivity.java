@@ -136,25 +136,6 @@ public class HomeSearchActivity extends Fragment
     public void onResume() {
         super.onResume();
 
-
-//        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-//        Criteria criteria = new Criteria();
-//        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-//        criteria.setAltitudeRequired(false);
-//        criteria.setBearingRequired(false);
-//        criteria.setPowerRequirement(Criteria.POWER_LOW);
-//        String provider = locationManager.getBestProvider(criteria, true);
-//        Log.d(TAG, "provider: " + provider);
-//
-//        android.location.Location location = getLocation(locationManager, 2);
-//
-//        Log.d(TAG, "Location: " + location);
-//
-//        if (location != null) {
-//            Log.d(TAG, "date: " + (System.currentTimeMillis() - location.getTime()));
-//            updateLocation(location);
-//        }
-
         if (locationManager == null) {
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         }
@@ -205,9 +186,6 @@ public class HomeSearchActivity extends Fragment
             public void onClick(View v) {
 
                 Menu menu = new Menu();
-
-
-
 
                 AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                 alert.setTitle("Espy's Menu");
