@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
@@ -61,11 +63,13 @@ public class FavoriteActivity extends Fragment {
         page = getArguments().getInt("myListPage", 1);
         title = getArguments().getString("myList");
 
-        RestAdapter mRestAdapter = new RestAdapter.Builder()
-                .setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog(TAG))
-                .setEndpoint(BASE_API).build();
-        servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
-        servicesFourSquare.getFeed("40.756296,-73.923944", new FourSquareCallback());
+        //RestAdapter mRestAdapter = new RestAdapter.Builder()
+//                .setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog(TAG))
+//                .setEndpoint(BASE_API).build();
+//        servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
+        //servicesFourSquare.getFeed("40.756296,-73.923944", new FourSquareCallback());
+
+
     }
 
 
@@ -80,6 +84,15 @@ public class FavoriteActivity extends Fragment {
 //            this.favorite = (TextView) view.findViewById(R.id.favorite_text);
 //            android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
 //            this.favorite.setTypeface(font);
+        if (adapter == null && venueList != null) {
+            adapter = new VenueAdapter(getActivity(), venueList);
+            mRecyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+            mRecyclerViewHeader.attachTo(mRecyclerView,true);
+        }else{
+            Toast.makeText(getActivity(),"Add something to your favorites",Toast.LENGTH_SHORT).show();
+        }
 
             Log.d(TAG,"recycleviwerHeader");
 
@@ -105,37 +118,40 @@ public class FavoriteActivity extends Fragment {
         }
     }
 
-    class FourSquareCallback implements Callback<ResponseAPI> {
+//    class FourSquareCallback implements Callback<ResponseAPI> {
+//
+//        @Override
+//        public void success(final ResponseAPI responseAPI, Response response) {
+//
+//            venueList = responseAPI.getResponse().getVenues();
+//
+//            resultsFound = true;
+//            if (adapter == null) {
+//                resultsFound = true;
+//                List<Venue> venueList = responseAPI.getResponse().getVenues();
+//
+//                adapter = new VenueAdapter(getActivity(), venueList);
+//                mRecyclerView.setAdapter(adapter);
+//                mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+//                mRecyclerViewHeader.attachTo(mRecyclerView,true);
+//
+//            }
+//
+//            //adapter.setVenueses(venuee);
+//            //  adapter.notifyDataSetChanged();
+//
+//            Log.d(TAG, "Success");
+//        }
+//
+//        @Override
+//        public void failure(RetrofitError error) {
+//            Log.d(TAG, "Failure");
+//
+//        }
+//
+//    }
 
-        @Override
-        public void success(final ResponseAPI responseAPI, Response response) {
+//
 
-            venueList = responseAPI.getResponse().getVenues();
-
-            resultsFound = true;
-            if (adapter == null) {
-                resultsFound = true;
-                List<Venue> venueList = responseAPI.getResponse().getVenues();
-
-                adapter = new VenueAdapter(getActivity(), venueList);
-                mRecyclerView.setAdapter(adapter);
-                mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
-                mRecyclerViewHeader.attachTo(mRecyclerView,true);
-
-            }
-
-            //adapter.setVenueses(venuee);
-            //  adapter.notifyDataSetChanged();
-
-            Log.d(TAG, "Success");
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-            Log.d(TAG, "Failure");
-
-        }
-
-    }
 
 }

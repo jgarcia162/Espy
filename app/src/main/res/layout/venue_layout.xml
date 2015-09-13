@@ -149,7 +149,7 @@
                 android:id="@+id/plus"
                 android:layout_gravity="bottom|right|end"
                 android:src="@drawable/plus_icon"
-                android:layout_weight="1" />
+                android:layout_weight="1"/>
 
          </android.support.design.widget.CoordinatorLayout>
 

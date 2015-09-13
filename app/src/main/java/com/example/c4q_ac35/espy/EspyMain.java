@@ -20,6 +20,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
@@ -27,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -91,6 +93,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     private boolean mRequestingLocationUpdates = true;
     Location mCurrentLocation;
     private String mLastUpdateTime;
+    private List<Venue> mVenueList;
+    private List<Venue> favoritesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +155,9 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         }
         //TODO ALARM TO HANDLE WEEKLY NOTIFICATIONS
         //setNotificationAlarm();
+
+        mFab = (FloatingActionButton) findViewById(R.id.faveBt);
+
     }
 
         @Override
@@ -241,6 +248,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         // Return a GeofencingRequest.
         return builder.build();
+
     }
 
     @Override
@@ -261,23 +269,25 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             Toast.makeText(this, "Not connected to GoogleApiClient", Toast.LENGTH_LONG).show();
             return;
         }
+        if(!mGeofenceList.isEmpty()) {
+            try {
+                LocationServices.GeofencingApi.addGeofences(
+                        mGoogleApiClient,
+                        // The GeofenceRequest object.
+                        getGeofencingRequest(),
+                        // A pending intent that is reused when calling removeGeofences(). This
+                        // pending intent is used to generate an intent when a matched geofence
+                        // transition is observed.
+                        getGeofencePendingIntent()
+                ).setResultCallback(this); // Result processed in onResult//().
+                mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, true);
 
-        try {
-            LocationServices.GeofencingApi.addGeofences(
-                    mGoogleApiClient,
-                    // The GeofenceRequest object.
-                    getGeofencingRequest(),
-                    // A pending intent that is reused when calling removeGeofences(). This
-                    // pending intent is used to generate an intent when a matched geofence
-                    // transition is observed.
-                    getGeofencePendingIntent()
-            ).setResultCallback(this); // Result processed in onResult//().
-            mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, true);
-
-        } catch (SecurityException securityException) {
-            // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
-            logSecurityException(securityException);
+            } catch (SecurityException securityException) {
+                // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
+                logSecurityException(securityException);
+            }
         }
+
     }
 
     /**
@@ -359,11 +369,10 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
 
     public void populateGeofenceList() {
+        float geofenceRadius = Constants.GEOFENCE_RADIUS_IN_METERS;
+        double falchiLat = 40.742676;
+        double falchiLong = -73.935182;
 
-        final double falchiLat = 40.742676;
-        final double falchiLong = -73.935182;
-
-        final float geofenceRadius = 300;
         mGeofenceList.add(new Geofence.Builder()
                 .setRequestId("Doughnut Plant") //replace with place.getName()
 
@@ -377,73 +386,25 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
                         Geofence.GEOFENCE_TRANSITION_EXIT)
                 .build());
+        if(FavoriteActivity.venueList != null) {
+            for (Venue venue : FavoriteActivity.venueList) {
+                double venueLat = venue.getLocation().getLat();
+                double venueLong = venue.getLocation().getLng();
+                mGeofenceList.add(new Geofence.Builder()
+                                .setRequestId(venue.getName())
+                                .setCircularRegion(
+                                        venueLat,
+                                        venueLong,
+                                        geofenceRadius
 
-        final double sevenLat = 40.744878;
-        final double sevenLong = -73.934073;
-        mGeofenceList.add(new Geofence.Builder()
-                .setRequestId("7-11") //replace with place.getName()
+                                )
+                                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                                        Geofence.GEOFENCE_TRANSITION_EXIT)
+                                .build());
 
-                        // Set the circular region of this geofence.
-                .setCircularRegion(
-                        sevenLat, //Replace with place.getLat()
-                        sevenLong, // Replace with place.getLong()
-                        geofenceRadius
-                )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
-
-        final double jimLat = 40.835837;
-        final double jimLong = -73.940200;
-
-        mGeofenceList.add(new Geofence.Builder()
-                .setRequestId("Jimbos") //replace with place.getName()
-
-                        // Set the circular region of this geofence.
-                .setCircularRegion(
-                        jimLat, //Replace with place.getLat()
-                        jimLong, // Replace with place.getLong()
-                        geofenceRadius
-                )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
-
-        final double metLat = 40.740527;
-        final double metLong = -73.995740;
-
-        mGeofenceList.add(new Geofence.Builder()
-                .setRequestId("Droidcon") //replace with place.getName()
-
-                        // Set the circular region of this geofence.
-                .setCircularRegion(
-                        metLat, //Replace with place.getLat()
-                        metLong, // Replace with place.getLong()
-                        geofenceRadius
-                )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
-
-        final double owoLat = 40.712925;
-        final double owoLong = -74.013319;
-
-        mGeofenceList.add(new Geofence.Builder()
-                .setRequestId("One World Trade Center") //replace with place.getName()
-
-                        // Set the circular region of this geofence.
-                .setCircularRegion(
-                        owoLat, //Replace with place.getLat()
-                        owoLong, // Replace with place.getLong()
-                        geofenceRadius
-                )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
+            }
+        }
     }
 
     protected void startLocationUpdates() {
@@ -494,6 +455,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     @Override
     public void onConnected(Bundle bundle) {
 //        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+        //if(!mGeofenceList.isEmpty()){
         AsyncTask geofence = new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
@@ -504,6 +466,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         };
 
         geofence.execute();
+
 
 //        if (mRequestingLocationUpdates) {
 //            startLocationUpdates();
@@ -593,6 +556,22 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             return sb;
         }
+
+    }
+
+    //ADD TO FAVORITES WHEN BUTTON ON HOLDER IS CLICKED
+    public void addToFavorites(View view){
+        mVenueList = HomeSearchActivity.venueList;
+        //favoritesList = FavoriteActivity.venueList;
+        //TODO FIND HOLDER POSITION
+        //view.
+//        Venue venue = mVenueList.get(position);
+//        favoritesList.add(venue);
+
+        if(favoritesList != null){
+        Toast.makeText(this,"TESTING",Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 }
