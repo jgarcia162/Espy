@@ -1,16 +1,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_recycleH_margin"
-    android:paddingRight="@dimen/activity_recycleH_margin"
-    android:paddingTop="@dimen/activity_recycleV_margin"
-    android:paddingBottom="@dimen/activity_recycleV_margin"
-    android:orientation="vertical"
-    android:background="@color/PrimaryColor"
-    tools:context=".MainActivity">
-    ​
-    ​
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/PrimaryColor">
+            <!--tools:context=".MainActivity"-->
+
+    <include layout="@layout/app_bar" />
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,8 +38,8 @@
                     android:imeOptions="actionSearch"
                     android:ems="10"
                     android:hint="Search"
-                    android:inputType="textAutoCorrect" />
-                ​
+                    android:inputType="textNoSuggestions" />
+
                 <TextView
                     tools:ignore="MissingPrefix"
                     android:text="Nearby"
@@ -55,9 +51,8 @@
                     android:id="@+id/nearby_text"
                     android:textColor="#FFFFFF"
                     fontPath="fonts/JosefinSans-Bold.ttf"/>
-                ​
+
             </android.support.design.widget.TextInputLayout>
-            ​
         </RelativeLayout>
         ​
     </com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader>

@@ -124,6 +124,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
+     //   getSupportActionBar().setLogo(R.drawable.espy_name);
         setUpTab();
 
 //        mFab = (FloatingActionButton) findViewById(R.id.plus);
@@ -476,10 +477,15 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.action_settings){
+
+        }
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         return true;

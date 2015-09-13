@@ -36,7 +36,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     private Location mLocation;
     private List<Venue> mVenues;
     private Context mContext;
-    SQLiteDatabase favorites;
 
 
 
@@ -58,7 +57,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Override
         public void onClick(View v) {
             int position = getLayoutPosition();
-
 
         }
     }

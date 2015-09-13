@@ -63,7 +63,6 @@ import retrofit.client.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 
-
 public class HomeSearchActivity extends Fragment
         implements LocationListener, GoogleApiClient.OnConnectionFailedListener, OnStreetViewPanoramaReadyCallback {
     protected TextView Nearby;
@@ -81,9 +80,6 @@ public class HomeSearchActivity extends Fragment
     private RecyclerViewHeader mRecyclerViewHeader;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private static final long MIN_LOCATION_TIME = DateTimeUtils.ONE_HOUR;
-
-
-    private static final String LOG_TAG = "HomeSearchActivity";
     private LocationManager locationManager;
     private AutoCompleteTextView mAutocompleteTextView;
 
@@ -93,7 +89,6 @@ public class HomeSearchActivity extends Fragment
     Button mButtonClear;
     private SwipeRefreshLayout swipeLayout;
     EditText mEditTextSearch;
-
 
 
     public static HomeSearchActivity newInstance(int page, String title) {
@@ -117,10 +112,7 @@ public class HomeSearchActivity extends Fragment
 
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
         //servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
-
-
-
-       // servicesFourSquare.getFeed("40.742472, -73.935381", new FourSquareCallback());
+        // servicesFourSquare.getFeed("40.742472, -73.935381", new FourSquareCallback());
 
     }
 
@@ -130,7 +122,6 @@ public class HomeSearchActivity extends Fragment
         if (locationManager == null) {
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         }
-
         updateFeed();
     }
 
@@ -152,10 +143,10 @@ public class HomeSearchActivity extends Fragment
             boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
 
-        if (isNetworkEnabled)
-            locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-        if (isGPSEnabled)
-            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
+            if (isNetworkEnabled)
+                locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+            if (isGPSEnabled)
+                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
 
         }
     }
@@ -196,7 +187,7 @@ public class HomeSearchActivity extends Fragment
     private void performSearch(String query, int limit) {
 
 
-            servicesFourSquare.search(query, limit, new FourSquareCallback());
+        servicesFourSquare.search(query, limit, new FourSquareCallback());
 
     }
 
@@ -253,7 +244,7 @@ public class HomeSearchActivity extends Fragment
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
-        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
+        Log.e(TAG, "Google Places API connection failed with error code: "
                 + connectionResult.getErrorCode());
 
         Toast.makeText(getActivity(),
@@ -262,7 +253,7 @@ public class HomeSearchActivity extends Fragment
                 Toast.LENGTH_LONG).show();
     }
 
-//Todo
+    //Todo
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
 
@@ -276,13 +267,13 @@ public class HomeSearchActivity extends Fragment
         public void success(final ResponseAPI responseAPI, Response response) {
 
             resultsFound = true;
-                venueList = responseAPI.getResponse().getVenues();
+            venueList = responseAPI.getResponse().getVenues();
 
-                adapter = new VenueAdapter(getActivity(), venueList);
-                mRecyclerView.setAdapter(adapter);
-                mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
-                mRecyclerViewHeader.attachTo(mRecyclerView,true);
-            }
+            adapter = new VenueAdapter(getActivity(), venueList);
+            mRecyclerView.setAdapter(adapter);
+            mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+            mRecyclerViewHeader.attachTo(mRecyclerView, true);
+        }
 
 
         @Override
@@ -293,12 +284,11 @@ public class HomeSearchActivity extends Fragment
         }
 
 
-
     }
 
 
-     public android.location.Location getLocation(LocationManager mLocationManager, long maxAge) {
-         //@Nullable  this goes in the front of the method
+    public android.location.Location getLocation(LocationManager mLocationManager, long maxAge) {
+        //@Nullable  this goes in the front of the method
 
         android.location.Location location = null;
 
