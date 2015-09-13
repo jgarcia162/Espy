@@ -64,12 +64,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
     private AlarmManager mAlarmManager;
-
     private static final String LOG_TAG = "MainActivity";
-    private AutoCompleteTextView mAutocompleteTextView;
-    private PlacesAdapter mPlaceArrayAdapter;
-    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
-            new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
     private GoogleApiClient mGoogleApiClient;
     private static final int GOOGLE_API_CLIENT_ID = 0;
 
@@ -99,21 +94,21 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
-        if(!mGoogleApiClient.isConnected()){
-        mGoogleApiClient.connect();
+        if (!mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.connect();
         } else {
 
         }
 
-        if(mGeofenceList.isEmpty()){
-        // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
-        mGeofencePendingIntent = null;
-        mNotificationPendingIntent = null;
+        if (mGeofenceList.isEmpty()) {
+            // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
+            mGeofencePendingIntent = null;
+            mNotificationPendingIntent = null;
 
-        // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
-        mGeofencePendingIntent = null;
-        // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
-        mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
+            // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
+            mGeofencePendingIntent = null;
+            // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
+            mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
         }
 
 
@@ -129,11 +124,9 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 //            );
 
 
-
-
-        if(getIntent().getAction().equals("OPEN_MAP")){
+        if (getIntent().getAction().equals("OPEN_MAP")) {
             viewPager.setCurrentItem(2);
-        }else if(getIntent().getAction().equals("OPEN_FAVORITES")){
+        } else if (getIntent().getAction().equals("OPEN_FAVORITES")) {
             viewPager.setCurrentItem(1);
         }
         //TODO ALARM TO HANDLE WEEKLY NOTIFICATIONS
@@ -151,8 +144,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.map_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user_icon));
 
-
-        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapterViewPager);
 //        tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -232,7 +224,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         NotificationManager pushNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         pushNotificationManager.cancel(GeofenceTransitionsIntentService.PUSH_NOTIFICATION_ID);
 
-        Log.i("Intent Message","NEW INTENT");
+        Log.i("Intent Message", "NEW INTENT");
     }
 
     /**
@@ -255,7 +247,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
                     // transition is observed.
                     getGeofencePendingIntent()
             ).setResultCallback(this); // Result processed in onResult//().
-            mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY,true);
+            mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, true);
 
         } catch (SecurityException securityException) {
             // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
@@ -321,13 +313,13 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         // Reuse the PendingIntent if we already have it.
         if (mGeofencePendingIntent != null) {
             return mGeofencePendingIntent;
-        } else{
-        Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT|Intent.FLAG_ACTIVITY_SINGLE_TOP|Notification.FLAG_AUTO_CANCEL);
-        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
-        // addGeofences() and removeGeofences().
+        } else {
+            Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP | Notification.FLAG_AUTO_CANCEL);
+            // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
+            // addGeofences() and removeGeofences().
 
-        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
     }
@@ -438,7 +430,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
             public void onLocationChanged(Location location) {
                 mCurrentLocation = location;
                 mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-                Toast.makeText(getApplicationContext(),mLastUpdateTime,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), mLastUpdateTime, Toast.LENGTH_SHORT).show();
             }
         };
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
@@ -513,64 +505,64 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-    }
 
+    }
     class MyPagerAdapter extends FragmentStatePagerAdapter {
-    int num_tabs = 4;
-    Fragment[] mFragments;
+        int num_tabs = 4;
+        Fragment[] mFragments;
 
 
-    public MyPagerAdapter(FragmentManager fm, int num_tabs) {
-        super(fm);
-        this.num_tabs = num_tabs;
+        public MyPagerAdapter(FragmentManager fm, int num_tabs) {
+            super(fm);
+            this.num_tabs = num_tabs;
 
-        mFragments = new Fragment[4];
-        mFragments[0] = new HomeSearchActivity();
-        mFragments[1] = new FavoriteActivity();
-        mFragments[2] = new MapActivity();
-        mFragments[3] = new UserActivity();
+            mFragments = new Fragment[4];
+            mFragments[0] = new HomeSearchActivity();
+            mFragments[1] = new FavoriteActivity();
+            mFragments[2] = new MapActivity();
+            mFragments[3] = new UserActivity();
 
-    }
-
-    @Override
-    public int getCount() {
-        return num_tabs;
-    }
-
-    @Override
-    public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return HomeSearchActivity.newInstance(0, "Home");
-            case 1:
-                return FavoriteActivity.newInstance(1, "Favorites");
-            case 2:
-                return MapActivity.newInstance(2, "Map");
-            case 3:
-                return UserActivity.newInstance(3, "User");
-            default:
-                return null;
         }
+
+        @Override
+        public int getCount() {
+            return num_tabs;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return HomeSearchActivity.newInstance(0, "Home");
+                case 1:
+                    return FavoriteActivity.newInstance(1, "Favorites");
+                case 2:
+                    return MapActivity.newInstance(2, "Map");
+                case 3:
+                    return UserActivity.newInstance(3, "User");
+                default:
+                    return null;
+            }
+        }
+
+        private int[] imageResId = {
+                R.drawable.house_icon,
+                R.drawable.heart_icon,
+                R.drawable.map_icon,
+                R.drawable.user_icon,
+        };
+
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Drawable image = getResources().getDrawable(imageResId[position]);
+            assert image != null;
+            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+            SpannableString sb = new SpannableString(" ");
+            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return sb;
+        }
+
     }
-
-    private int[] imageResId = {
-            R.drawable.house_icon,
-            R.drawable.heart_icon,
-            R.drawable.map_icon,
-            R.drawable.user_icon,
-    };
-
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-        Drawable image = getResources().getDrawable(imageResId[position]);
-        assert image != null;
-        image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-        SpannableString sb = new SpannableString(" ");
-        ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-        sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return sb;
-    }
-
-}
 }

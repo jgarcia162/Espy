@@ -22,6 +22,7 @@ import com.example.c4q_ac35.espy.foursquare.Venue;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,7 +34,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
   private static final String PRE_ENDPOINT = "https://maps.googleapis.com/maps/api/streetview?&size=800x400&location=";
     private static final String TAG = "VenueActivity";
     private Location mLocation;
-    private Venue [] mVenues;
+    private List<Venue> mVenues;
     private Context mContext;
     SQLiteDatabase favorites;
 
@@ -46,8 +47,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Bind(R.id.item_address) TextView address;
         @Bind(R.id.item_phone) TextView phone;
         @Bind(R.id.venue_picture) ImageView mImageViewVenue;
-//        @Bind(R.id.shareBt) ImageButton mShareButton;
-       // @Bind(R.id.faveBt) ImageButton mFavoritesButton;
 
 
 
@@ -60,13 +59,11 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         public void onClick(View v) {
             int position = getLayoutPosition();
 
-            Venue venue = mVenues[position];
-            //place intent to connect user with venue website
 
         }
     }
 
-    public VenueAdapter(Context context, Venue[] venues) {
+    public VenueAdapter(Context context, List<Venue> venues) {
         this.mContext = context;
         this.mVenues = venues;
     }
@@ -82,25 +79,13 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(final VenueAdapter.ViewHolder holder, int position) {
-        final Venue venue = mVenues[position];
-
-        //if(venue.getCategories().equals("food") && venue.getCategories().equals("nightlife spot")) {
-
-
+    public void onBindViewHolder(VenueAdapter.ViewHolder holder, int position) {
+        Venue venue = mVenues.get(position);
             holder.name.setText(venue.getName());
             holder.address.setText(venue.getLocation().getCity());
             holder.phone.setText(venue.getContact().phone);
 //            final double venueLat = venue.getLocation().getLat();
 //            final double venueLon = venue.getLocation().getLng();
-
-//        holder.mFavoritesButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //MyFavoritesHelper favoritesHelper =  MyFavoritesHelper.getInstance(view.getContext());
-//                //FavoritesData favoritesData = new FavoritesData(venue.getName(),venueLat,venueLon);
-//            }
-//        });
 
             mLocation = venue.getLocation();
 
@@ -119,17 +104,11 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
             Log.w("TAG", "Called");
 
-
-//        }else {
-//
-//        }
-
-
     }
 
     @Override
     public int getItemCount() {
-        return mVenues.length;
+        return mVenues.size();
     }
 
     private void addToFavorites(String name,String address,String phone, String hours, String tableName, double lat,double lon,SQLiteDatabase database){

@@ -123,11 +123,10 @@ public class FavoriteActivity extends Fragment {
 
             resultsFound = true;
             if (adapter == null) {
+                resultsFound = true;
                 List<Venue> venueList = responseAPI.getResponse().getVenues();
 
-                venuee = venueList.toArray(new Venue[venueList.size()]);
-
-                adapter = new VenueAdapter(getActivity(), venuee);
+                adapter = new VenueAdapter(getActivity(), venueList);
                 mRecyclerView.setAdapter(adapter);
                 mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
                 mRecyclerViewHeader.attachTo(mRecyclerView,true);
