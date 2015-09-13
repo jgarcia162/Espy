@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
@@ -34,7 +33,7 @@ public class FavoriteActivity extends Fragment {
     public static final String BASE_API = "https://api.foursquare.com/v2";
     public static final String TAG = "Main Activity";
     FourSquareAPI servicesFourSquare = null;
-    public Venue[] venuee = null;
+    public static List<Venue> venueList = null;
     private String title;
     private int page;
     RecyclerView mRecyclerView;
@@ -68,7 +67,6 @@ public class FavoriteActivity extends Fragment {
         RestAdapter mRestAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog(TAG))
                 .setEndpoint(BASE_API).build();
-
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
         servicesFourSquare.getFeed("40.756296,-73.923944", new FourSquareCallback());
     }
@@ -82,27 +80,11 @@ public class FavoriteActivity extends Fragment {
               View view = inflater.inflate(R.layout.activity_favorites, container, false);
             mRecyclerView = (RecyclerView) view.findViewById(R.id.favelist);
             mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header);
-            this.favorite = (TextView) view.findViewById(R.id.favorite_text);
-            android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
-            this.favorite.setTypeface(font);
+//            this.favorite = (TextView) view.findViewById(R.id.favorite_text);
+//            android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
+//            this.favorite.setTypeface(font);
 
             Log.d(TAG,"recycleviwerHeader");
-      //  this.favorite = (EspyFont) view.findViewById(R.id.favorite_text);
-//        android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
-//        this.favorite.setTypeface(font);
-
-//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-//                            .setDefaultFontPath("fonts/poiret_one.ttf")
-//                            .setFontAttrId(R.attr.fontPath)
-//                            .build()
-//            );
-//        this.name = (EspyFont) view.findViewById(R.id.item_name);
-//        this.address = (EspyFont) view.findViewById(R.id.item_address);
-//        this.phone = (EspyFont) view.findViewById(R.id.item_phone);
-//        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
-//        this.name.setTypeface(font);
-//        this.address.setTypeface(font);
-//       this.phone.setTypeface(font);
 
         return view;
     }
@@ -130,24 +112,14 @@ public class FavoriteActivity extends Fragment {
         @Override
         public void success(final ResponseAPI responseAPI, Response response) {
 
-            venuee = new Venue[responseAPI.getResponse().getVenues().size()];
-
-//            for (int i = 0; i <responseAPI.getResponse().getVenues().size(); i++) {
-//                Venue v = new Venue();
-//                String name = responseAPI.getResponse().getVenues().get(i).getName();
-//                String location = responseAPI.getResponse().getVenues().get(i).getLocation().getCity();
-//
-//                venuee[i] = v;
-//                Log.d(TAG, name);
-//            }
+            venueList = responseAPI.getResponse().getVenues();
 
             resultsFound = true;
             if (adapter == null) {
+                resultsFound = true;
                 List<Venue> venueList = responseAPI.getResponse().getVenues();
 
-                venuee = venueList.toArray(new Venue[venueList.size()]);
-
-                adapter = new VenueAdapter(getActivity(), venuee);
+                adapter = new VenueAdapter(getActivity(), venueList);
                 mRecyclerView.setAdapter(adapter);
                 mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
                 mRecyclerViewHeader.attachTo(mRecyclerView,true);

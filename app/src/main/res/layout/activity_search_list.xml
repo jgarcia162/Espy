@@ -1,42 +1,64 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="#FFFFFF">
-    <!--tools:context=".MainActivity"-->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/PrimaryColor">
+<!--tools:context=".MainActivity"-->
 
-    <com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader
-        android:id="@+id/header1"
-        android:layout_width="match_parent"
-        android:layout_height="125dp"
-        android:layout_gravity="center_horizontal|top">
 
-        <RelativeLayout
+<include layout="@layout/app_bar" />
+
+
+<android.support.v7.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/listView"/>
+​
+<!--</android.support.v4.widget.SwipeRefreshLayout>-->
+<!--<todo: add  margin btw search bar and title;-->
+​
+<com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader
+    android:id="@+id/header1"
+    android:layout_width="match_parent"
+    android:layout_height="125dp"
+    android:layout_gravity="center_horizontal|top">
+    ​
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        ​
+        ​
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <SearchView
-                android:id="@+id/search_field"
+            android:layout_height="wrap_content">
+            ​
+            <EditText
+                android:id="@+id/search_field_final"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_margin="5dp">
-            </SearchView>
+                android:layout_height="wrap_content"
+                android:imeOptions="actionSearch"
+                android:ems="10"
+                android:hint="Search"
+                android:inputType="textNoSuggestions" />
+
 
             <TextView
-                android:id="@+id/nearby_text"
+                tools:ignore="MissingPrefix"
+                android:text="Nearby"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/search_field"
-                android:layout_centerHorizontal="true"
+                android:textSize="35sp"
                 android:layout_margin="5dp"
-                android:text="Nearby"
-                android:textColor="@color/PrimaryDarkColor"
-                android:textSize="35sp"/>
-        </RelativeLayout>
-    </com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader>
+                android:layout_centerHorizontal="true"
+                android:id="@+id/nearby_text"
+                android:textColor="#FFFFFF"
+                fontPath="fonts/JosefinSans-Bold.ttf"/>
+
+
+        </android.support.design.widget.TextInputLayout>
+    </RelativeLayout>
+    ​
+</com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader>
+​
 </FrameLayout>
