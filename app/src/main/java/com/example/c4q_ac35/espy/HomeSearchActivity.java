@@ -1,24 +1,43 @@
 package com.example.c4q_ac35.espy;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,40 +47,55 @@ import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.joooonho.SelectableRoundedImageView;
 
 import java.util.List;
+import java.util.logging.Handler;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.android.AndroidLog;
 import retrofit.client.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
 
 public class HomeSearchActivity extends Fragment
-        implements LocationListener, GoogleApiClient.OnConnectionFailedListener, OnStreetViewPanoramaReadyCallback {
+        implements LocationListener, GoogleApiClient.OnConnectionFailedListener, OnStreetViewPanoramaReadyCallback
+{
 
+
+    protected TextView Nearby;
     private String title;
     private int page;
     private VenueAdapter adapter;
     public static final String BASE_API = "https://api.foursquare.com/v2";
     public static final String TAG = "HomeSearchActivity";
     FourSquareAPI servicesFourSquare = null;
-    public static List<Venue> venueList;
+    public Venue[] venuee = null;
     private boolean resultsFound = false;
     private RecyclerView mRecyclerView;
     private RecyclerViewHeader mRecyclerViewHeader;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private static final long MIN_LOCATION_TIME = DateTimeUtils.ONE_HOUR;
+
+    private static final String LOG_TAG = "HomeSearchActivity";
+    private LocationManager locationManager;
+    private AutoCompleteTextView mAutocompleteTextView;
+
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
             new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
     private PlacesAdapter mPlaceArrayAdapter;
+    private SwipeRefreshLayout swipeLayout;
     EditText mEditTextSearch;
     Button mButtonMenu;
-    private LocationManager locationManager;
 
     public static HomeSearchActivity newInstance(int page, String title) {
         HomeSearchActivity homeSearchActivity = new HomeSearchActivity();
@@ -92,21 +126,42 @@ public class HomeSearchActivity extends Fragment
         super.onActivityCreated(savedInstanceState);
 
         mPlaceArrayAdapter = new PlacesAdapter(getActivity(), android.R.layout.simple_list_item_1,
-                ((EspyMain) getActivity()).getGoogleApiClient(), BOUNDS_MOUNTAIN_VIEW, null);
+                ((EspyMain)getActivity()).getGoogleApiClient(), BOUNDS_MOUNTAIN_VIEW, null);
+
+        //mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
+
+//        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+//        Criteria criteria = new Criteria();
+//        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+//        criteria.setAltitudeRequired(false);
+//        criteria.setBearingRequired(false);
+//        criteria.setPowerRequirement(Criteria.POWER_LOW);
+//        String provider = locationManager.getBestProvider(criteria, true);
+//        Log.d(TAG, "provider: " + provider);
+//
+//        android.location.Location location = getLocation(locationManager, 2);
+//
+//        Log.d(TAG, "Location: " + location);
+//
+//        if (location != null) {
+//            Log.d(TAG, "date: " + (System.currentTimeMillis() - location.getTime()));
+//            updateLocation(location);
+//        }
+
         if (locationManager == null) {
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         }
+
         updateFeed();
     }
 
     private void updateFeed() {
-
 
         Location location = getLocation(locationManager, MIN_LOCATION_TIME);
 
@@ -124,10 +179,10 @@ public class HomeSearchActivity extends Fragment
             boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
 
-            if (isNetworkEnabled)
-                locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-            if (isGPSEnabled)
-                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
+        if (isNetworkEnabled)
+            locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+        if (isGPSEnabled)
+            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
 
         }
     }
@@ -148,13 +203,12 @@ public class HomeSearchActivity extends Fragment
 //            @Override
 //            public void onClick(View v) {
 //
-//                Menu menu = new Menu();
 //
 //                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 //                alert.setTitle("Espy's Menu");
 //
 //                WebView wv = new WebView(getActivity());
-//                wv.loadUrl("https://www.google.com/");
+//                wv.loadUrl("http://whereyoueat.com/Song--2703.html");
 //                wv.setWebViewClient(new WebViewClient() {
 //                    @Override
 //                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -181,6 +235,7 @@ public class HomeSearchActivity extends Fragment
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
                     performSearch(v.getText().toString(), 10);
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(mEditTextSearch.getWindowToken(), 0);
@@ -190,12 +245,12 @@ public class HomeSearchActivity extends Fragment
                 return false;
             }
         });
+
     }
 
     private void performSearch(String query, int limit) {
 
-        servicesFourSquare.search(query, limit, new FourSquareCallback());
-
+            servicesFourSquare.search(query, limit, new FourSquareCallback());
     }
 
     @Override
@@ -251,7 +306,7 @@ public class HomeSearchActivity extends Fragment
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
-        Log.e(TAG, "Google Places API connection failed with error code: "
+        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
                 + connectionResult.getErrorCode());
 
         Toast.makeText(getActivity(),
@@ -260,6 +315,7 @@ public class HomeSearchActivity extends Fragment
                 Toast.LENGTH_LONG).show();
     }
 
+//Todo
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
 
@@ -273,14 +329,13 @@ public class HomeSearchActivity extends Fragment
         public void success(final ResponseAPI responseAPI, Response response) {
 
             resultsFound = true;
-            venueList = responseAPI.getResponse().getVenues();
+                List<Venue> venueList = responseAPI.getResponse().getVenues();
 
-            adapter = new VenueAdapter(getActivity(), venueList);
-            mRecyclerView.setAdapter(adapter);
-            mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
-            mRecyclerViewHeader.attachTo(mRecyclerView, true);
-
-        }
+                adapter = new VenueAdapter(getActivity(), venueList);
+                mRecyclerView.setAdapter(adapter);
+                mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+                mRecyclerViewHeader.attachTo(mRecyclerView,true);
+            }
 
         @Override
         public void failure(RetrofitError error) {
@@ -290,8 +345,8 @@ public class HomeSearchActivity extends Fragment
 
     }
 
-    public android.location.Location getLocation(LocationManager mLocationManager, long maxAge) {
-        //@Nullable  this goes in the front of the method
+     public android.location.Location getLocation(LocationManager mLocationManager, long maxAge) {
+         //@Nullable  this goes in the front of the method
 
         android.location.Location location = null;
 
@@ -323,6 +378,10 @@ public class HomeSearchActivity extends Fragment
             }
         }
 
+        if (isNetworkEnabled)
+            mLocationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+        if (isGPSEnabled)
+            mLocationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
         return null;
     }
 
