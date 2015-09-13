@@ -1,6 +1,8 @@
 package com.example.c4q_ac35.espy;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -19,6 +21,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -80,11 +84,20 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(13)); // choose default zoom of map
 
-        // Calls location service within context
 
-        //Loop for setting markers and geofences for each location in results list
-        List<Venue> triggeredFences = HomeSearchActivity.venueList;
-        for(Venue venue: triggeredFences){
+        //Set custom icon for markers
+        Bitmap icon = BitmapFactory.decodeResource(this.getResources(),
+                R.mipmap.espy_marker);
+        BitmapDescriptor iconMarker = BitmapDescriptorFactory.fromBitmap(icon);
+
+        //Loop for setting markers and geofences for each location in results and or favorites list
+        List<Venue> favoriteVenuesList;
+        if(FavoriteActivity.venueList!= null){
+            favoriteVenuesList = FavoriteActivity.venueList;
+        }else{
+            favoriteVenuesList = HomeSearchActivity.venueList;
+        }
+        for(Venue venue: favoriteVenuesList){
             double lati = venue.getLocation().getLat();
             double longi = venue.getLocation().getLng();
             Marker mark = googleMap.addMarker(new MarkerOptions()
@@ -92,6 +105,7 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
                     .title(venue.getName()));
             mark.setSnippet("Phone Number: " + venue.getContact().getPhone());
             mark.isInfoWindowShown();
+            mark.setIcon(iconMarker);
         }
     }
 

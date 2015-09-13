@@ -7,7 +7,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 /**
  * Created by c4q-vanice on 9/9/15.
  */
-public class CalligraphyApplication extends Application {
+public class EspyApplications extends Application {
 
     @Override
     public void onCreate() {

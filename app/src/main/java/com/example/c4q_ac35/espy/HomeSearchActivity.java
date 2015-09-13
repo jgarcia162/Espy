@@ -23,6 +23,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -49,6 +50,7 @@ import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.joooonho.SelectableRoundedImageView;
 
 import java.util.List;
 import java.util.logging.Handler;
@@ -58,6 +60,7 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.android.AndroidLog;
 import retrofit.client.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 
 
@@ -113,8 +116,7 @@ public class HomeSearchActivity extends Fragment
                 .setEndpoint(BASE_API).build();
 
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
-        servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
-
+        //servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
 
 
 
@@ -206,6 +208,7 @@ public class HomeSearchActivity extends Fragment
         mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header1);
 
         return view;
+
     }
 
     @Override

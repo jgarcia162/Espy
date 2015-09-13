@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
@@ -56,6 +57,15 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+
+import java.util.ArrayList;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static android.support.design.widget.FloatingActionButton.*;
 
 public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
@@ -70,7 +80,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
     private MenuItem mSearchAction;
     private android.support.v7.widget.Toolbar mToolbar;
-    private FloatingActionButton FAB;
+    private FloatingActionButton mFab;
     TabViewPager viewPager;
     MyPagerAdapter adapterViewPager;
     public static ArrayList<Geofence> mGeofenceList = new ArrayList<>();
@@ -114,15 +124,24 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
-//        FAB = (FloatingActionButton) findViewById(R.id.fab);
         setUpTab();
-//
-//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-//                        .setDefaultFontPath("fonts/poiret_one.ttf")
-//                        .setFontAttrId(R.attr.fontPath)
-//                        .build()
-//            );
 
+//        mFab = (FloatingActionButton) findViewById(R.id.plus);
+//
+//        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
+//        ImageView heartIcon = new ImageView(this);
+//        heartIcon.setImageResource(R.drawable.heart_icon);
+//        SubActionButton button1 = itemBuilder.setContentView(heartIcon).build();
+//
+//        ImageView shareIcon = new ImageView(this);
+//        shareIcon.setImageResource(R.drawable.share_icon);
+//        SubActionButton button2 = itemBuilder.setContentView(shareIcon).build();
+//
+//        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
+//                                            .addSubActionView(button1)
+//                                            .addSubActionView(button2)
+//                                            .attachTo(mFab)
+//                                            .build();
 
         if (getIntent().getAction().equals("OPEN_MAP")) {
             viewPager.setCurrentItem(2);
@@ -131,6 +150,11 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         }
         //TODO ALARM TO HANDLE WEEKLY NOTIFICATIONS
         //setNotificationAlarm();
+    }
+
+        @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     private void setUpTab() {
