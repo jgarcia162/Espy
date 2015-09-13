@@ -1,13 +1,18 @@
 package com.example.c4q_ac35.espy;
 
 import android.app.AlarmManager;
-import android.content.BroadcastReceiver;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.app.PendingIntent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.graphics.*;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -15,6 +20,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
@@ -22,8 +28,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
+import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -35,100 +46,94 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
+import java.util.ArrayList;
 
-public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static android.support.design.widget.FloatingActionButton.*;
+
+public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
     private final String TAG = "Espy Main";
-    private static final String CLIENT_ID = "GHO15NRJ1DFJECCEPOPOC555Y1MKI23LPQQZHG04F2AG3FPJ";
-    private static String client_Secret = "4CV4XEO03BPPLXSMOFVOB4KG14SSKQYGH20X3VN1RM5RLBRY";
-    private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
-    private final long ALARM_WEEKLY_INTERVAL = 1000 * 60 * 60 * 24 * 7;
-    private AlarmManager mAlarmManager;
-    private GeofenceReceiver mGeofenceReceiver;
 
-    //Todo: merge Elvis code
+    private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
+    private AlarmManager mAlarmManager;
     private static final String LOG_TAG = "MainActivity";
-    private AutoCompleteTextView mAutocompleteTextView;
-    private PlacesAdapter mPlaceArrayAdapter;
-    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
-            new LatLng(40.498425, -74.250219), new LatLng(40.792266, -73.776434));
-    private GoogleApiClient mGoogleApiClient;
-    GoogleMap mGoogleMap;
-    private static final int GOOGLE_API_CLIENT_ID = 0;
 
     private MenuItem mSearchAction;
     private android.support.v7.widget.Toolbar mToolbar;
-    private FloatingActionButton FAB;
+    private FloatingActionButton mFab;
     TabViewPager viewPager;
     MyPagerAdapter adapterViewPager;
-    ArrayList<Geofence> mGeofenceList;
-    PendingIntent mGeofencePendingIntent;
     PendingIntent mNotificationPendingIntent;
     private boolean mGeofencesAdded;
     private SharedPreferences mSharedPreferences;
     private boolean mRequestingLocationUpdates = true;
     Location mCurrentLocation;
     private String mLastUpdateTime;
-    int WEEKLY_NOTIFICATION_ID = 1;
+    private List<Venue> mVenueList;
+    private List<Venue> favoritesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addApi(Places.GEO_DATA_API)
-                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Places.GEO_DATA_API)
-                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
-                .addApi(LocationServices.API)
-                .build();
-
-        mGoogleApiClient.connect();
-
-        mGeofenceList = new ArrayList<Geofence>();
-        // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
-        mGeofencePendingIntent = null;
-        mNotificationPendingIntent = null;
-
-        // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
-        mGeofencePendingIntent = null;
         mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-        // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
-        mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
 
         mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
-//        FAB = (FloatingActionButton) findViewById(R.id.fab);
+     //   getSupportActionBar().setLogo(R.drawable.espy_name);
         setUpTab();
 
-        //ALARM TO HANDLE WEEKLY NOTIFICATIONS
+//        mFab = (FloatingActionButton) findViewById(R.id.plus);
+//
+//        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
+//        ImageView heartIcon = new ImageView(this);
+//        heartIcon.setImageResource(R.drawable.heart_icon);
+//        SubActionButton button1 = itemBuilder.setContentView(heartIcon).build();
+//
+//        ImageView shareIcon = new ImageView(this);
+//        shareIcon.setImageResource(R.drawable.share_icon);
+//        SubActionButton button2 = itemBuilder.setContentView(shareIcon).build();
+//
+//        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
+//                                            .addSubActionView(button1)
+//                                            .addSubActionView(button2)
+//                                            .attachTo(mFab)
+//                                            .build();
 
+        if (getIntent().getAction().equals("OPEN_MAP")) {
+            viewPager.setCurrentItem(2);
+        } else if (getIntent().getAction().equals("OPEN_FAVORITES")) {
+            viewPager.setCurrentItem(1);
+        }
+        //TODO ALARM TO HANDLE WEEKLY NOTIFICATIONS
+        //setNotificationAlarm();
 
+        mFab = (FloatingActionButton) findViewById(R.id.faveBt);
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mGeofenceReceiver = new GeofenceReceiver();
-        mGeofenceReceiver.abortBroadcast();
-    }
-
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        mGeofenceReceiver.clearAbortBroadcast();
+        @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     private void setUpTab() {
@@ -136,7 +141,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.house_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.heart_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.map_icon));
@@ -146,6 +151,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         viewPager.setAdapter(adapterViewPager);
 //        tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 //                final int width = viewPager.getWidth();
@@ -191,142 +197,20 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
 
 
-//
-//    @Override
-//    public void onBackPressed() {
-//        if (isSearchOpened) {
-//            // handleMenuSearch();
-//            return;
-//        }
-//        super.onBackPressed();
-//
-//    }
-
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        mGoogleApiClient.connect();
-//        populateGeofenceList();
-//        addGeofences();
-//    }
-
     @Override
-    protected void onStop() {
-        super.onStop();
-        mGoogleApiClient.disconnect();
-    }
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        NotificationManager pushNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        pushNotificationManager.cancel(GeofenceTransitionsIntentService.PUSH_NOTIFICATION_ID);
 
-
-    /**
-     * Builds and returns a GeofencingRequest. Specifies the list of geofences to be monitored.
-     * Also specifies how the geofence notifications are initially triggered.
-     */
-    private GeofencingRequest getGeofencingRequest() {
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-
-        // The INITIAL_TRIGGER_ENTER flag indicates that geofencing service should trigger a
-        // GEOFENCE_TRANSITION_ENTER notification when the geofence is added and if the device
-        // is already inside that geofence.
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-
-        // Add the geofences to be monitored by geofencing service.
-        builder.addGeofences(mGeofenceList);
-
-        // Return a GeofencingRequest.
-        return builder.build();
+        Log.i("Intent Message", "NEW INTENT");
     }
 
     /**
      * Adds geofences, which sets alerts to be notified when the device enters or exits one of the
      * specified geofences. Handles the success or failure results returned by addGeofences().
      */
-    public void addGeofences() {
-        if (!mGoogleApiClient.isConnected()) {
-            Toast.makeText(this, "Not connected to GoogleApiClient", Toast.LENGTH_LONG).show();
-            return;
-        }
 
-        try {
-            LocationServices.GeofencingApi.addGeofences(
-                    mGoogleApiClient,
-                    // The GeofenceRequest object.
-                    getGeofencingRequest(),
-                    // A pending intent that is reused when calling removeGeofences(). This
-                    // pending intent is used to generate an intent when a matched geofence
-                    // transition is observed.
-                    getGeofencePendingIntent()
-            ).setResultCallback(this); // Result processed in onResult().
-        } catch (SecurityException securityException) {
-            // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
-            logSecurityException(securityException);
-        }
-    }
-
-    /**
-     * Removes geofences, which stops further notifications when the device enters or exits
-     * previously registered geofences.
-     */
-    public void removeGeofences() {
-        if (!mGoogleApiClient.isConnected()) {
-            Toast.makeText(this, "Not connected to GoogleApiClient", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        try {
-            // Remove geofences.
-            LocationServices.GeofencingApi.removeGeofences(
-                    mGoogleApiClient,
-                    // This is the same pending intent that was used in addGeofences().
-                    getGeofencePendingIntent()
-            ).setResultCallback(this); // Result processed in onResult().
-        } catch (SecurityException securityException) {
-            logSecurityException(securityException);
-        }
-    }
-
-    private void logSecurityException(SecurityException securityException) {
-        Log.e(TAG, "Invalid location permission. " +
-                "You need to use ACCESS_FINE_LOCATION with geofences", securityException);
-    }
-
-    /**
-     * Runs when the result of calling addGeofences() and removeGeofences() becomes available.
-     * Either method can complete successfully or with an error.
-     * <p/>
-     * Since this activity implements the {@link ResultCallback} interface, we are required to
-     * define this method.
-     *
-     * @param status The Status returned through a PendingIntent when addGeofences() or
-     *               removeGeofences() get called.
-     */
-    public void onResult(Status status) {
-        if (status.isSuccess()) {
-            // Update state and save in shared preferences.
-            SharedPreferences.Editor editor = mSharedPreferences.edit();
-            editor.putBoolean(Constants.GEOFENCES_ADDED_KEY, mGeofencesAdded);
-            editor.commit();
-
-            // Update the UI. Adding geofences enables the Remove Geofences button, and removing
-            // geofences enables the Add Geofences button.
-
-        } else {
-            // Get the status code for the error and log it using a user-friendly message.
-            String errorMessage = GeofenceErrorMessages.getErrorString(this,
-                    status.getStatusCode());
-            Log.e(TAG, errorMessage);
-        }
-    }
-
-    private PendingIntent getGeofencePendingIntent() {
-        // Reuse the PendingIntent if we already have it.
-        if (mGeofencePendingIntent != null) {
-            return mGeofencePendingIntent;
-        }
-        Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
-        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
-        // addGeofences() and removeGeofences().
-        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
 
     private PendingIntent notificationPendingIntent() {
         if (mNotificationPendingIntent != null) {
@@ -336,115 +220,28 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
         return PendingIntent.getService(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    public void populateGeofenceList() {
-
-        final double falchiLat = 40.742676;
-        final double falchiLong = -73.935182;
-
-        final float geofenceRadius = 150;
-        mGeofenceList.add(new Geofence.Builder()
-                .setRequestId("Doughnut Plant") //replace with place.getName()
-
-                        // Set the circular region of this geofence.
-                .setCircularRegion(
-                        falchiLat, //Replace with place.getLat()
-                        falchiLong, // Replace with place.getLong()
-                        geofenceRadius
-                )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
-
-        final double sevenLat = 40.744878;
-        final double sevenLong = -73.934073;
-        mGeofenceList.add(new Geofence.Builder()
-                .setRequestId("7-11") //replace with place.getName()
-
-                        // Set the circular region of this geofence.
-                .setCircularRegion(
-                        sevenLat, //Replace with place.getLat()
-                        sevenLong, // Replace with place.getLong()
-                        geofenceRadius
-                )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
-
-        final double jimLat = 40.835837;
-        final double jimLong = -73.940200;
-
-        mGeofenceList.add(new Geofence.Builder()
-                .setRequestId("Jimbos") //replace with place.getName()
-
-                        // Set the circular region of this geofence.
-                .setCircularRegion(
-                        jimLat, //Replace with place.getLat()
-                        jimLong, // Replace with place.getLong()
-                        geofenceRadius
-                )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
-
-        final double metLat = 40.740527;
-        final double metLong = -73.995740;
-
-        mGeofenceList.add(new Geofence.Builder()
-                .setRequestId("Droidcon") //replace with place.getName()
-
-                        // Set the circular region of this geofence.
-                .setCircularRegion(
-                        metLat, //Replace with place.getLat()
-                        metLong, // Replace with place.getLong()
-                        geofenceRadius
-                )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
-
-        final double owoLat = 40.712925;
-        final double owoLong = -74.013319;
-
-        mGeofenceList.add(new Geofence.Builder()
-                .setRequestId("One World Trade Center") //replace with place.getName()
-
-                        // Set the circular region of this geofence.
-                .setCircularRegion(
-                        metLat, //Replace with place.getLat()
-                        metLong, // Replace with place.getLong()
-                        geofenceRadius
-                )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
-    }
 
 
-    protected void startLocationUpdates() {
-        LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(60000*10);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        LocationListener mLocationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                mCurrentLocation = location;
-                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-            }
-        };
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
-    }
+//    protected void startLocationUpdates() {
+//        LocationRequest mLocationRequest = new LocationRequest();
+//        mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
+//        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        LocationListener mLocationListener = new LocationListener() {
+//            @Override
+//            public void onLocationChanged(Location location) {
+//                mCurrentLocation = location;
+//                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+//                Toast.makeText(getApplicationContext(), mLastUpdateTime, Toast.LENGTH_SHORT).show();
+//            }
+//        };
+//        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
+//    }
 
     private void setNotificationAlarm() {
         mNotificationPendingIntent = notificationPendingIntent();
 
         mAlarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-      mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, ALARM_WEEKLY_INTERVAL, ALARM_WEEKLY_INTERVAL, mNotificationPendingIntent);
-
+        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, Calendar.WEDNESDAY, 10000, mNotificationPendingIntent);
     }
 
     @Override
@@ -456,140 +253,100 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback, G
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.action_settings){
+
+        }
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent(EspyMain.this, UserActivity.class);
-            EspyMain.this.startActivity(settingsIntent);
-            switch (item.getItemId()) {
-                case R.id.action_settings:
-                    return true;
-                default:
-                    return super.onOptionsItemSelected(item);
-            }
-        }
         return true;
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
-//        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-        if(mGeofenceList.size() > 0){
-        populateGeofenceList();
-        addGeofences();
-        }
 
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
-        }
-        // mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-        Log.i(LOG_TAG, "Google Places API connected.");
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
-                + connectionResult.getErrorCode());
-
-        Toast.makeText(this,
-                "Google Places API connection failed with error code:" +
-                        connectionResult.getErrorCode(),
-                Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        //  mPlaceArrayAdapter.setGoogleApiClient(null);
-        Log.e(LOG_TAG, "Google Places API connection suspended.");
-    }
 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("Marker"));
-    }
 
-class MyPagerAdapter extends FragmentStatePagerAdapter {
-    int num_tabs = 4;
-    Fragment[] mFragments;
-
-
-    public MyPagerAdapter(FragmentManager fm, int num_tabs) {
-        super(fm);
-        this.num_tabs = num_tabs;
-
-        mFragments = new Fragment[4];
-        mFragments[0] = new HomeSearchActivity();
-        mFragments[1] = new FavoriteActivity();
-        mFragments[2] = new MapActivity();
-        mFragments[3] = new UserActivity();
 
     }
+    class MyPagerAdapter extends FragmentStatePagerAdapter {
+        int num_tabs = 4;
+        Fragment[] mFragments;
 
-    @Override
-    public int getCount() {
-        return num_tabs;
-    }
 
-    @Override
-    public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return HomeSearchActivity.newInstance(0, "Home");
-            case 1:
-                return FavoriteActivity.newInstance(1, "Favorites");
-            case 2:
-                return MapActivity.newInstance(2, "Map");
-            case 3:
-                return UserActivity.newInstance(3, "User");
-            default:
-                return null;
+        public MyPagerAdapter(FragmentManager fm, int num_tabs) {
+            super(fm);
+            this.num_tabs = num_tabs;
+
+            mFragments = new Fragment[4];
+            mFragments[0] = new HomeSearchActivity();
+            mFragments[1] = new FavoriteActivity();
+            mFragments[2] = new MapActivity();
+            mFragments[3] = new UserActivity();
+
         }
+
+        @Override
+        public int getCount() {
+            return num_tabs;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return HomeSearchActivity.newInstance(0, "Home");
+                case 1:
+                    return FavoriteActivity.newInstance(1, "Favorites");
+                case 2:
+                    return MapActivity.newInstance(2, "Map");
+                case 3:
+                    return UserActivity.newInstance(3, "User");
+                default:
+                    return null;
+            }
+        }
+
+        private int[] imageResId = {
+                R.drawable.house_icon,
+                R.drawable.heart_icon,
+                R.drawable.map_icon,
+                R.drawable.user_icon,
+        };
+
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Drawable image = getResources().getDrawable(imageResId[position]);
+            assert image != null;
+            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+            SpannableString sb = new SpannableString(" ");
+            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return sb;
+        }
+
     }
 
-    private int[] imageResId = {
-            R.drawable.house_icon,
-            R.drawable.heart_icon,
-            R.drawable.map_icon,
-            R.drawable.user_icon,
-    };
+    //ADD TO FAVORITES WHEN BUTTON ON HOLDER IS CLICKED
+    public void addToFavorites(View view){
+        mVenueList = HomeSearchActivity.venueList;
+        //favoritesList = FavoriteActivity.venueList;
+        //TODO FIND HOLDER POSITION
+        //view.
+//        Venue venue = mVenueList.get(position);
+//        favoritesList.add(venue);
+
+        if(favoritesList != null){
+        Toast.makeText(this,"TESTING",Toast.LENGTH_SHORT).show();
+        }
 
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        Drawable image = getResources().getDrawable(imageResId[position]);
-        assert image != null;
-        image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-        SpannableString sb = new SpannableString(" ");
-        ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-        sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return sb;
     }
-
-
-
-//        private int[] imageResId = {
-//                R.drawable.house_icon,
-//                R.drawable.heart_icon,
-//                R.drawable.map_icon,
-//                R.drawable.user_icon,
-//        };
-//
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            Drawable image = getResources().getDrawable(imageResId[position]);
-//            assert image != null;
-//            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-//            SpannableString sb = new SpannableString(" ");
-//            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-//            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//            return sb;
-}
 }

@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,13 +30,16 @@ public class NotificationsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification weeklyNotification = sendWeeklyNotification("Hey try something new this week!");
-        notificationManager.notify(WEEKLY_NOTIFICATION_ID, weeklyNotification);
+
+        Toast.makeText(this,"TESTING",Toast.LENGTH_SHORT).show();
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        Notification weeklyNotification = sendWeeklyNotification("Hey try something new this week!");
+//        notificationManager.notify(WEEKLY_NOTIFICATION_ID, weeklyNotification);
     }
 
     private Notification sendWeeklyNotification(String notificationDetails){
         Intent notificationIntent = new Intent(getApplicationContext(),EspyMain.class);
+        notificationIntent.setAction("OPEN_FAVORITES");
 
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
 
@@ -48,8 +52,8 @@ public class NotificationsService extends IntentService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
         builder.setPriority(NotificationCompat.PRIORITY_LOW)
-                .setSmallIcon(R.drawable.common_signin_btn_icon_focus_dark)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.common_signin_btn_icon_focus_dark))
+                .setSmallIcon(R.mipmap.espy_icon)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.espy_icon))
                 .setColor(Color.GREEN)
                 .setContentTitle("Get Out And Explore!")
                 .setContentText(notificationDetails)

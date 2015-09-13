@@ -31,7 +31,7 @@ public class Constants {
      */
     public static final long GEOFENCE_EXPIRATION_IN_MILLISECONDS =
             GEOFENCE_EXPIRATION_IN_HOURS * 60 * 60 * 1000;
-    public static final float GEOFENCE_RADIUS_IN_METERS = 1609; // 1 mile, 1.6 km
+    public static final float GEOFENCE_RADIUS_IN_METERS = 1000; // 1 mile, 1.6 km
 
     /**
      * Map for storing information about airports in the San Francisco bay area.
@@ -44,5 +44,12 @@ public class Constants {
         // Googleplex.
         BAY_AREA_LANDMARKS.put("GOOGLE", new LatLng(37.422611,-122.0840577));
     }
+
+    public static final double GEOFENCE_NOTIFICATION_TIME = 5 * 60 * 1000;
+    public static final int WEEKLY_NOTIFICATION_ID = 1;
+    public static final long LOCATION_UPDATE_INTERVAL = 60 * 60 * 1000;
+    public static final long ALARM_WEEKLY_INTERVAL = 1000 * 60 * 60 * 24 * 7;
+
+
 
 }

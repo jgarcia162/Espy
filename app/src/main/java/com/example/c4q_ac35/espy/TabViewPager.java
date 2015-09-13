@@ -26,4 +26,8 @@ public class TabViewPager extends ViewPager {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return false;
     }
+
+
+
+
 }
