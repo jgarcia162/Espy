@@ -180,8 +180,6 @@ public class HomeSearchActivity extends Fragment
         });
 
         //swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
-
-
     }
 
     private void performSearch(String query, int limit) {
