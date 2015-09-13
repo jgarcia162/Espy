@@ -31,23 +31,16 @@ public class NotificationsService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        Toast.makeText(this,"TESTING",Toast.LENGTH_SHORT).show();
-//        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//        Notification weeklyNotification = sendWeeklyNotification("Hey try something new this week!");
-//        notificationManager.notify(WEEKLY_NOTIFICATION_ID, weeklyNotification);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+       // Notification weeklyNotification = sendWeeklyNotification("Hey try something new this week!");
+        //notificationManager.notify(WEEKLY_NOTIFICATION_ID, weeklyNotification);
     }
 
     private Notification sendWeeklyNotification(String notificationDetails){
         Intent notificationIntent = new Intent(getApplicationContext(),EspyMain.class);
         notificationIntent.setAction("OPEN_FAVORITES");
 
-        TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
-
-        taskStackBuilder.addParentStack(EspyMain.class);
-
-        taskStackBuilder.addNextIntent(notificationIntent);
-
-        PendingIntent notificationPendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent notificationPendingIntent = PendingIntent.getActivity(this,Constants.WEEKLY_NOTIFICATION_ID,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
