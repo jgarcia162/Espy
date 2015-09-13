@@ -52,6 +52,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.joooonho.SelectableRoundedImageView;
 
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Handler;
 
@@ -64,7 +65,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 
 public class HomeSearchActivity extends Fragment
-        implements LocationListener, GoogleApiClient.OnConnectionFailedListener, OnStreetViewPanoramaReadyCallback {
+        implements LocationListener,OnStreetViewPanoramaReadyCallback {
     protected TextView Nearby;
 
 
@@ -79,7 +80,7 @@ public class HomeSearchActivity extends Fragment
     private RecyclerView mRecyclerView;
     private RecyclerViewHeader mRecyclerViewHeader;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private static final long MIN_LOCATION_TIME = DateTimeUtils.ONE_HOUR;
+    private static final long MIN_LOCATION_TIME = DateTimeUtils.ONE_MINUTE;
     private LocationManager locationManager;
     private AutoCompleteTextView mAutocompleteTextView;
 
@@ -113,7 +114,6 @@ public class HomeSearchActivity extends Fragment
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
         //servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
         // servicesFourSquare.getFeed("40.742472, -73.935381", new FourSquareCallback());
-
     }
 
     @Override
@@ -179,6 +179,8 @@ public class HomeSearchActivity extends Fragment
             }
         });
 
+
+
         //swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
     }
 
@@ -213,7 +215,6 @@ public class HomeSearchActivity extends Fragment
 
             }
         }
-
     }
 
     private void updateLocation(Location location) {
@@ -239,17 +240,17 @@ public class HomeSearchActivity extends Fragment
 
     }
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-        Log.e(TAG, "Google Places API connection failed with error code: "
-                + connectionResult.getErrorCode());
-
-        Toast.makeText(getActivity(),
-                "Google Places API connection failed with error code:" +
-                        connectionResult.getErrorCode(),
-                Toast.LENGTH_LONG).show();
-    }
+//    @Override
+//    public void onConnectionFailed(ConnectionResult connectionResult) {
+//
+//        Log.e(TAG, "Google Places API connection failed with error code: "
+//                + connectionResult.getErrorCode());
+//
+//        Toast.makeText(getActivity(),
+//                "Google Places API connection failed with error code:" +
+//                        connectionResult.getErrorCode(),
+//                Toast.LENGTH_LONG).show();
+//    }
 
     //Todo
     @Override
@@ -280,9 +281,7 @@ public class HomeSearchActivity extends Fragment
             error.printStackTrace();
 
         }
-
     }
-
 
     public android.location.Location getLocation(LocationManager mLocationManager, long maxAge) {
         //@Nullable  this goes in the front of the method
@@ -318,5 +317,4 @@ public class HomeSearchActivity extends Fragment
         }
         return null;
     }
-
 }

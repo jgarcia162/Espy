@@ -7,12 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-public class UserActivity extends Fragment {
+public class UserFragment extends Fragment {
     ImageView userPic;
 
 
-    public static UserActivity newInstance(int page, String title) {
-       UserActivity userProfile= new UserActivity();
+    public static UserFragment newInstance(int page, String title) {
+       UserFragment userProfile= new UserFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);

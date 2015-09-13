@@ -8,17 +8,13 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -28,14 +24,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
-import java.net.URL;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Timer;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -96,11 +85,12 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
 
         //Loop for setting markers and geofences for each location in results and or favorites list
         List<Venue> favoriteVenuesList;
-        if(FavoriteActivity.venueList!= null){
-            favoriteVenuesList = FavoriteActivity.venueList;
+        if(FavoritesFragment.venueList!= null){
+            favoriteVenuesList = FavoritesFragment.venueList;
         }else{
             favoriteVenuesList = HomeSearchActivity.venueList;
         }
+        if(!favoriteVenuesList.isEmpty()){
         for(Venue venue: favoriteVenuesList){
             double lati = venue.getLocation().getLat();
             double longi = venue.getLocation().getLng();
@@ -110,6 +100,7 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
             mark.setSnippet("Phone Number: " + venue.getContact().getPhone());
             mark.isInfoWindowShown();
             mark.setIcon(iconMarker);
+        }
         }
     }
 

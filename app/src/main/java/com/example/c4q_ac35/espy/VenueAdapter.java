@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Typeface;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.c4q_ac35.espy.db.FavoritesData;
 import com.example.c4q_ac35.espy.db.FavoritesHelper;
-import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Location;
 import com.example.c4q_ac35.espy.foursquare.Menu;
 import com.example.c4q_ac35.espy.foursquare.Venue;
@@ -29,6 +27,7 @@ import com.example.c4q_ac35.espy.foursquare.Venue;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -41,7 +40,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
   private static final String PRE_ENDPOINT = "https://maps.googleapis.com/maps/api/streetview?&size=800x400&location=";
     private static final String TAG = "VenueActivity";
     private Location mLocation;
-    private List<Venue> mVenues;
+    public List<Venue> mVenues;
     private Context mContext;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -51,8 +50,9 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Bind(R.id.item_address) TextView address;
         @Bind(R.id.item_phone) TextView phone;
         @Bind(R.id.item_menu) TextView menu;
-        @Bind(R.id.menu) Button mButtonMenu;
         @Bind(R.id.venue_picture) ImageView mImageViewVenue;
+        @Bind(R.id.plus) FloatingActionButton favButton;
+        @Bind(R.id.menu) Button mButtonMenu;
 
 
         public ViewHolder(View itemView) {
@@ -92,19 +92,28 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public void onBindViewHolder(final VenueAdapter.ViewHolder holder, int position) {
 
         final Venue venue = mVenues.get(position);
-
             holder.name.setText(venue.getName());
             holder.address.setText(venue.getLocation().getCity());
             holder.phone.setText(venue.getContact().phone);
-            if (venue.getMenu() != null) {
-                holder.menu.setText(venue.getMenu().getMobileUrl());
-                holder.menu.setVisibility(View.INVISIBLE);
-
-            }else {
-                holder.menu.setText("No Menu Available");
-                //holder.mButtonMenu.
-            }
-
+            holder.favButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(FavoritesFragment.venueList != null){
+                    FavoritesFragment.venueList.add(venue);
+                    }else{
+                        FavoritesFragment.venueList = new ArrayList<Venue>();
+                        FavoritesFragment.venueList.add(venue);
+                        Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ",Toast.LENGTH_SHORT).show();
+                        holder.favButton.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
+        if (venue.getMenu() != null) {
+            holder.menu.setText(venue.getMenu().getMobileUrl());
+            holder.menu.setVisibility(View.INVISIBLE);
+        }
+//            final double venueLat = venue.getLocation().getLat();
+//            final double venueLon = venue.getLocation().getLng();
 
             mLocation = venue.getLocation();
 
@@ -128,7 +137,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             public void onClick(View view) {
 
 
-                AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                android.support.v7.app.AlertDialog.Builder alert = new android.support.v7.app.AlertDialog.Builder(mContext);
                 alert.setTitle("Espy's Menu");
 
                 WebView wv = new WebView(mContext);
@@ -163,6 +172,10 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     }
 
     private void addToFavorites(String name,String address,String phone, String hours, String tableName, double lat,double lon,SQLiteDatabase database){
-        FavoritesHelper.insertRow(name,address,phone,hours, tableName,lat,lon,database);
+        FavoritesHelper.insertRow(name, address, phone, hours, tableName, lat, lon, database);
+    }
+
+    private void addToFaves(View v,int position){
+
     }
 }
