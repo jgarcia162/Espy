@@ -1,12 +1,12 @@
 package com.example.c4q_ac35.espy;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -16,20 +16,36 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.c4q_ac35.espy.foursquare.Venue;
-
 import java.util.List;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
@@ -38,16 +54,14 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
     private final String TAG = "Espy Main";
-
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
-    private AlarmManager mAlarmManager;
     private static final String LOG_TAG = "MainActivity";
 
     private MenuItem mSearchAction;
     private android.support.v7.widget.Toolbar mToolbar;
-    private FloatingActionButton mFab;
     TabViewPager viewPager;
     MyPagerAdapter adapterViewPager;
+
     PendingIntent mNotificationPendingIntent;
     private boolean mGeofencesAdded;
     private SharedPreferences mSharedPreferences;
@@ -56,16 +70,17 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
     private String mLastUpdateTime;
     private List<Venue> mVenueList;
     private List<Venue> favoritesList;
+    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
 
+        mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
-     //   getSupportActionBar().setLogo(R.drawable.espy_name);
+//        FAB = (FloatingActionButton) findViewById(R.id.fab);
         setUpTab();
 
 //        mFab = (FloatingActionButton) findViewById(R.id.plus);
@@ -106,17 +121,16 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.house_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.heart_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.map_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user_icon));
 
-        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(adapterViewPager);
 //        tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 //                final int width = viewPager.getWidth();
@@ -142,6 +156,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
 
+
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -160,7 +175,40 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         });
     }
 
+//        private int[] imageResId = {
+//                R.drawable.house_icon,
+//                R.drawable.heart_icon,
+//                R.drawable.map_icon,
+//                R.drawable.user_icon,
+//        };
+//
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            Drawable image = getResources().getDrawable(imageResId[position]);
+//            assert image != null;
+//            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+//            SpannableString sb = new SpannableString(" ");
+//            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+//            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            return sb;
+//        }
+
+
+
     @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(0, 0))
+                .title("Marker"));
+    }
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        mGoogleApiClient.connect();
+//        populateGeofenceList();
+//        addGeofences();
+//    }
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         NotificationManager pushNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -174,7 +222,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
      * Adds geofences, which sets alerts to be notified when the device enters or exits one of the
      * specified geofences. Handles the success or failure results returned by addGeofences().
      */
-
 
     private PendingIntent notificationPendingIntent() {
         if (mNotificationPendingIntent != null) {
@@ -216,28 +263,15 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if(id == R.id.action_settings){
-
-        }
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
 
         //noinspection SimplifiableIfStatement
         return true;
     }
 
-
-
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-
-
-    }
     class MyPagerAdapter extends FragmentStatePagerAdapter {
         int num_tabs = 4;
         Fragment[] mFragments;
@@ -283,19 +317,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
                 R.drawable.user_icon,
         };
 
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Drawable image = getResources().getDrawable(imageResId[position]);
-            assert image != null;
-            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-            SpannableString sb = new SpannableString(" ");
-            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            return sb;
-        }
-
-    }
+}
 
     //ADD TO FAVORITES WHEN BUTTON ON HOLDER IS CLICKED
     public void addToFavorites(View view){
@@ -309,7 +331,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         if(favoritesList != null){
         Toast.makeText(this,"TESTING",Toast.LENGTH_SHORT).show();
         }
-
 
     }
 }

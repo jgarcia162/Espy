@@ -12,12 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
+import com.example.c4q_ac35.espy.foursquare.Response;
+import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 
 import java.util.List;
+
+import retrofit.Callback;
 
 /**
  * Created by c4q-marbella on 8/24/15.
@@ -34,7 +37,7 @@ public class FavoritesFragment extends Fragment {
     RecyclerViewHeader mRecyclerViewHeader;
     private VenueAdapter adapter;
     public Venue[] fav = null;
-    List favList= null;
+    List favList = null;
     private boolean resultsFound = false;
     Context context;
     protected TextView favorite;
@@ -69,8 +72,8 @@ public class FavoritesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_favorites, container, false);
 
-            mRecyclerView = (RecyclerView) view.findViewById(R.id.favelist);
-            mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.favelist);
+        mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header);
 //            this.favorite = (TextView) view.findViewById(R.id.favorite_text);
 //            android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
 //            this.favorite.setTypeface(font);
@@ -84,7 +87,7 @@ public class FavoritesFragment extends Fragment {
             Toast.makeText(getActivity(),"Add something to your favorites",Toast.LENGTH_SHORT).show();
         }
 
-            Log.d(TAG,"recycleviwerHeader");
+        Log.d(TAG, "recycleviwerHeader");
 
         return view;
     }
@@ -94,15 +97,11 @@ public class FavoritesFragment extends Fragment {
         if (mContainer == null || mFont == null) return;
 
         final int mCount = mContainer.getChildCount();
-        for (int i = 0; i < mCount; ++i)
-        {
+        for (int i = 0; i < mCount; ++i) {
             final View mChild = mContainer.getChildAt(i);
-            if (mChild instanceof TextView)
-            {
+            if (mChild instanceof TextView) {
                 ((TextView) mChild).setTypeface(mFont);
-            }
-            else if (mChild instanceof ViewGroup)
-            {
+            } else if (mChild instanceof ViewGroup) {
                 setAppFont((ViewGroup) mChild, mFont);
             }
         }
@@ -123,23 +122,17 @@ public class FavoritesFragment extends Fragment {
 //                adapter = new VenueAdapter(getActivity(), venueList);
 //                mRecyclerView.setAdapter(adapter);
 //                mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
-//                mRecyclerViewHeader.attachTo(mRecyclerView,true);
+//                mRecyclerViewHeader.attachTo(mRecyclerView, true);
 //
+//                Log.d(TAG, "Success");
 //            }
 //
-//            //adapter.setVenueses(venuee);
-//            //  adapter.notifyDataSetChanged();
-//
-//            Log.d(TAG, "Success");
 //        }
 //
 //        @Override
 //        public void failure(RetrofitError error) {
-//            Log.d(TAG, "Failure");
 //
 //        }
 //
 //    }
-//
-
 }

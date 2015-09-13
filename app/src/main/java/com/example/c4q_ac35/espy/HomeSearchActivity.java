@@ -168,7 +168,7 @@ public class HomeSearchActivity extends Fragment
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    performSearch(v.getText().toString(), 10);
+                    performSearch(v.getText().toString(), 20);
 
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(mEditTextSearch.getWindowToken(), 0);
@@ -315,29 +315,6 @@ public class HomeSearchActivity extends Fragment
                 }
             }
         }
-
-        if (isNetworkEnabled)
-            mLocationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-        if (isGPSEnabled)
-            mLocationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
         return null;
     }
-
-
-//    private AdapterView.OnItemClickListener mAutocompleteClickListener
-//            = new AdapterView.OnItemClickListener() {
-//        @Override
-//        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//            performSearch(parent.getItemAtPosition(position).toString(), 1);
-//
-//
-//        }
-//
-//    };
-
-    // Todo: Hide the keyboard
-    //Todo: Hide the AutoComplete
-    //Todo: The AsynTask if the searching is null "saying that is loading"
-
 }

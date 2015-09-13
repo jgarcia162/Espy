@@ -11,6 +11,7 @@ import java.util.HashMap;
  * Created by c4q-ac35 on 8/16/15.
  */
 public class Constants {
+
     private Constants() {
     }
 
