@@ -72,7 +72,7 @@ public class HomeSearchActivity extends Fragment
     public static final String BASE_API = "https://api.foursquare.com/v2";
     public static final String TAG = "HomeSearchActivity";
     FourSquareAPI servicesFourSquare = null;
-    public Venue[] venuee = null;
+    public static List<Venue> venueList;
     private boolean resultsFound = false;
     private RecyclerView mRecyclerView;
     private RecyclerViewHeader mRecyclerViewHeader;
@@ -175,7 +175,7 @@ public class HomeSearchActivity extends Fragment
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    performSearch(v.getText().toString(),10);
+                    performSearch(v.getText().toString(), 10);
 
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(mEditTextSearch.getWindowToken(), 0);
@@ -273,7 +273,7 @@ public class HomeSearchActivity extends Fragment
         public void success(final ResponseAPI responseAPI, Response response) {
 
             resultsFound = true;
-                List<Venue> venueList = responseAPI.getResponse().getVenues();
+                venueList = responseAPI.getResponse().getVenues();
 
                 adapter = new VenueAdapter(getActivity(), venueList);
                 mRecyclerView.setAdapter(adapter);

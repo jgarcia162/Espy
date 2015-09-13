@@ -80,21 +80,18 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(13)); // choose default zoom of map
 
-
-
-        Marker marker = googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(lat,lon))
-                .title("Rice To Riches"));
-        marker.setSnippet("Phone Number: (212) 274-0008");
-        marker.isInfoWindowShown();
-
         // Calls location service within context
 
-        //TODO Loop for setting markers and geofences for each location in list
-
-        List<Geofence> triggeredFences = GeofenceTransitionsIntentService.triggeredFences;
-        for(Geofence geofence: triggeredFences){
-            geofence.getRequestId();
+        //Loop for setting markers and geofences for each location in results list
+        List<Venue> triggeredFences = HomeSearchActivity.venueList;
+        for(Venue venue: triggeredFences){
+            double lati = venue.getLocation().getLat();
+            double longi = venue.getLocation().getLng();
+            Marker mark = googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(lati,longi))
+                    .title(venue.getName()));
+            mark.setSnippet("Phone Number: " + venue.getContact().getPhone());
+            mark.isInfoWindowShown();
         }
     }
 
