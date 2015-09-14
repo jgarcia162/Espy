@@ -65,41 +65,16 @@
                 fontPath="fonts/JosefinSans-Bold.ttf"/>
 
 
-            <TextView
-                tools:ignore="MissingPrefix"
-                android:id="@+id/distance_text"
-                android:text="250 ft"
-                android:textSize="20sp"
-                android:textColor="#218C8D"
-                android:layout_margin="3dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                fontPath="fonts/JosefinSans-Regular.ttf"/>
-
-                <TextView
-                    tools:ignore="MissingPrefix"
-                    android:id="@+id/rating_box"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:padding="5dp"
-                    android:text="9.5"
-                    android:textSize="15sp"
-                    android:textColor="#FFFFFF"
-                    android:gravity="center"
-                    android:background="@drawable/rating_box"
-                    fontPath="fonts/JosefinSans-Regular.ttf"/>
-
-                <!--<RatingBar-->
-                    <!--android:id="@+id/ratingBar1"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@id/item_name"-->
-                    <!--android:max="100"-->
-                    <!--android:numStars="5"-->
-                    <!--android:stepSize="0.1"-->
-                    <!--android:layout_margin="5dp"-->
-                    <!--style="?android:attr/ratingBarStyleSmall" />-->
+            <!--<TextView-->
+                <!--tools:ignore="MissingPrefix"-->
+                <!--android:id="@+id/distance_text"-->
+                <!--android:text="250 ft"-->
+                <!--android:textSize="20sp"-->
+                <!--android:textColor="#218C8D"-->
+                <!--android:layout_margin="3dp"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--fontPath="fonts/JosefinSans-Regular.ttf"/>-->
 
             <TextView
                 tools:ignore="MissingPrefix"
@@ -122,6 +97,21 @@
                     android:textColor="#218C8D"
                     android:textSize="20sp"
                     fontPath="fonts/JosefinSans-Regular.ttf"/>
+                <TextView
+                    tools:ignore="MissingPrefix"
+                    android:id="@+id/item_menu"
+                    android:text="(718) 285-6180"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:textColor="#218C8D"
+                    android:textSize="20sp"
+                    fontPath="fonts/JosefinSans-Regular.ttf"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/menu"
+                    android:text="menu"/>
 
             </LinearLayout>
 
@@ -140,7 +130,6 @@
                 android:id="@+id/faveBt"
                 android:layout_margin="3dp"
                 android:src="@drawable/heart_icon"/>
-
 
             <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"

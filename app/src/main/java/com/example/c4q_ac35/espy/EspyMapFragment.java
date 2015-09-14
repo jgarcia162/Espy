@@ -6,18 +6,15 @@ import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -27,11 +24,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Timer;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -42,6 +35,7 @@ import retrofit.client.Response;
  */
 
 public class EspyMapFragment extends SupportMapFragment implements Callback<ResponseAPI> {
+    private static final String TAG = "EspyMapFragment";
     GoogleMap googleMap;
     Location myLocation;
     List<Geofence> mGeofenceList;
@@ -65,8 +59,7 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); //Choose type of map, normal, terrain, satellite, none
 
-        double lat = 40.722695;
-        double lon = -73.996545;
+
 
         //Adding a null check
         if(myLocation==null){
@@ -85,6 +78,7 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
 //        googleMap.animateCamera(CameraUpdateFactory.zoomTo(13)); // choose default zoom of map
 
 
+
         //Set custom icon for markers
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(),
                 R.mipmap.espy_marker);
@@ -92,11 +86,12 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
 
         //Loop for setting markers and geofences for each location in results and or favorites list
         List<Venue> favoriteVenuesList;
-        if(FavoriteActivity.venueList!= null){
-            favoriteVenuesList = FavoriteActivity.venueList;
+        if(FavoritesFragment.venueList!= null){
+            favoriteVenuesList = FavoritesFragment.venueList;
         }else{
             favoriteVenuesList = HomeSearchActivity.venueList;
         }
+        if(!favoriteVenuesList.isEmpty()){
         for(Venue venue: favoriteVenuesList){
             double lati = venue.getLocation().getLat();
             double longi = venue.getLocation().getLng();
@@ -106,6 +101,7 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
             mark.setSnippet("Phone Number: " + venue.getContact().getPhone());
             mark.isInfoWindowShown();
             mark.setIcon(iconMarker);
+        }
         }
     }
 
