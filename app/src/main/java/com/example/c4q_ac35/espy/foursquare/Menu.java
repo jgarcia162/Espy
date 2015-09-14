@@ -3,6 +3,7 @@ package com.example.c4q_ac35.espy.foursquare;
 
 
 import com.google.gson.annotations.Expose;
+import com.j256.ormlite.field.DatabaseField;
 
 
 public class Menu {
@@ -14,6 +15,7 @@ public class Menu {
     @Expose
     private String anchor;
     @Expose
+    @DatabaseField
     private String url;
     @Expose
     private String mobileUrl;

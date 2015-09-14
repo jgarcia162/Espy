@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
+import com.j256.ormlite.field.DatabaseField;
 
 
 public class Venue {
@@ -12,6 +13,7 @@ public class Venue {
     @Expose
     private String id;
     @Expose
+    @DatabaseField
     private String name;
     @Expose
     private Contact contact;

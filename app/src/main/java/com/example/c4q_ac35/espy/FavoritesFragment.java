@@ -80,9 +80,9 @@ public class FavoritesFragment extends Fragment {
         if (adapter == null && venueList != null) {
             adapter = new VenueAdapter(getActivity(), venueList);
             mRecyclerView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
             mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
             mRecyclerViewHeader.attachTo(mRecyclerView,true);
+            adapter.notifyDataSetChanged();
         }else{
             Toast.makeText(getActivity(),"Add something to your favorites",Toast.LENGTH_SHORT).show();
         }

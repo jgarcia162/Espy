@@ -6,8 +6,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,37 +15,24 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Venue;
-import java.util.List;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
+
+import java.sql.SQLException;
+import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -58,7 +43,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
     private static final String LOG_TAG = "MainActivity";
 
     private MenuItem mSearchAction;
-    private android.support.v7.widget.Toolbar mToolbar;
+    private Toolbar mToolbar;
     TabViewPager viewPager;
     MyPagerAdapter adapterViewPager;
 
@@ -72,13 +57,23 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
     private List<Venue> favoritesList;
     private FloatingActionButton mFab;
 
+    private MyFavoritesHelper databaseHelper = null;
+
+    private MyFavoritesHelper getHelper() {
+        if (databaseHelper == null) {
+            databaseHelper = OpenHelperManager.getHelper(this, MyFavoritesHelper.class);
+        }
+        return databaseHelper;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initData();
         setContentView(R.layout.activity_home);
 
         mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-        mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
+        mToolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
 //        FAB = (FloatingActionButton) findViewById(R.id.fab);
         setUpTab();
@@ -111,7 +106,17 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         mFab = (FloatingActionButton) findViewById(R.id.faveBt);
     }
 
-        @Override
+    private void initData() {
+        try {
+            Dao<Venue, Integer> venueDao = getHelper().getVenueDao();
+            List<Venue> venues = venueDao.queryForAll();
+            Log.d("JOSE", venues.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
