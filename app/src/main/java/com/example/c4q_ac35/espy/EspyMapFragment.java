@@ -1,45 +1,56 @@
 package com.example.c4q_ac35.espy;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
+import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
+import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by c4q-ac35 on 8/12/15.
  */
 
-public class EspyMapFragment extends SupportMapFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class EspyMapFragment extends SupportMapFragment implements Callback<ResponseAPI> {
     GoogleMap googleMap;
     Location myLocation;
-    GoogleApiClient mapGoogleApiClient;
     List<Geofence> mGeofenceList;
+    FourSquareAPI servicesFoursquare;
     float GEOFENCE_RADIUS_IN_METERS = 1000;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-//        mapGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(LocationServices.API)
-//                .build();
-//        mapGoogleApiClient.connect();
 
         googleMap = getMap(); // loads map
         googleMap.setMyLocationEnabled(true); //finds current location
@@ -54,67 +65,70 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); //Choose type of map, normal, terrain, satellite, none
 
-
         double lat = 40.722695;
         double lon = -73.996545;
 
         //Adding a null check
         if(myLocation==null){
             LocationRequest mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(10000);
-            mLocationRequest.setFastestInterval(5000);
-            mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+            mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         } else {
-            double latitude = myLocation.getLatitude();
-            double longitude = myLocation.getLongitude();
-            //Geofence.Builder falchiGeofence = new
-            LatLng latLng = new LatLng(latitude, longitude);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            LocationRequest mLocationRequest = new LocationRequest();
+            mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         }
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(11)); // choose default zoom of map
+//        double latitude = myLocation.getLatitude();
+//        double longitude = myLocation.getLongitude();
+//        LatLng latLng = new LatLng(latitude, longitude);
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//        googleMap.animateCamera(CameraUpdateFactory.zoomTo(13)); // choose default zoom of map
 
 
-        Marker marker = googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(lat,lon))
-                .title("Rice To Riches"));
-        marker.setSnippet("Phone Number: (212) 274-0008");
-        marker.isInfoWindowShown();
+        //Set custom icon for markers
+        Bitmap icon = BitmapFactory.decodeResource(this.getResources(),
+                R.mipmap.espy_marker);
+        BitmapDescriptor iconMarker = BitmapDescriptorFactory.fromBitmap(icon);
 
+        //Loop for setting markers and geofences for each location in results and or favorites list
+        List<Venue> favoriteVenuesList;
+        if(FavoriteActivity.venueList!= null){
+            favoriteVenuesList = FavoriteActivity.venueList;
+        }else{
+            favoriteVenuesList = HomeSearchActivity.venueList;
+        }
+        for(Venue venue: favoriteVenuesList){
+            double lati = venue.getLocation().getLat();
+            double longi = venue.getLocation().getLng();
+            Marker mark = googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(lati,longi))
+                    .title(venue.getName()));
+            mark.setSnippet("Phone Number: " + venue.getContact().getPhone());
+            mark.isInfoWindowShown();
+            mark.setIcon(iconMarker);
+        }
+    }
 
-
-
-
-
-        // Calls location service within context
-
-//        //Loop for setting markers and geofences for each location in list
-//        for(Location location : mListOfLocations ){
-//            double lat = location.getLatitude();
-//            double lon = location.getLongitude();
-//            EspyGeofence locationFence = new EspyGeofence(location.getName().toString(),lat,lon,geofenceRadius,Constants.GEOFENCE_EXPIRATION_TIME,Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_DWELL | Geofence.GEOFENCE_TRANSITION_EXIT);
-//            locationFence.toGeofence();
+    @Override
+    public void success(ResponseAPI responseAPI, Response response) {
+//        List<Venue> venueList = responseAPI.getResponse().getVenues();
+//
+//        for(int i =0;i<venueList.size();i++) {
+//            com.example.c4q_ac35.espy.foursquare.Location location = venueList.get(i).getLocation();
+//            final double venueLat = location.getLat();
+//            final double venueLong = location.getLng();
 //
 //            Marker locationMarker = googleMap.addMarker(new MarkerOptions()
-//                    .position(new LatLng(location.getLatitude(),location.getLongitude()))
-//                    .title(location.getName()));
-//            locationMarker.setSnippet("Phone NUmber: " + location.getPhone().toString());
+//                    .position(new LatLng(venueLat, venueLong))
+//                    .title(venueList.get(i).getName()));
+//            locationMarker.setSnippet("Phone Number: " + venueList.get(i).getContact().getPhone());
 //            locationMarker.isInfoWindowShown();
+//            Log.i(venueList.get(i).getContact().getPhone(), venueList.get(i).getName());
 //        }
     }
 
     @Override
-    public void onConnected(Bundle bundle) {
-
+    public void failure(RetrofitError error) {
+        Toast.makeText(getActivity(),"WHOOPS",Toast.LENGTH_SHORT).show();
     }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
-
 }

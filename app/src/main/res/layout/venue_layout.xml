@@ -12,7 +12,7 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         xmlns:app="http://schemas.android.com/tools"
         android:id="@+id/card_view"
-        android:elevation="5dp"
+        android:elevation="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
@@ -127,32 +127,35 @@
 
         </LinearLayout>
 
-         <android.support.design.widget.CoordinatorLayout
+         <LinearLayout
             android:id="@+id/layout_icons"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
 
             <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/faveBt"
-                android:layout_margin="10dp"
-                app:layout_anchorGravity="top|left"
+                android:layout_margin="3dp"
                 android:src="@drawable/heart_icon"/>
-
 
 
             <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:id="@+id/plus"
-                app:layout_anchorGravity="top|left|end"
-                android:src="@drawable/plus_icon"
-                android:layout_weight="1" />
+                android:id="@+id/shareBt"
+                android:layout_margin="3dp"
+                android:src="@drawable/share_icon" />
 
-         </android.support.design.widget.CoordinatorLayout>
-
+             <android.support.design.widget.FloatingActionButton
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/mapBt"
+                 android:layout_margin="3dp"
+                 android:src="@drawable/map_icon"/>
+         </LinearLayout>
 
 </android.support.v7.widget.CardView>
 

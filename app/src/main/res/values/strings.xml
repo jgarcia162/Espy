@@ -49,7 +49,7 @@
     <string name="geofence_transition_entered">Entered</string>
     <string name="geofence_transition_exited">Exited</string>
     <string name="unknown_geofence_transition">Unknown Transition</string>
-
+    <string name="title_activity_custom_background">CustomBackgroundActivity</string>
     <string name="geofence_transition_notification_text">Click notification to return to app</string>
     <string name="userName">Bella Viva</string>
     <string name="favorite">Favorite</string>
