@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-        android:title="Notification Service">
-        <SwitchPreference
-            android:key="EnabledNotif"
-            android:title="Notifications"
-            android:checked="true"/>
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:title="Notifications and Sounds"/>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="pref_notifications_root">
     <CheckBoxPreference
-        android:dependency="EnabledNotif"
-        android:key="EnabledNearby"
+        android:defaultValue="true"
+        android:key="pref_enabledNotif"
+        android:title="Enable Notifications"/>
+    <PreferenceCategory
+        android:title="Notifications Types"/>
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_enabledNearby"
         android:title="Nearby Location"/>
     <CheckBoxPreference
-        android:dependency="EnabledNotif"
-        android:key="EnabledWeekly"
+        android:defaultValue="true"
+        android:key="pref_enabledWeekly"
         android:title="Weekly"/>
     <CheckBoxPreference
-        android:dependency="EnabledNotif"
-        android:key="EnabledBi-Weekly"
+        android:key="pref_enabledBi-Weekly"
         android:title="Bi-Weekly"/>
-    <RingtonePreference
-        android:dependency="EnabledNotif"
-        android:key="Ringtone"
-        android:ringtoneType="all"
-        android:summary="Select Ringtone"
-        android:title="Ringtone Preference"/>
+    <PreferenceCategory
+        android:title="Notification Options"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_notification_sound"
+            android:title="Notification Sound"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_notification_vibrate"
+            android:title="Notification Vibrate"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_notification_light"
+            android:title="Notification Blink"/>
 </PreferenceScreen>

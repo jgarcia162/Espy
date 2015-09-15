@@ -2,20 +2,15 @@ package com.example.c4q_ac35.espy;
 
 import android.app.IntentService;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.IBinder;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.widget.Toast;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by c4q-ac35 on 8/31/15.
@@ -51,15 +46,17 @@ public class NotificationsService extends IntentService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         builder.setPriority(NotificationCompat.PRIORITY_LOW)
                 .setSmallIcon(R.mipmap.espy_icon)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.espy_icon))
                 .setColor(Color.GREEN)
-                .setContentTitle("Get Out And Explore!")
+                .setContentTitle("Go out and explore!")
                 .setContentText(notificationDetails)
                 .setContentIntent(notificationPendingIntent)
                 .setAutoCancel(true)
-                .setOnlyAlertOnce(true);
+                .setOnlyAlertOnce(true)
+                .setSound(soundUri);
 
             return builder.build();
     }
