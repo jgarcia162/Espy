@@ -16,8 +16,10 @@ public class Venue {
     @DatabaseField
     private String name;
     @Expose
+   @DatabaseField (columnName = "Contact Information",foreign = true)
     private Contact contact;
     @Expose
+    @DatabaseField (columnName = "Location",foreign = true)
     private Location location;
     @Expose
     private List<Category> categories = new ArrayList<Category>();
@@ -30,6 +32,7 @@ public class Venue {
     @Expose
     private boolean hasMenu;
     @Expose
+    @DatabaseField(columnName = "Menu",foreign = true,canBeNull = true)
     private Menu menu;
     @Expose
     private Specials specials;

@@ -6,7 +6,7 @@ import com.j256.ormlite.field.DatabaseField;
 
 public class Contact {
 
-    @DatabaseField
+    @DatabaseField(canBeNull = true, foreign = true)
     public String phone;
     public String twitter;
     public String facebook;

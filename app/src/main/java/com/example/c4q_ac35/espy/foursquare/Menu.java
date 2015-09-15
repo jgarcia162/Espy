@@ -15,7 +15,7 @@ public class Menu {
     @Expose
     private String anchor;
     @Expose
-    @DatabaseField
+    @DatabaseField(canBeNull = true)
     private String url;
     @Expose
     private String mobileUrl;

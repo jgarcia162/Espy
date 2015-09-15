@@ -106,11 +106,11 @@ public class EspyApplication extends Application implements
     public void populateGeofenceList() {
         float geofenceRadius = Constants.GEOFENCE_RADIUS_IN_METERS;
 
-        double riteAidLat = 40.835928;
-        double riteAidLng = -73.940591;
+        double riteAidLat = 40.742723;
+        double riteAidLng = -73.935131;
 
         sGeofenceList.add(new Geofence.Builder()
-                .setRequestId("Rite Aid") //replace with place.getName()
+                .setRequestId("Doughnut Plant") //replace with place.getName()
 
                         // Set the circular region of this geofence.
                 .setCircularRegion(

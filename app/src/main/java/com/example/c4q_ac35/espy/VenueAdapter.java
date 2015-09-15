@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.c4q_ac35.espy.db.FavoritesHelper;
+import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Location;
 import com.example.c4q_ac35.espy.foursquare.Menu;
 import com.example.c4q_ac35.espy.foursquare.Venue;
@@ -42,6 +43,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     private Location mLocation;
     public List<Venue> mVenues;
     private Context mContext;
+    //MyFavoritesHelper myFavoritesHelper = new MyFavoritesHelper();
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -54,11 +56,9 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Bind(R.id.plus) FloatingActionButton favButton;
         @Bind(R.id.menu) Button mButtonMenu;
 
-
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            Log.d(TAG, "K Mierda: " + itemView);
 
         }
 
@@ -86,8 +86,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
     }
 
-
-
     @Override
     public void onBindViewHolder(final VenueAdapter.ViewHolder holder, int position) {
 
@@ -100,6 +98,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
                 public void onClick(View view) {
                     if(FavoritesFragment.venueList != null){
                     FavoritesFragment.venueList.add(venue);
+
+
                     }else{
                         FavoritesFragment.venueList = new ArrayList<Venue>();
                         FavoritesFragment.venueList.add(venue);
@@ -171,8 +171,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
     }
 
-    private void addToFavorites(String name,String address,String phone, String hours, String tableName, double lat,double lon,SQLiteDatabase database){
-        FavoritesHelper.insertRow(name, address, phone, hours, tableName, lat, lon, database);
+    private void addToFavorites(Venue venue){
+
     }
 
     private void addToFaves(View v,int position){

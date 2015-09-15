@@ -94,7 +94,7 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
             Marker mark = googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(lati,longi))
                     .title(venue.getName()));
-            mark.setSnippet("Phone Number: " + venue.getContact().getPhone());
+            mark.setSnippet("Phone Number: " + venue.getLocation().getFormattedAddress());
             mark.isInfoWindowShown();
             mark.setIcon(iconMarker);
         }

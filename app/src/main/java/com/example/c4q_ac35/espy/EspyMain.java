@@ -69,7 +69,11 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initData();
+        if(FavoritesFragment.venueList != null){
+            if(!FavoritesFragment.venueList.isEmpty()){
+       // initData();
+            }
+        }
         setContentView(R.layout.activity_home);
 
         mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
@@ -108,9 +112,14 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
     private void initData() {
         try {
-            Dao<Venue, Integer> venueDao = getHelper().getVenueDao();
-            List<Venue> venues = venueDao.queryForAll();
-            Log.d("JOSE", venues.toString());
+            for(Venue venue : FavoritesFragment.venueList) {
+                Dao<Venue, Integer> venueDao = getHelper().getVenueDao();
+                Venue v = venue;
+                v.setId(venue.getId());
+                v.setName(venue.getName());
+                v.setLocation(venue.getLocation());
+                venueDao.create(v);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

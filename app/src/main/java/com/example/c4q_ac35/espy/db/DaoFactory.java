@@ -20,8 +20,8 @@ public class DaoFactory extends Application {
     private MyFavoritesHelper myFavoritesHelper = null;
 
     private Dao<Venue,Integer> venueDao=null;
-    private Dao<Contact,Integer> contactDao = null;
     private Dao<Location,Integer> locationDao = null;
+    private Dao<Contact, Integer> contactDao = null;
 
     @Override
     public void onCreate() {
@@ -44,7 +44,7 @@ public class DaoFactory extends Application {
     }
 
     public Dao<Contact, Integer> getContactDao() throws SQLException {
-        if (contactDao == null) {
+        if(contactDao == null){
             contactDao = myFavoritesHelper.getDao(Contact.class);
         }
         return contactDao;

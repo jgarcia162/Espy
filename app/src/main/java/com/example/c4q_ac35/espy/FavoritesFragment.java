@@ -13,11 +13,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
+import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.Response;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import retrofit.Callback;
@@ -41,6 +43,7 @@ public class FavoritesFragment extends Fragment {
     private boolean resultsFound = false;
     Context context;
     protected TextView favorite;
+    MyFavoritesHelper myFavoritesHelper;
     // newInstance constructor for creating fragment with arguments
 
     public static FavoritesFragment newInstance(int page, String title) {
@@ -59,6 +62,8 @@ public class FavoritesFragment extends Fragment {
         page = getArguments().getInt("myListPage", 1);
         title = getArguments().getString("myList");
 
+
+
         //RestAdapter mRestAdapter = new RestAdapter.Builder()
 //                .setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog(TAG))
 //                .setEndpoint(BASE_API).build();
@@ -71,17 +76,28 @@ public class FavoritesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_favorites, container, false);
+        //myFavoritesHelper = new MyFavoritesHelper(view.getContext());
+
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.favelist);
         mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header);
 //            this.favorite = (TextView) view.findViewById(R.id.favorite_text);
 //            android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
 //            this.favorite.setTypeface(font);
+//        try {
+//            if(myFavoritesHelper.getVenueDao() !=null){
+//                venueList = myFavoritesHelper.getVenueDao().queryForAll();
+//            } else{
+//                venueList = null;
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
         if (adapter == null && venueList != null) {
             adapter = new VenueAdapter(getActivity(), venueList);
             mRecyclerView.setAdapter(adapter);
             mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
-            mRecyclerViewHeader.attachTo(mRecyclerView,true);
+            mRecyclerViewHeader.attachTo(mRecyclerView, true);
             adapter.notifyDataSetChanged();
         }else{
             Toast.makeText(getActivity(),"Add something to your favorites",Toast.LENGTH_SHORT).show();
