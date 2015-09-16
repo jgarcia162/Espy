@@ -1,0 +1,490 @@
+{
+  "region": {
+    "span": {
+      "latitude_delta": 0.03935591967493224,
+      "longitude_delta": 0.05306950000002075
+    },
+    "center": {
+      "latitude": 40.7342059501433,
+      "longitude": -73.8682905
+    }
+  },
+  "total": 165,
+  "businesses": [
+    {
+      "is_claimed": false,
+      "rating": 4.5,
+      "mobile_url": "http://m.yelp.com/biz/dominicks-hot-dog-truck-queens",
+      "rating_img_url": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/99493c12711e/ico/stars/v1/stars_4_half.png",
+      "review_count": 24,
+      "name": "Dominick's Hot Dog Truck",
+      "rating_img_url_small": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/a5221e66bc70/ico/stars/v1/stars_small_4_half.png",
+      "url": "http://www.yelp.com/biz/dominicks-hot-dog-truck-queens",
+      "is_closed": false,
+      "snippet_text": "Dominick's is great!\nThe hot dogs are of great quality, not just your supermarket hot dog.\nMost hot dogs are full of salt that keep you thirsty for hours,...",
+      "image_url": "http://s3-media3.fl.yelpcdn.com/bphoto/VNu_fk4izoGzYDRN60JOKg/ms.jpg",
+      "categories": [
+        [
+          "Hot Dogs",
+          "hotdog"
+        ]
+      ],
+      "rating_img_url_large": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/9f83790ff7f6/ico/stars/v1/stars_large_4_half.png",
+      "id": "dominicks-hot-dog-truck-queens",
+      "snippet_image_url": "http://s3-media4.fl.yelpcdn.com/assets/srv0/yelp_styleguide/cc4afe21892e/assets/img/default_avatars/user_medium_square.png",
+      "location": {
+        "city": "Queens",
+        "display_address": [
+          "Rego Park",
+          "Woodhaven Blvd and 67th Ave",
+          "Middle Village",
+          "Queens, NY 11374"
+        ],
+        "geo_accuracy": 7.0,
+        "neighborhoods": [
+          "Middle Village"
+        ],
+        "postal_code": "11374",
+        "country_code": "US",
+        "address": [
+          "Rego Park",
+          "Woodhaven Blvd and 67th Ave"
+        ],
+        "coordinate": {
+          "latitude": 40.7171783,
+          "longitude": -73.8623428
+        },
+        "state_code": "NY"
+      }
+    },
+    {
+      "is_claimed": false,
+      "rating": 4.0,
+      "mobile_url": "http://m.yelp.com/biz/wafels-and-dinges-forest-hills-2",
+      "rating_img_url": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/c2f3dd9799a5/ico/stars/v1/stars_4.png",
+      "review_count": 38,
+      "name": "Wafels & Dinges",
+      "rating_img_url_small": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/f62a5be2f902/ico/stars/v1/stars_small_4.png",
+      "url": "http://www.yelp.com/biz/wafels-and-dinges-forest-hills-2",
+      "is_closed": false,
+      "phone": "8664297329",
+      "snippet_text": "It was my first time trying wafles & dinges so of course I had to go hard or go home. I ordered the traditional waffle with a scoop of spekuloos ice cream,...",
+      "image_url": "http://s3-media4.fl.yelpcdn.com/bphoto/68AMe1jPbQ2bF5Xo0nPz5A/ms.jpg",
+      "categories": [
+        [
+          "Desserts",
+          "desserts"
+        ],
+        [
+          "Food Trucks",
+          "foodtrucks"
+        ]
+      ],
+      "display_phone": "+1-866-429-7329",
+      "rating_img_url_large": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/ccf2b76faa2c/ico/stars/v1/stars_large_4.png",
+      "id": "wafels-and-dinges-forest-hills-2",
+      "snippet_image_url": "http://s3-media2.fl.yelpcdn.com/photo/wxnPMwM4DP5KS9T5KYZglA/ms.jpg",
+      "location": {
+        "city": "Forest Hills",
+        "display_address": [
+          "10716 71St Ave",
+          "Forest Hills",
+          "Forest Hills, NY 11375"
+        ],
+        "geo_accuracy": 8.0,
+        "neighborhoods": [
+          "Forest Hills"
+        ],
+        "postal_code": "11375",
+        "country_code": "US",
+        "address": [
+          "10716 71St Ave"
+        ],
+        "coordinate": {
+          "latitude": 40.72044,
+          "longitude": -73.84416
+        },
+        "state_code": "NY"
+      }
+    },
+    {
+      "is_claimed": false,
+      "rating": 4.5,
+      "mobile_url": "http://m.yelp.com/biz/d-angelos-sausage-truck-staten-island",
+      "rating_img_url": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/99493c12711e/ico/stars/v1/stars_4_half.png",
+      "review_count": 9,
+      "name": "D Angelo's Sausage Truck",
+      "rating_img_url_small": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/a5221e66bc70/ico/stars/v1/stars_small_4_half.png",
+      "url": "http://www.yelp.com/biz/d-angelos-sausage-truck-staten-island",
+      "is_closed": false,
+      "snippet_text": "I was craving a hotdog... And this spot has the best around. No frills ! Classic ! Great tasting dogs !\nThey have them sitting on the grill right next to...",
+      "image_url": "http://s3-media3.fl.yelpcdn.com/bphoto/TnvPAEzr5ON5Myaolf1-BQ/ms.jpg",
+      "categories": [
+        [
+          "Food Trucks",
+          "foodtrucks"
+        ]
+      ],
+      "rating_img_url_large": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/9f83790ff7f6/ico/stars/v1/stars_large_4_half.png",
+      "id": "d-angelos-sausage-truck-staten-island",
+      "snippet_image_url": "http://s3-media1.fl.yelpcdn.com/photo/EhntgWo7VeosWNk2gFcbiw/ms.jpg",
+      "location": {
+        "city": "Staten Island",
+        "display_address": [
+          "72 Dr Woodhaven Blvd",
+          "Middle Village",
+          "Staten Island, NY 10308"
+        ],
+        "geo_accuracy": 9.5,
+        "neighborhoods": [
+          "Middle Village"
+        ],
+        "postal_code": "10308",
+        "country_code": "US",
+        "address": [
+          "72 Dr Woodhaven Blvd"
+        ],
+        "coordinate": {
+          "latitude": 40.7163168957456,
+          "longitude": -73.8620256185389
+        },
+        "state_code": "NY"
+      }
+    },
+    {
+      "is_claimed": false,
+      "rating": 3.5,
+      "mobile_url": "http://m.yelp.com/biz/mexican-food-forest-hills",
+      "rating_img_url": "http://s3-media1.fl.yelpcdn.com/assets/2/www/img/5ef3eb3cb162/ico/stars/v1/stars_3_half.png",
+      "review_count": 17,
+      "name": "Mexican Food",
+      "rating_img_url_small": "http://s3-media1.fl.yelpcdn.com/assets/2/www/img/2e909d5d3536/ico/stars/v1/stars_small_3_half.png",
+      "url": "http://www.yelp.com/biz/mexican-food-forest-hills",
+      "is_closed": false,
+      "snippet_text": "I've slowly embraced the fact that I need tacos in my life more than any other kind(s) of food. Okay, partially true because I'd probably put Chinese Food,...",
+      "image_url": "http://s3-media3.fl.yelpcdn.com/bphoto/rQoQRqNxNAnaca5WCCKsgA/ms.jpg",
+      "categories": [
+        [
+          "Mexican",
+          "mexican"
+        ]
+      ],
+      "rating_img_url_large": "http://s3-media3.fl.yelpcdn.com/assets/2/www/img/bd9b7a815d1b/ico/stars/v1/stars_large_3_half.png",
+      "id": "mexican-food-forest-hills",
+      "snippet_image_url": "http://s3-media1.fl.yelpcdn.com/photo/-eu6hW4pzYvb4FOu_DtNMA/ms.jpg",
+      "location": {
+        "city": "Forest Hills",
+        "display_address": [
+          "71st Ave & Austin St",
+          "Forest Hills",
+          "Forest Hills, NY 11375"
+        ],
+        "geo_accuracy": 7.0,
+        "neighborhoods": [
+          "Forest Hills"
+        ],
+        "postal_code": "11375",
+        "country_code": "US",
+        "address": [
+          "71st Ave & Austin St"
+        ],
+        "coordinate": {
+          "latitude": 40.7201701389815,
+          "longitude": -73.8447921353291
+        },
+        "state_code": "NY"
+      }
+    },
+    {
+      "is_claimed": false,
+      "rating": 4.5,
+      "mobile_url": "http://m.yelp.com/biz/tortas-neza-corona",
+      "rating_img_url": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/99493c12711e/ico/stars/v1/stars_4_half.png",
+      "review_count": 27,
+      "name": "Tortas Neza",
+      "rating_img_url_small": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/a5221e66bc70/ico/stars/v1/stars_small_4_half.png",
+      "url": "http://www.yelp.com/biz/tortas-neza-corona",
+      "is_closed": false,
+      "phone": "3476661517",
+      "snippet_text": "Go Big or Go Home! Order the first item on their menu which is Tortas Pumas. The friendly owner/chef does it best. \n\nPreparation of the amazing Tortas Pumas...",
+      "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/Glvalg63k5_LleGiZSIhpA/ms.jpg",
+      "categories": [
+        [
+          "Mexican",
+          "mexican"
+        ],
+        [
+          "Food Stands",
+          "foodstands"
+        ]
+      ],
+      "display_phone": "+1-347-666-1517",
+      "rating_img_url_large": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/9f83790ff7f6/ico/stars/v1/stars_large_4_half.png",
+      "id": "tortas-neza-corona",
+      "snippet_image_url": "http://s3-media4.fl.yelpcdn.com/photo/zY80MVC3g8xieHYdTZu76Q/ms.jpg",
+      "location": {
+        "city": "Corona",
+        "display_address": [
+          "Juan Bar",
+          "96-15 Roosevelt Ave",
+          "Elmhurst",
+          "Corona, NY 11368"
+        ],
+        "geo_accuracy": 8.0,
+        "neighborhoods": [
+          "Elmhurst"
+        ],
+        "postal_code": "11368",
+        "country_code": "US",
+        "address": [
+          "Juan Bar",
+          "96-15 Roosevelt Ave"
+        ],
+        "coordinate": {
+          "latitude": 40.7493782,
+          "longitude": -73.8687897
+        },
+        "state_code": "NY"
+      }
+    },
+    {
+      "is_claimed": false,
+      "rating": 4.0,
+      "mobile_url": "http://m.yelp.com/biz/los-amigos-chimmy-churry-corona",
+      "rating_img_url": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/c2f3dd9799a5/ico/stars/v1/stars_4.png",
+      "review_count": 23,
+      "name": "Los Amigos Chimmy Churry",
+      "rating_img_url_small": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/f62a5be2f902/ico/stars/v1/stars_small_4.png",
+      "url": "http://www.yelp.com/biz/los-amigos-chimmy-churry-corona",
+      "is_closed": false,
+      "phone": "7189388569",
+      "snippet_text": "Ever since I first tried their steak it's like a must have food from time to time! Gets super busy around opening time 9p-12a. Good thing I live close by :D",
+      "image_url": "http://s3-media4.fl.yelpcdn.com/bphoto/c99i-qEWKOPQ469uju4zNA/ms.jpg",
+      "categories": [
+        [
+          "Latin American",
+          "latin"
+        ],
+        [
+          "Food Trucks",
+          "foodtrucks"
+        ]
+      ],
+      "display_phone": "+1-718-938-8569",
+      "rating_img_url_large": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/ccf2b76faa2c/ico/stars/v1/stars_large_4.png",
+      "id": "los-amigos-chimmy-churry-corona",
+      "snippet_image_url": "http://s3-media2.fl.yelpcdn.com/photo/42gActLwmiJZpOwAuGK1kA/ms.jpg",
+      "location": {
+        "city": "Corona",
+        "display_address": [
+          "Between 111th & 108th On Roosevelt Ave",
+          "Elmhurst",
+          "Corona, NY 11368"
+        ],
+        "geo_accuracy": 9.5,
+        "neighborhoods": [
+          "Elmhurst"
+        ],
+        "postal_code": "11368",
+        "country_code": "US",
+        "address": [
+          "Between 111th & 108th On Roosevelt Ave"
+        ],
+        "coordinate": {
+          "latitude": 40.752095004541,
+          "longitude": -73.8535914288361
+        },
+        "state_code": "NY"
+      }
+    },
+    {
+      "is_claimed": true,
+      "rating": 4.0,
+      "mobile_url": "http://m.yelp.com/biz/tortilleria-nixtamal-corona-4",
+      "rating_img_url": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/c2f3dd9799a5/ico/stars/v1/stars_4.png",
+      "review_count": 557,
+      "name": "Tortilleria Nixtamal",
+      "rating_img_url_small": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/f62a5be2f902/ico/stars/v1/stars_small_4.png",
+      "url": "http://www.yelp.com/biz/tortilleria-nixtamal-corona-4",
+      "is_closed": false,
+      "id": "tortilleria-nixtamal-corona-4",
+      "phone": "7186992434",
+      "snippet_text": "I love the Pozole and horchata here. Pozoles good for a hang over and horchata is more of a water based drink compared to a milk based drink arroz con...",
+      "image_url": "http://s3-media1.fl.yelpcdn.com/bphoto/1WjjHgb5IuXcw4kwNxqBLg/ms.jpg",
+      "categories": [
+        [
+          "Mexican",
+          "mexican"
+        ]
+      ],
+      "display_phone": "+1-718-699-2434",
+      "rating_img_url_large": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/ccf2b76faa2c/ico/stars/v1/stars_large_4.png",
+      "menu_provider": "single_platform",
+      "menu_date_updated": 1434194804,
+      "snippet_image_url": "http://s3-media1.fl.yelpcdn.com/photo/rWkudfSmfh1fQswQ-nueZQ/ms.jpg",
+      "location": {
+        "city": "Corona",
+        "display_address": [
+          "104-05 47th Ave",
+          "Corona, NY 11368"
+        ],
+        "geo_accuracy": 8.0,
+        "postal_code": "11368",
+        "country_code": "US",
+        "address": [
+          "104-05 47th Ave"
+        ],
+        "coordinate": {
+          "latitude": 40.7459297,
+          "longitude": -73.8592682
+        },
+        "state_code": "NY"
+      }
+    },
+    {
+      "is_claimed": true,
+      "rating": 4.0,
+      "mobile_url": "http://m.yelp.com/biz/sammys-halal-food-jackson-heights",
+      "rating_img_url": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/c2f3dd9799a5/ico/stars/v1/stars_4.png",
+      "review_count": 266,
+      "name": "Sammy's Halal Food",
+      "rating_img_url_small": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/f62a5be2f902/ico/stars/v1/stars_small_4.png",
+      "url": "http://www.yelp.com/biz/sammys-halal-food-jackson-heights",
+      "is_closed": false,
+      "phone": "6463219961",
+      "snippet_text": "I seek out every halal cart/food truck in my area and give them a try. \nI had a favorite for the longest time until i tried Sammys halal. \nIt is now my...",
+      "image_url": "http://s3-media4.fl.yelpcdn.com/bphoto/GMBG0WKwoQr6EAy6oQ0VyA/ms.jpg",
+      "categories": [
+        [
+          "Food Stands",
+          "foodstands"
+        ],
+        [
+          "Halal",
+          "halal"
+        ]
+      ],
+      "display_phone": "+1-646-321-9961",
+      "rating_img_url_large": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/ccf2b76faa2c/ico/stars/v1/stars_large_4.png",
+      "id": "sammys-halal-food-jackson-heights",
+      "snippet_image_url": "http://s3-media1.fl.yelpcdn.com/photo/C_RxRZeBgOI5CQNkUmmCeA/ms.jpg",
+      "location": {
+        "city": "Jackson Heights",
+        "display_address": [
+          "73rd St and Broadway",
+          "Jackson Heights",
+          "Jackson Heights, NY 11372"
+        ],
+        "geo_accuracy": 7.0,
+        "neighborhoods": [
+          "Jackson Heights",
+          "Elmhurst"
+        ],
+        "postal_code": "11372",
+        "country_code": "US",
+        "address": [
+          "73rd St and Broadway"
+        ],
+        "coordinate": {
+          "latitude": 40.7471199354554,
+          "longitude": -73.8923904597797
+        },
+        "state_code": "NY"
+      }
+    },
+    {
+      "is_claimed": false,
+      "rating": 4.5,
+      "mobile_url": "http://m.yelp.com/biz/tia-julia-taco-truck-elmhurst",
+      "rating_img_url": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/99493c12711e/ico/stars/v1/stars_4_half.png",
+      "review_count": 12,
+      "name": "Tia Julia Taco Truck",
+      "rating_img_url_small": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/a5221e66bc70/ico/stars/v1/stars_small_4_half.png",
+      "url": "http://www.yelp.com/biz/tia-julia-taco-truck-elmhurst",
+      "is_closed": false,
+      "phone": "9177571633",
+      "snippet_text": "The chicken sandwich is Delicious!!!!!! Comes packed with chicken,  avocado,  cheese, peppers, beans, on a huge roll + pico de gallo. Very satisfying and...",
+      "image_url": "http://s3-media1.fl.yelpcdn.com/bphoto/4ciONWLhgjHbnnQAjSQMKA/ms.jpg",
+      "categories": [
+        [
+          "Mexican",
+          "mexican"
+        ],
+        [
+          "Food Stands",
+          "foodstands"
+        ]
+      ],
+      "display_phone": "+1-917-757-1633",
+      "rating_img_url_large": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/9f83790ff7f6/ico/stars/v1/stars_large_4_half.png",
+      "id": "tia-julia-taco-truck-elmhurst",
+      "snippet_image_url": "http://s3-media4.fl.yelpcdn.com/photo/mJDPjLfWw7QuvOp47wvaRQ/ms.jpg",
+      "location": {
+        "city": "Elmhurst",
+        "display_address": [
+          "Roosevelt Ave & Benham St",
+          "Elmhurst",
+          "Elmhurst, NY 11373"
+        ],
+        "geo_accuracy": 7.0,
+        "neighborhoods": [
+          "Elmhurst"
+        ],
+        "postal_code": "11373",
+        "country_code": "US",
+        "address": [
+          "Roosevelt Ave & Benham St"
+        ],
+        "coordinate": {
+          "latitude": 40.7485313,
+          "longitude": -73.875351
+        },
+        "state_code": "NY"
+      }
+    },
+    {
+      "is_claimed": false,
+      "rating": 4.5,
+      "mobile_url": "http://m.yelp.com/biz/wafels-and-dinges-elmhurst",
+      "rating_img_url": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/99493c12711e/ico/stars/v1/stars_4_half.png",
+      "review_count": 3,
+      "name": "Wafels & Dinges",
+      "rating_img_url_small": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/a5221e66bc70/ico/stars/v1/stars_small_4_half.png",
+      "url": "http://www.yelp.com/biz/wafels-and-dinges-elmhurst",
+      "is_closed": false,
+      "snippet_text": "Welcome to Elmhurst Wafel & Dinges ! What a great addition and change of scenery for those of us used to seeing the bazillion halal food trucks in this...",
+      "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/hO9MaP-Mf_htaFi6RwJI1Q/ms.jpg",
+      "categories": [
+        [
+          "Food Trucks",
+          "foodtrucks"
+        ]
+      ],
+      "rating_img_url_large": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/9f83790ff7f6/ico/stars/v1/stars_large_4_half.png",
+      "id": "wafels-and-dinges-elmhurst",
+      "snippet_image_url": "http://s3-media2.fl.yelpcdn.com/photo/SsAo_EUb0S2YtDDY0kEMwQ/ms.jpg",
+      "location": {
+        "city": "Elmhurst",
+        "display_address": [
+          "55 Rd",
+          "Elmhurst",
+          "Elmhurst, NY 11373"
+        ],
+        "geo_accuracy": 6.0,
+        "neighborhoods": [
+          "Elmhurst"
+        ],
+        "postal_code": "11373",
+        "country_code": "US",
+        "address": [
+          "55 Rd"
+        ],
+        "coordinate": {
+          "latitude": 40.73423,
+          "longitude": -73.8766098
+        },
+        "state_code": "NY"
+      }
+    }
+  ]
+}

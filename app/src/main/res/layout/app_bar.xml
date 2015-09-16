@@ -6,8 +6,10 @@
     android:id="@+id/app_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/PrimaryColor">
-
+    android:background="@color/PrimaryColor"
+    android:minHeight="?android:attr/actionBarSize"
+    android:theme="@style/AppTheme.Base"
+    android:navigationIcon="?attr/homeAsUpIndicator">
 
     <android.support.design.widget.TabLayout
         android:layout_width="match_parent"
@@ -15,7 +17,5 @@
         android:id="@+id/tabs"
         android:elevation="2dp">
     </android.support.design.widget.TabLayout>
-
-
 </android.support.v7.widget.Toolbar>
 

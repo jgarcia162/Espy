@@ -16,13 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-
+import android.widget.TextView;
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
@@ -81,8 +80,8 @@ public class HomeSearchFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt("homePage", 0);
-        title = getArguments().getString("home");
+//        page = getArguments().getInt("homePage", 0);
+//        title = getArguments().getString("home");
 
         RestAdapter mRestAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog(TAG))
@@ -91,6 +90,8 @@ public class HomeSearchFragment extends Fragment
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
         //servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
         // servicesFourSquare.getFeed("40.742472, -73.935381", new FourSquareCallback());
+
+
     }
 
     @Override
@@ -131,28 +132,6 @@ public class HomeSearchFragment extends Fragment
         locationManager.removeUpdates(this);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mEditTextSearch = (EditText) view.findViewById(R.id.search_field_final);
-        mEditTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    performSearch(v.getText().toString(), 20);
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(mEditTextSearch.getWindowToken(), 0);
-
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        //swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
-    }
-
     private void performSearch(String query, int limit) {
         servicesFourSquare.search(query, limit, new FourSquareCallback());
     }
@@ -167,6 +146,22 @@ public class HomeSearchFragment extends Fragment
         // this setups the layout manager (can be done before connecting to internet)
         mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
         mRecyclerViewHeader.attachTo(mRecyclerView, true);
+        mEditTextSearch = (EditText) view.findViewById(R.id.search_field_final);
+
+        mEditTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performSearch(v.getText().toString(), 10);
+
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(mEditTextSearch.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
 
         return view;
     }

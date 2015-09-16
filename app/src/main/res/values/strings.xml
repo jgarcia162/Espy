@@ -11,6 +11,14 @@
         <item>Two Things</item>
         <item>Three Things</item>
     </string-array>
+
+    <string-array name="Distance">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+    </string-array>
     <string name="title_activity_welcome_back">WelcomeBackActivity</string>
     <string name="title_activity_setting">SettingActivity</string>
     <string name="name">Name</string>
@@ -52,7 +60,12 @@
     <string name="unknown_geofence_transition">Unknown Transition</string>
 
     <string name="geofence_transition_notification_text">Click notification to return to app</string>
+
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+
     <string name="userName">Bella Viva</string>
     <string name="favorite">Favorites</string>
     <string name="nearby">Nearby</string>
+
 </resources>

@@ -10,7 +10,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.example.c4q_ac35.espy"
+        applicationId "nyc.c4q_ac35.espy"
         minSdkVersion 19
         targetSdkVersion 22
         versionCode 1
@@ -54,10 +54,10 @@ android {
             keyPassword "123456"
         }
     }
-}
 
+}
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(dir: 'libs', include:  ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.google.android.gms:play-services-maps:7.8.0'
@@ -77,5 +77,4 @@ dependencies {
     compile 'com.bartoszlipinski.recyclerviewheader:library:1.2.0'
     compile files('libs/ormlite-android-4.48.jar')
     compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
-
 }

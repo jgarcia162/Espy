@@ -1,6 +1,7 @@
 package com.example.c4q_ac35.espy;
 
 import android.app.Notification;
+import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -12,6 +13,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -26,12 +29,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
 import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
@@ -49,12 +52,11 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
     private final String TAG = "Espy Main";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
     private static final String LOG_TAG = "MainActivity";
-
     private MenuItem mSearchAction;
-    private Toolbar mToolbar;
+    private AlarmManager mAlarmManager;
+    private android.support.v7.widget.Toolbar mToolbar;
     TabViewPager viewPager;
     MyPagerAdapter adapterViewPager;
-
     PendingIntent mNotificationPendingIntent;
     private boolean mGeofencesAdded;
     private SharedPreferences mSharedPreferences;
@@ -65,47 +67,25 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
     private List<Venue> favoritesList;
     private FloatingActionButton mFab;
 
-    private MyFavoritesHelper databaseHelper = null;
-
-    private MyFavoritesHelper getHelper() {
-        if (databaseHelper == null) {
-            databaseHelper = OpenHelperManager.getHelper(this, MyFavoritesHelper.class);
-        }
-        return databaseHelper;
-    }
+//    private MyFavoritesHelper databaseHelper = null;
+//
+//    private MyFavoritesHelper getHelper() {
+//        if (databaseHelper == null) {
+//            databaseHelper = OpenHelperManager.getHelper(this, MyFavoritesHelper.class);
+//        }
+//        return databaseHelper;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(FavoritesFragment.venueList != null){
-            if(!FavoritesFragment.venueList.isEmpty()){
-       // initData();
-            }
-        }
         setContentView(R.layout.activity_home);
-
         mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
-//        setSupportActionBar(mToolbar);
-//        FAB = (FloatingActionButton) findViewById(R.id.fab);
-        setUpTab();
+        PreferenceManager.setDefaultValues(this, R.xml.user_settings_layout, false);
 
-//        mFab = (FloatingActionButton) findViewById(R.id.plus);
-//
-//        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
-//        ImageView heartIcon = new ImageView(this);
-//        heartIcon.setImageResource(R.drawable.heart_icon);
-//        SubActionButton button1 = itemBuilder.setContentView(heartIcon).build();
-//
-//        ImageView shareIcon = new ImageView(this);
-//        shareIcon.setImageResource(R.drawable.share_icon);
-//        SubActionButton button2 = itemBuilder.setContentView(shareIcon).build();
-//
-//        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
-//                                            .addSubActionView(button1)
-//                                            .addSubActionView(button2)
-//                                            .attachTo(mFab)
-//                                            .build();
+        mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
+//        setSupportActionBar(mToolbar);
+        setUpTab();
 
         if (getIntent().getAction().equals("OPEN_MAP")) {
             viewPager.setCurrentItem(2);
@@ -113,35 +93,32 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
             viewPager.setCurrentItem(1);
         }
         //TODO ALARM TO HANDLE WEEKLY NOTIFICATIONS
-       // setNotificationAlarm();
 
-        mFab = (FloatingActionButton) findViewById(R.id.faveBt);
+        setNotificationAlarm();
 
-        if(!isNetworkOnline() && !checkForWifi()){
-            createNetworkDialog(this);
-        }
+     //  mFab = (FloatingActionButton) findViewById(R.id.faveBt);
+
+//        if(!isNetworkOnline() && !checkForWifi()){
+//            createNetworkDialog(this);
+//        }
 
     }
 
-    public static void addGeofencesFromFavorites(){
-       // EspyApplication.addGeofences();
-    }
 
-    private void initData() {
-        try {
-            for(Venue venue : FavoritesFragment.venueList) {
-                Dao<Venue, Integer> venueDao = getHelper().getVenueDao();
-                Venue v = venue;
-                v.setId(venue.getId());
-                v.setName(venue.getName());
-                v.setLocation(venue.getLocation());
-                venueDao.create(v);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
+//    private void initData() {
+//        try {
+//            for(Venue venue : FavoritesFragment.venueList) {
+//                Dao<Venue, Integer> venueDao = getHelper().getVenueDao();
+//                Venue v = venue;
+//                v.setId(venue.getId());
+//                v.setName(venue.getName());
+//                v.setLocation(venue.getLocation());
+//                venueDao.create(v);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -149,10 +126,9 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
     private void setUpTab() {
         viewPager = (TabViewPager) findViewById(R.id.vpPager);
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.house_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.heart_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.map_icon));
@@ -207,25 +183,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         });
     }
 
-//        private int[] imageResId = {
-//                R.drawable.house_icon,
-//                R.drawable.heart_icon,
-//                R.drawable.map_icon,
-//                R.drawable.user_icon,
-//        };
-//
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            Drawable image = getResources().getDrawable(imageResId[position]);
-//            assert image != null;
-//            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-//            SpannableString sb = new SpannableString(" ");
-//            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-//            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//            return sb;
-//        }
-
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -272,35 +229,19 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         LocationServices.FusedLocationApi.requestLocationUpdates(EspyApplication.getsGoogleApiClient(), mLocationRequest, mLocationListener);
     }
 
-//    private void setNotificationAlarm() {
-//        mNotificationPendingIntent = notificationPendingIntent();
-//
+
+    private void setNotificationAlarm() {
+        mNotificationPendingIntent = notificationPendingIntent();
 //        mAlarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-//        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, Calendar.WEDNESDAY, 10000, mNotificationPendingIntent);
-//    }
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
+        //google calender code from current date to 7*24*60*60*1000
+//        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, Calendar.FRIDAY, 20000, mNotificationPendingIntent);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_espy_main, menu);
-        return true;
+        alarmManager.set(AlarmManager.RTC_WAKEUP, 20000, mNotificationPendingIntent);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent settingsIntent = new Intent(EspyMain.this, SettingActivity.class);
-                EspyMain.this.startActivity(settingsIntent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
 
-    }
+
 
     class MyPagerAdapter extends FragmentStatePagerAdapter {
         private final int numTabs;
@@ -354,6 +295,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         }catch(Exception e){
             e.printStackTrace();
             return false;
+
         }
         return status;
 
@@ -369,10 +311,11 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
             return true;
     }
 
+
     private void createNetworkDialog(Context context){
             new AlertDialog.Builder(context)
                     .setTitle("No Network")
-                    .setMessage("Check your Network Settings")
+                    .setMessage("Please check your Network Settings")
                     .setIcon(R.mipmap.espy_icon)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -389,4 +332,28 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
                     .show();
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_espy_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(EspyMain.this, SettingsActivity.class);
+                EspyMain.this.startActivity(settingsIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
 }

@@ -1,8 +1,5 @@
 package com.example.c4q_ac35.espy;
 
-import android.net.Uri;
-
-import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashMap;
@@ -20,6 +17,8 @@ public class Constants {
     public static final String SHARED_PREFERENCES_NAME = PACKAGE_NAME + ".SHARED_PREFERENCES_NAME";
 
     public static final String GEOFENCES_ADDED_KEY = PACKAGE_NAME + ".GEOFENCES_ADDED_KEY";
+
+    public static final int CONNECTION_FAIL_RESOLUTION_REQUEST = 9000 ;
 
     /**
      * Used to set an expiration time for a geofence. After this amount of time Location Services

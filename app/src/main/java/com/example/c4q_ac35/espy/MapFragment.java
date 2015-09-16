@@ -26,8 +26,6 @@ public class MapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int mapPage = getArguments().getInt("mapPage", 2);
-       String mapActivity = getArguments().getString("map");
 
     }
 

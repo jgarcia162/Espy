@@ -92,7 +92,7 @@ public class EspyApplication extends Application implements
 //                Toast.LENGTH_LONG).show();
             new AlertDialog.Builder(getApplicationContext())
                     .setTitle("No Internet")
-                    .setMessage("Looks like theres no internet right now, try again later!")
+                    .setMessage("Looks like there  is no internet right now, try again later!")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // continue with delete
@@ -111,26 +111,8 @@ public class EspyApplication extends Application implements
     public static void populateGeofenceList() {
         float geofenceRadius = Constants.GEOFENCE_RADIUS_IN_METERS;
 
-        double riteAidLat = 40.742723;
-        double riteAidLng = -73.935131;
-
-//        sGeofenceList.add(new Geofence.Builder()
-//                .setRequestId("Doughnut Plant") //replace with place.getName()
-//
-//                        // Set the circular region of this geofence.
-//                .setCircularRegion(
-//                        riteAidLat, //Replace with place.getLat()
-//                        riteAidLng, // Replace with place.getLong()
-//                        geofenceRadius
-//                )
-//                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-//                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-//                        Geofence.GEOFENCE_TRANSITION_EXIT)
-//                .build());
-
         if(FavoritesFragment.venueList != null) {
             sGeofenceList.clear();
-
             for (Venue venue : FavoritesFragment.venueList) {
                 double venueLat = venue.getLocation().getLat();
                 double venueLong = venue.getLocation().getLng();
