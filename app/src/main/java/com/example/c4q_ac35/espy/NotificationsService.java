@@ -32,7 +32,7 @@ public class NotificationsService extends IntentService {
 //        notificationManager.notify(WEEKLY_NOTIFICATION_ID, weeklyNotification);
     }
 
-    private Notification sendWeeklyNotification(String notificationDetails){
+    public Notification sendWeeklyNotification(final String notificationDetails){
         Intent notificationIntent = new Intent(getApplicationContext(),EspyMain.class);
         notificationIntent.setAction("OPEN_FAVORITES");
 
