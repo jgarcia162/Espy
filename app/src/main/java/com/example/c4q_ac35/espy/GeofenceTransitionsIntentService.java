@@ -44,12 +44,6 @@ public class GeofenceTransitionsIntentService extends IntentService {
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-
-    }
-
-    @Override
     protected void onHandleIntent(Intent intent) {
         NotificationManager geoNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         GeofencingEvent geoFenceEvent = GeofencingEvent.fromIntent(intent);

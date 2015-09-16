@@ -3,10 +3,13 @@ package com.example.c4q_ac35.espy;
 import android.app.Application;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -67,22 +70,8 @@ public class EspyApplication extends Application implements
 
     @Override
     public void onConnected(Bundle bundle) {
-        //        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-        //if(!sGeofenceList.isEmpty()){
-        AsyncTask geofence = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                populateGeofenceList();
-                addGeofences();
-                return null;
-            }
-        };
+        EspyMain.startLocationUpdates();
 
-        geofence.execute();
-
-//        if (mRequestingLocationUpdates) {
-//            startLocationUpdates();
-//        }
         // mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
         Log.i(LOG_TAG, "Google Places API connected.");
     }
@@ -94,35 +83,54 @@ public class EspyApplication extends Application implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
-                + connectionResult.getErrorCode());
+//        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
+//                + connectionResult.getErrorCode());
+//
+//        Toast.makeText(this,
+//                "Google Places API connection failed with error code:" +
+//                        connectionResult.getErrorCode(),
+//                Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(getApplicationContext())
+                    .setTitle("No Internet")
+                    .setMessage("Looks like theres no internet right now, try again later!")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
 
-        Toast.makeText(this,
-                "Google Places API connection failed with error code:" +
-                        connectionResult.getErrorCode(),
-                Toast.LENGTH_LONG).show();
     }
 
-    public void populateGeofenceList() {
+    public static void populateGeofenceList() {
         float geofenceRadius = Constants.GEOFENCE_RADIUS_IN_METERS;
 
-        double riteAidLat = 40.835928;
-        double riteAidLng = -73.940591;
+        double riteAidLat = 40.742723;
+        double riteAidLng = -73.935131;
 
-        sGeofenceList.add(new Geofence.Builder()
-                .setRequestId("Rite Aid") //replace with place.getName()
+//        sGeofenceList.add(new Geofence.Builder()
+//                .setRequestId("Doughnut Plant") //replace with place.getName()
+//
+//                        // Set the circular region of this geofence.
+//                .setCircularRegion(
+//                        riteAidLat, //Replace with place.getLat()
+//                        riteAidLng, // Replace with place.getLong()
+//                        geofenceRadius
+//                )
+//                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+//                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+//                        Geofence.GEOFENCE_TRANSITION_EXIT)
+//                .build());
 
-                        // Set the circular region of this geofence.
-                .setCircularRegion(
-                        riteAidLat, //Replace with place.getLat()
-                        riteAidLng, // Replace with place.getLong()
-                        geofenceRadius
-                )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
         if(FavoritesFragment.venueList != null) {
+            sGeofenceList.clear();
+
             for (Venue venue : FavoritesFragment.venueList) {
                 double venueLat = venue.getLocation().getLat();
                 double venueLong = venue.getLocation().getLng();
@@ -142,6 +150,7 @@ public class EspyApplication extends Application implements
             }
         }
     }
+
     public void addGeofences() {
         if (!sGoogleApiClient.isConnected()) {
             Toast.makeText(this, "Not connected to GoogleApiClient", Toast.LENGTH_LONG).show();
@@ -252,9 +261,10 @@ public class EspyApplication extends Application implements
 
     }
 
-
     private void logSecurityException(SecurityException securityException) {
         Log.e(LOG_TAG, "Invalid location permission. " +
                 "You need to use ACCESS_FINE_LOCATION with geofences", securityException);
     }
+
+
 }

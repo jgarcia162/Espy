@@ -1,71 +1,93 @@
 package com.example.c4q_ac35.espy;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Venue;
-
-import java.util.List;
-
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
+
+import java.sql.SQLException;
+import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
     private final String TAG = "Espy Main";
-
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 900;
-    private AlarmManager mAlarmManager;
     private static final String LOG_TAG = "MainActivity";
 
     private MenuItem mSearchAction;
-    private android.support.v7.widget.Toolbar mToolbar;
-    private FloatingActionButton mFab;
+    private Toolbar mToolbar;
     TabViewPager viewPager;
     MyPagerAdapter adapterViewPager;
+
     PendingIntent mNotificationPendingIntent;
     private boolean mGeofencesAdded;
     private SharedPreferences mSharedPreferences;
     private boolean mRequestingLocationUpdates = true;
-    Location mCurrentLocation;
-    private String mLastUpdateTime;
+    public static Location mCurrentLocation;
+    public static String mLastUpdateTime;
     private List<Venue> mVenueList;
     private List<Venue> favoritesList;
+    private FloatingActionButton mFab;
+
+    private MyFavoritesHelper databaseHelper = null;
+
+    private MyFavoritesHelper getHelper() {
+        if (databaseHelper == null) {
+            databaseHelper = OpenHelperManager.getHelper(this, MyFavoritesHelper.class);
+        }
+        return databaseHelper;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(FavoritesFragment.venueList != null){
+            if(!FavoritesFragment.venueList.isEmpty()){
+       // initData();
+            }
+        }
         setContentView(R.layout.activity_home);
-        mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
 
-        mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
-        setSupportActionBar(mToolbar);
-     //   getSupportActionBar().setLogo(R.drawable.espy_name);
+        mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+        mToolbar = (Toolbar) findViewById(R.id.app_bar);
+//        setSupportActionBar(mToolbar);
+//        FAB = (FloatingActionButton) findViewById(R.id.fab);
         setUpTab();
 
 //        mFab = (FloatingActionButton) findViewById(R.id.plus);
@@ -94,9 +116,33 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
        // setNotificationAlarm();
 
         mFab = (FloatingActionButton) findViewById(R.id.faveBt);
+
+        if(!isNetworkOnline() && !checkForWifi()){
+            createNetworkDialog(this);
+        }
+
     }
 
-        @Override
+    public static void addGeofencesFromFavorites(){
+       // EspyApplication.addGeofences();
+    }
+
+    private void initData() {
+        try {
+            for(Venue venue : FavoritesFragment.venueList) {
+                Dao<Venue, Integer> venueDao = getHelper().getVenueDao();
+                Venue v = venue;
+                v.setId(venue.getId());
+                v.setName(venue.getName());
+                v.setLocation(venue.getLocation());
+                venueDao.create(v);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
@@ -106,17 +152,16 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.house_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.heart_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.map_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user_icon));
 
-        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(adapterViewPager);
 //        tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 //                final int width = viewPager.getWidth();
@@ -142,9 +187,11 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
 
+
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                adapterViewPager.notifyDataSetChanged();
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
@@ -160,7 +207,40 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         });
     }
 
+//        private int[] imageResId = {
+//                R.drawable.house_icon,
+//                R.drawable.heart_icon,
+//                R.drawable.map_icon,
+//                R.drawable.user_icon,
+//        };
+//
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            Drawable image = getResources().getDrawable(imageResId[position]);
+//            assert image != null;
+//            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+//            SpannableString sb = new SpannableString(" ");
+//            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+//            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            return sb;
+//        }
+
+
+
     @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(0, 0))
+                .title("Marker"));
+    }
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        mGoogleApiClient.connect();
+//        populateGeofenceList();
+//        addGeofences();
+//    }
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         NotificationManager pushNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -169,12 +249,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
         Log.i("Intent Message", "NEW INTENT");
     }
-
-    /**
-     * Adds geofences, which sets alerts to be notified when the device enters or exits one of the
-     * specified geofences. Handles the success or failure results returned by addGeofences().
-     */
-
 
     private PendingIntent notificationPendingIntent() {
         if (mNotificationPendingIntent != null) {
@@ -185,20 +259,18 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         return PendingIntent.getService(this, Constants.WEEKLY_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-//    protected void startLocationUpdates() {
-//        LocationRequest mLocationRequest = new LocationRequest();
-//        mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
-//        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        LocationListener mLocationListener = new LocationListener() {
-//            @Override
-//            public void onLocationChanged(Location location) {
-//                mCurrentLocation = location;
-//                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-//                Toast.makeText(getApplicationContext(), mLastUpdateTime, Toast.LENGTH_SHORT).show();
-//            }
-//        };
-//        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
-//    }
+    public static void startLocationUpdates() {
+        LocationRequest mLocationRequest = new LocationRequest();
+        //mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationListener mLocationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                mCurrentLocation = location;
+            }
+        };
+        LocationServices.FusedLocationApi.requestLocationUpdates(EspyApplication.getsGoogleApiClient(), mLocationRequest, mLocationListener);
+    }
 
 //    private void setNotificationAlarm() {
 //        mNotificationPendingIntent = notificationPendingIntent();
@@ -216,59 +288,42 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if(id == R.id.action_settings){
-
-        }
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-
-        //noinspection SimplifiableIfStatement
-        return true;
-    }
-
-
-
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(EspyMain.this, SettingActivity.class);
+                EspyMain.this.startActivity(settingsIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
     }
+
     class MyPagerAdapter extends FragmentStatePagerAdapter {
-        int num_tabs = 4;
-        Fragment[] mFragments;
+        private final int numTabs;
 
-
-        public MyPagerAdapter(FragmentManager fm, int num_tabs) {
+        public MyPagerAdapter(FragmentManager fm, int numTabs) {
             super(fm);
-            this.num_tabs = num_tabs;
-
-            mFragments = new Fragment[4];
-            mFragments[0] = new HomeSearchActivity();
-            mFragments[1] = new FavoritesFragment();
-            mFragments[2] = new MapActivity();
-            mFragments[3] = new UserFragment();
-
+            this.numTabs = numTabs;
         }
 
         @Override
         public int getCount() {
-            return num_tabs;
+            return numTabs;
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return HomeSearchActivity.newInstance(0, "Home");
+                    return HomeSearchFragment.newInstance(0, "Home");
                 case 1:
                     return FavoritesFragment.newInstance(1, "Favorites");
                 case 2:
-                    return MapActivity.newInstance(2, "Map");
+                    return MapFragment.newInstance(2, "Map");
                 case 3:
                     return UserFragment.newInstance(3, "User");
                 default:
@@ -276,40 +331,62 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
             }
         }
 
-        private int[] imageResId = {
-                R.drawable.house_icon,
-                R.drawable.heart_icon,
-                R.drawable.map_icon,
-                R.drawable.user_icon,
-        };
-
-
         @Override
-        public CharSequence getPageTitle(int position) {
-            Drawable image = getResources().getDrawable(imageResId[position]);
-            assert image != null;
-            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-            SpannableString sb = new SpannableString(" ");
-            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            return sb;
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
+    }
+
+
+
+    public boolean isNetworkOnline() {
+        boolean status=false;
+        try{
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getNetworkInfo(0);
+            if (netInfo != null && netInfo.getState()==NetworkInfo.State.CONNECTED) {
+                status= true;
+            }else {
+                netInfo = cm.getNetworkInfo(1);
+                if(netInfo!=null && netInfo.getState()== NetworkInfo.State.CONNECTED)
+                    status= true;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return status;
 
     }
 
-    //ADD TO FAVORITES WHEN BUTTON ON HOLDER IS CLICKED
-    public void addToFavorites(View view){
-        mVenueList = HomeSearchActivity.venueList;
-        //favoritesList = FavoritesFragment.venueList;
-        //TODO FIND HOLDER POSITION
-        //view.
-//        Venue venue = mVenueList.get(position);
-//        favoritesList.add(venue);
+    private boolean checkForWifi(){
+        ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        if(favoritesList != null){
-        Toast.makeText(this,"TESTING",Toast.LENGTH_SHORT).show();
-        }
+        if (!mWifi.isConnected()) {
+            return false;
+        }else
+            return true;
+    }
 
+    private void createNetworkDialog(Context context){
+            new AlertDialog.Builder(context)
+                    .setTitle("No Network")
+                    .setMessage("Check your Network Settings")
+                    .setIcon(R.mipmap.espy_icon)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent networkIntent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                            startActivity(networkIntent);
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
 
     }
 }

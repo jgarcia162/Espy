@@ -1,12 +1,15 @@
 package com.example.c4q_ac35.espy;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
@@ -33,11 +36,11 @@ import retrofit.client.Response;
  */
 
 public class EspyMapFragment extends SupportMapFragment implements Callback<ResponseAPI> {
+    private static final String TAG = "EspyMapFragment";
     GoogleMap googleMap;
-    Location myLocation;
+   public static Location myLocation;
     List<Geofence> mGeofenceList;
     FourSquareAPI servicesFoursquare;
-    float GEOFENCE_RADIUS_IN_METERS = 1000;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -52,29 +55,38 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
 
         String provider = locationManager.getBestProvider(criteria, true);
 
-        myLocation = locationManager.getLastKnownLocation(provider);
+        if(locationManager.getLastKnownLocation(provider) == null){
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("No Location")
+                    .setMessage("Please turn on your Location")
+                    .setIcon(R.mipmap.espy_marker)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent viewIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(viewIntent);
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+        }else{
+            myLocation = locationManager.getLastKnownLocation(provider);
+        }
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); //Choose type of map, normal, terrain, satellite, none
 
-        double lat = 40.722695;
-        double lon = -73.996545;
-
         //Adding a null check
-//        if(myLocation==null){
-//            LocationRequest mLocationRequest = new LocationRequest();
-//            mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
-//            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-//        } else {
-//            LocationRequest mLocationRequest = new LocationRequest();
-//            mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
-//            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-//        }
-        double latitude = myLocation.getLatitude();
-        double longitude = myLocation.getLongitude();
-        LatLng latLng = new LatLng(latitude, longitude);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(13)); // choose default zoom of map
-
+        if(myLocation!=null){
+            double latitude = myLocation.getLatitude();
+            double longitude = myLocation.getLongitude();
+            LatLng latLng = new LatLng(latitude, longitude);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(13)); // choose default zoom of map
+        }
 
         //Set custom icon for markers
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(),
@@ -86,19 +98,23 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
         if(FavoritesFragment.venueList!= null){
             favoriteVenuesList = FavoritesFragment.venueList;
         }else{
-            favoriteVenuesList = HomeSearchActivity.venueList;
+            favoriteVenuesList = HomeSearchFragment.venueList;
         }
-        if(!favoriteVenuesList.isEmpty()){
+        if(favoriteVenuesList != null && !favoriteVenuesList.isEmpty()){
         for(Venue venue: favoriteVenuesList){
             double lati = venue.getLocation().getLat();
             double longi = venue.getLocation().getLng();
             Marker mark = googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(lati,longi))
                     .title(venue.getName()));
-            mark.setSnippet("Phone Number: " + venue.getContact().getPhone());
+            mark.setSnippet( " "+ venue.getLocation().getFormattedAddress());
             mark.isInfoWindowShown();
             mark.setIcon(iconMarker);
         }
+        }else if(favoriteVenuesList == null){
+            Toast.makeText(getActivity().getApplicationContext(),"You don't have any favorites yet!",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getActivity().getApplicationContext(),"You don't have any favorites yet!",Toast.LENGTH_SHORT).show();
         }
     }
 

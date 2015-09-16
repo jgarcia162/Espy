@@ -11,6 +11,7 @@ import java.util.HashMap;
  * Created by c4q-ac35 on 8/16/15.
  */
 public class Constants {
+
     private Constants() {
     }
 
@@ -31,11 +32,11 @@ public class Constants {
      */
     public static final long GEOFENCE_EXPIRATION_IN_MILLISECONDS =
             GEOFENCE_EXPIRATION_IN_HOURS * 60 * 60 * 1000;
-    public static final float GEOFENCE_RADIUS_IN_METERS = 1000; // 1 mile, 1.6 km
+    public static final float GEOFENCE_RADIUS_IN_METERS = 300; // 1 mile, 1.6 km
 
     public static final double GEOFENCE_NOTIFICATION_TIME = 5 * 60 * 1000;
     public static final int WEEKLY_NOTIFICATION_ID = 101;
-    public static final long LOCATION_UPDATE_INTERVAL = 60 * 60 * 1000;
+    public static final long LOCATION_UPDATE_INTERVAL = 60 * 60 * 10000;
     public static final long ALARM_WEEKLY_INTERVAL = 1000 * 60 * 60 * 24 * 7;
 
 
