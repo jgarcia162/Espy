@@ -7,6 +7,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -38,6 +40,7 @@ import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -51,14 +54,14 @@ public class HomeSearchFragment extends Fragment
         implements LocationListener, OnStreetViewPanoramaReadyCallback {
     protected TextView Nearby;
 
-
+    protected int mScrollPosition;
     private String title;
     private int page;
     private VenueAdapter adapter;
     public static final String BASE_API = "https://api.foursquare.com/v2";
     public static final String TAG = "HomeSearchFragment";
     FourSquareAPI servicesFourSquare = null;
-    public static List<Venue> venueList;
+    public static List<Venue> venueList = new ArrayList<>();;
     private boolean resultsFound = false;
     private RecyclerView mRecyclerView;
     private RecyclerViewHeader mRecyclerViewHeader;
@@ -95,11 +98,46 @@ public class HomeSearchFragment extends Fragment
                 .setEndpoint(BASE_API).build();
 
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
+
+
+
+
+//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//                mTotalScrolled += dy;
+//
+//            }
+//        });
         //servicesFourSquare.getFeed("40.7463956,-73.9852992", new FourSquareCallback());
         // servicesFourSquare.getFeed("40.742472, -73.935381", new FourSquareCallback());
 
-
     }
+
+//   Attempt #8 at fixing this search.
+
+//    @Override
+//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+//        super.onViewStateRestored(savedInstanceState);
+//
+//        if(savedInstanceState != null)
+//        {
+//            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(String.valueOf(R.layout.fragment_search_list));
+//            mRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+//        }
+//    }
+//
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putParcelable(String.valueOf(R.layout.fragment_search_list), mRecyclerView.getLayoutManager().onSaveInstanceState());
+//    }
+
+
+
+
 
     @Override
     public void onResume() {
@@ -149,7 +187,8 @@ public class HomeSearchFragment extends Fragment
       //  mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
         mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header1);
-
+        adapter = new VenueAdapter(getActivity(), venueList);
+        mRecyclerView.setAdapter(adapter);
         // this setups the layout manager (can be done before connecting to internet)
         mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
         mRecyclerViewHeader.attachTo(mRecyclerView, true);
@@ -240,10 +279,16 @@ public class HomeSearchFragment extends Fragment
 
             resultsFound = true;
             venueList = responseAPI.getResponse().getVenues();
-
-            adapter = new VenueAdapter(getActivity(), venueList);
-            mRecyclerView.setAdapter(adapter);
+            adapter.setVenues(venueList);
+            mRecyclerView.setVerticalScrollbarPosition(0);
         }
+           // adapter = new VenueAdapter(getActivity(), venueList);
+           // mRecyclerView.setAdapter(adapter);
+
+     //<--------------------Attempt #3 ---------------------->
+           // adapter.notifyItemRangeChanged(0, venueList.size() -1);
+           // adapter.notifyDataSetChanged();
+
 
 
         @Override

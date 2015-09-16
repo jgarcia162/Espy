@@ -29,6 +29,7 @@ import com.example.c4q_ac35.espy.db.FavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Location;
 import com.example.c4q_ac35.espy.foursquare.Menu;
 import com.example.c4q_ac35.espy.foursquare.Venue;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -43,7 +44,7 @@ import butterknife.ButterKnife;
 /**
  * Created by c4q-marbella on 8/22/15.
  */
-public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> {
+public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> implements StickyRecyclerHeadersAdapter {
     private static final String PRE_ENDPOINT = "https://maps.googleapis.com/maps/api/streetview?&size=800x400&location=";
     private static final String TAG = "VenueActivity";
     private Location mLocation;
@@ -248,9 +249,29 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     }
 
     @Override
+    public long getHeaderId(int i) {
+        return 0;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
+        return null;
+    }
+
+    @Override
+    public void onBindHeaderViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
+
+    }
+
+    @Override
     public int getItemCount() {
         return mVenues.size();
 
+    }
+
+    public void setVenues(List<Venue> venues){
+        this.mVenues = venues;
+        notifyDataSetChanged();
     }
 
 }
