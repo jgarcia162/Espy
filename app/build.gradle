@@ -13,8 +13,8 @@ android {
         applicationId "nyc.c4q_ac35.espy"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "3.0"
 
     }
 
