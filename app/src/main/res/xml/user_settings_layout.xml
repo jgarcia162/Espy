@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-                        android:title="Notification Settings"/>
-    <CheckBoxPreference android:title="Weekly"
-                        android:key="EnabledWeekly"
-                        android:dependency="EnabledNotif"/>
-    <CheckBoxPreference android:title="Bi-Weekly"
-                        android:key="EnabledBi-Weekly"
-                        android:dependency="EnabledNotif"/>
-    <RingtonePreference android:title="Ringtone Preference"
-                        android:summary="Select Ringtone"
-                        android:ringtoneType="all"
-                        android:key="Ringtone"
-                        android:dependency="EnabledNotif"/>
+        android:title="Notifications Types"/>
+    <CheckBoxPreference
+        android:key="pref_enablednearby"
+        android:title="Nearby Location"
+        android:defaultValue="true"/>
+    <CheckBoxPreference
+        android:key="pref_enabledweekly"
+        android:title="Weekly"
+        android:defaultValue="true"/>
+    <CheckBoxPreference
+        android:key="pref_enabledbiweekly"
+        android:title="Bi-weekly"/>
     <PreferenceCategory
-                        android:title="Location Settings">
-    <EditTextPreference android:title="Home Address"
-                        android:key="Home"
-                        android:summary="Enter your home address"
-                        android:dialogTitle="Enter Home Address"/>
-    <EditTextPreference android:title="Work Address"
-                        android:key="Work"
-                        android:summary="Enter your work address"
-                        android:dialogTitle="Enter Work Address"/>
-    <EditTextPreference android:title="Other Address"
-                        android:key="Other"
-                        android:summary="Enter your other address"
-                        android:dialogTitle="Enter other Address"/>
-    </PreferenceCategory>
+        android:title="Notification Options"/>
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="pref_notification_sound"
+        android:title="Notification Sound"/>
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_notification_vibrate"
+        android:title="Notification Vibrate"/>
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="pref_notification_light"
+        android:title="Notification Blink"/>
 </PreferenceScreen>

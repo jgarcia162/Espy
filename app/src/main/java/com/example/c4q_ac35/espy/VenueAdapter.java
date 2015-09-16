@@ -91,20 +91,23 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
         final Venue venue = mVenues.get(position);
             holder.name.setText(venue.getName());
-            holder.address.setText(venue.getLocation().getCity());
+            holder.address.setText(""+venue.getLocation().getFormattedAddress());
             holder.phone.setText(venue.getContact().phone);
             holder.favButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(FavoritesFragment.venueList != null){
                     FavoritesFragment.venueList.add(venue);
-
+                        EspyApplication.populateGeofenceList();
+                        EspyMain.startLocationUpdates();
 
                     }else{
                         FavoritesFragment.venueList = new ArrayList<Venue>();
                         FavoritesFragment.venueList.add(venue);
                         Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ",Toast.LENGTH_SHORT).show();
                         holder.favButton.setVisibility(View.INVISIBLE);
+                        EspyApplication.populateGeofenceList();
+                        EspyMain.startLocationUpdates();
                     }
                 }
             });
@@ -138,7 +141,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
 
                 android.support.v7.app.AlertDialog.Builder alert = new android.support.v7.app.AlertDialog.Builder(mContext);
-                alert.setTitle("Espy's Menu");
+                alert.setTitle("Menu");
 
                 WebView wv = new WebView(mContext);
                 wv.loadUrl(holder.menu.getText().toString());

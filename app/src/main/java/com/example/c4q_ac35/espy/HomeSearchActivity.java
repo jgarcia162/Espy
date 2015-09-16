@@ -179,13 +179,10 @@ public class HomeSearchActivity extends Fragment
             }
         });
 
-
-
         //swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
     }
 
     private void performSearch(String query, int limit) {
-
 
         servicesFourSquare.search(query, limit, new FourSquareCallback());
 
@@ -218,7 +215,7 @@ public class HomeSearchActivity extends Fragment
     }
 
     private void updateLocation(Location location) {
-        final String ll = String.format("%g,%g", location.getLatitude(), location.getLongitude());
+        final String ll = String.format("%f,%f", location.getLatitude(), location.getLongitude());
         servicesFourSquare.getFeed(ll, new FourSquareCallback());
     }
 

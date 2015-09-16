@@ -21,43 +21,41 @@
         </FrameLayout>
         </RelativeLayout>
 
-    <TextView
-        tools:ignore="MissingPrefix"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="35sp"
-        android:text="Devicion"
-        android:textColor="#FFFFFF"
-        android:background="@color/PrimaryColor"
-        fontPath="fonts/JosefinSans-Regular.ttf"
-        android:layout_above="@+id/item_address"
-        android:layout_alignStart="@+id/item_address" />
+    <!--<TextView-->
+        <!--tools:ignore="MissingPrefix"-->
+        <!--android:id="@+id/item_name"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="35sp"-->
+        <!--android:textColor="#FFFFFF"-->
+        <!--android:background="@color/PrimaryColor"-->
+        <!--fontPath="fonts/JosefinSans-Regular.ttf"-->
+        <!--android:layout_above="@+id/item_address"-->
+        <!--android:layout_alignStart="@+id/item_address" />-->
 
-    <TextView
-        tools:ignore="MissingPrefix"
-        android:id="@+id/item_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="69 Grand St, Brooklyn, NY 11249"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:background="@color/PrimaryColor"
-        fontPath="fonts/JosefinSans-Regular.ttf"
-        android:layout_above="@+id/item_phone"
-        android:layout_alignParentStart="true" />
+    <!--<TextView-->
+        <!--tools:ignore="MissingPrefix"-->
+        <!--android:id="@+id/item_address"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="#FFFFFF"-->
+        <!--android:textSize="20sp"-->
+        <!--android:background="@color/PrimaryColor"-->
+        <!--fontPath="fonts/JosefinSans-Regular.ttf"-->
+        <!--android:layout_above="@+id/item_phone"-->
+        <!--android:layout_alignParentStart="true" />-->
 
-    <TextView
-        tools:ignore="MissingPrefix"
-        android:id="@+id/item_phone"
-        android:text="(718) 285-6180"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:background="@color/PrimaryColor"
-        fontPath="fonts/JosefinSans-Regular.ttf"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/item_address" />
+    <!--<TextView-->
+        <!--tools:ignore="MissingPrefix"-->
+        <!--android:id="@+id/item_phone"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="#FFFFFF"-->
+        <!--android:textSize="20sp"-->
+        <!--android:background="@color/PrimaryColor"-->
+        <!--fontPath="fonts/JosefinSans-Regular.ttf"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignStart="@+id/item_address" />-->
 
 
 </RelativeLayout>

@@ -36,7 +36,7 @@ public class Constants {
 
     public static final double GEOFENCE_NOTIFICATION_TIME = 5 * 60 * 1000;
     public static final int WEEKLY_NOTIFICATION_ID = 101;
-    public static final long LOCATION_UPDATE_INTERVAL = 60 * 60 * 1000;
+    public static final long LOCATION_UPDATE_INTERVAL = 60 * 60 * 10000;
     public static final long ALARM_WEEKLY_INTERVAL = 1000 * 60 * 60 * 24 * 7;
 
 

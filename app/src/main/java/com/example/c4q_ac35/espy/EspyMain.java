@@ -24,6 +24,9 @@ import android.widget.Toast;
 
 import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Venue;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
@@ -32,6 +35,8 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -51,8 +56,8 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
     private boolean mGeofencesAdded;
     private SharedPreferences mSharedPreferences;
     private boolean mRequestingLocationUpdates = true;
-    Location mCurrentLocation;
-    private String mLastUpdateTime;
+    public static Location mCurrentLocation;
+    public static String mLastUpdateTime;
     private List<Venue> mVenueList;
     private List<Venue> favoritesList;
     private FloatingActionButton mFab;
@@ -232,11 +237,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         Log.i("Intent Message", "NEW INTENT");
     }
 
-    /**
-     * Adds geofences, which sets alerts to be notified when the device enters or exits one of the
-     * specified geofences. Handles the success or failure results returned by addGeofences().
-     */
-
     private PendingIntent notificationPendingIntent() {
         if (mNotificationPendingIntent != null) {
             return mNotificationPendingIntent;
@@ -246,20 +246,18 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         return PendingIntent.getService(this, Constants.WEEKLY_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-//    protected void startLocationUpdates() {
-//        LocationRequest mLocationRequest = new LocationRequest();
-//        mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
-//        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        LocationListener mLocationListener = new LocationListener() {
-//            @Override
-//            public void onLocationChanged(Location location) {
-//                mCurrentLocation = location;
-//                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-//                Toast.makeText(getApplicationContext(), mLastUpdateTime, Toast.LENGTH_SHORT).show();
-//            }
-//        };
-//        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
-//    }
+    public static void startLocationUpdates() {
+        LocationRequest mLocationRequest = new LocationRequest();
+        //mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationListener mLocationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                mCurrentLocation = location;
+            }
+        };
+        LocationServices.FusedLocationApi.requestLocationUpdates(EspyApplication.getsGoogleApiClient(), mLocationRequest, mLocationListener);
+    }
 
 //    private void setNotificationAlarm() {
 //        mNotificationPendingIntent = notificationPendingIntent();
@@ -280,10 +278,15 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(EspyMain.this, SettingActivity.class);
+                EspyMain.this.startActivity(settingsIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
-
-        //noinspection SimplifiableIfStatement
-        return true;
     }
 
     class MyPagerAdapter extends FragmentStatePagerAdapter {

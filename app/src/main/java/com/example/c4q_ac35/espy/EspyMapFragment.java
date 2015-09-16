@@ -37,7 +37,7 @@ import retrofit.client.Response;
 public class EspyMapFragment extends SupportMapFragment implements Callback<ResponseAPI> {
     private static final String TAG = "EspyMapFragment";
     GoogleMap googleMap;
-    Location myLocation;
+   public static Location myLocation;
     List<Geofence> mGeofenceList;
     FourSquareAPI servicesFoursquare;
 
@@ -59,20 +59,14 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); //Choose type of map, normal, terrain, satellite, none
 
         //Adding a null check
-//        if(myLocation==null){
-//            LocationRequest mLocationRequest = new LocationRequest();
-//            mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
-//            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-//        } else {
-//            LocationRequest mLocationRequest = new LocationRequest();
-//            mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
-//            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-//        }
-        double latitude = myLocation.getLatitude();
-        double longitude = myLocation.getLongitude();
-        LatLng latLng = new LatLng(latitude, longitude);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(13)); // choose default zoom of map
+        if(myLocation!=null){
+            double latitude = myLocation.getLatitude();
+            double longitude = myLocation.getLongitude();
+            LatLng latLng = new LatLng(latitude, longitude);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(13)); // choose default zoom of map
+        }
+
 
 
         //Set custom icon for markers
@@ -94,10 +88,11 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
             Marker mark = googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(lati,longi))
                     .title(venue.getName()));
-            mark.setSnippet("Phone Number: " + venue.getLocation().getFormattedAddress());
+            mark.setSnippet( " "+ venue.getLocation().getFormattedAddress());
             mark.isInfoWindowShown();
             mark.setIcon(iconMarker);
         }
+
         }
     }
 
