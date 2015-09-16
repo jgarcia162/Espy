@@ -7,4 +7,10 @@
 
         <color name="AccentColor">#F9E559</color>
 
+        <color name="AccentColor2">#ffc107</color>
+
+        <color name="PrimaryColor2">#00bCD4</color>
+
+        <color name="PrimaryDarkColor2">#0097A7</color>
+
 </resources>

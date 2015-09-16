@@ -70,7 +70,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/shareBt"
                 android:padding="8dp"
-                android:src="@drawable/share_icon"/>
+                android:src="@drawable/share_icon"
+                android:layout_gravity="bottom|right"/>
 
             <!--<ImageButton-->
                 <!--android:layout_width="wrap_content"-->
