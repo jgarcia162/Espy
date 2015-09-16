@@ -5,7 +5,6 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 
 /**
  * Created by c4q-marbella on 9/14/15.
@@ -16,12 +15,10 @@ public class MyPreferenceFragment extends PreferenceFragment implements SharedPr
     public static boolean IS_VIBRATE = false;
     private AudioManager myAudioManager;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.user_settings_layout);
-//
 
        Preference nearbyEnabled = findPreference("pref_enablednearby");
 ////        Preference weeklyEnabled = findPreference("pref_enabledweekly");
@@ -31,7 +28,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements SharedPr
 ////        Preference notiflight = findPreference("pref_notification_light");
 
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
 
 
 //        boolean notifEnabledbt = sharedPreferences.getBoolean("pref_enablednotif", false);

@@ -6,7 +6,7 @@
     <CheckBoxPreference
         android:key="pref_enablednearby"
         android:title="Nearby Location"
-        android:defaultValue="false"/>
+        android:defaultValue="true"/>
     <CheckBoxPreference
         android:key="pref_enabledweekly"
         android:title="Weekly"
