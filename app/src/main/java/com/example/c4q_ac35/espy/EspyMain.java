@@ -237,7 +237,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         //google calender code from current date to 7*24*60*60*1000
 //        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, Calendar.FRIDAY, 20000, mNotificationPendingIntent);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, 20000, mNotificationPendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, Constants.ALARM_WEEKLY_INTERVAL, mNotificationPendingIntent);
     }
 
 

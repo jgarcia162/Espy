@@ -1,154 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:background="#FFFFFF"
-    android:orientation="vertical"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/PrimaryColor"
+    android:paddingBottom="@dimen/activity_recycleV_margin"
+    android:paddingLeft="@dimen/activity_recycleH_margin"
+    android:paddingRight="@dimen/activity_recycleH_margin"
+    android:paddingTop="@dimen/activity_recycleV_margin">
 
-    <include layout="@layout/app_bar" />
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:orientation="vertical">
-        ​
-        <LinearLayout
-            android:id="@+id/viewA"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:background="@color/PrimaryColor"
-            android:orientation="vertical">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/historylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top" />
 
-            <TextView
-                tools:ignore="MissingPrefix"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:textSize="50sp"
-                android:text="Great Explorer"
-                android:padding="10dp"
-                android:layout_gravity="center_vertical"
-                fontPath="fonts/JosefinSans-SemiBold.ttf"/>
+    <com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal|top">
 
-            <TextView
-                tools:ignore="MissingPrefix"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:textSize="25sp"
-                android:text="New York, NY"
-                android:padding="10dp"
-                android:layout_gravity="center_vertical"
-                fontPath="fonts/JosefinSans-SemiBold.ttf"/>
+        <TextView
+            android:id="@+id/history_text"
+            fontPath="fonts/JosefinSans-Bold.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Places I\'ve Been"
+            android:textColor="#FFFFFF"
+            android:textSize="35sp"
+            tools:ignore="MissingPrefix" />
 
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/viewB"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.4"
-            android:layout_margin="10dp"
-            android:background="#FFFFFF">
-
-            <Button
-                tools:ignore="MissingPrefix"
-                android:id="@+id/fave_number"
-                android:background="@drawable/circle"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:text="0"
-                android:textSize="30sp"
-                android:textColor="#FFFFFF"
-                fontPath="fonts/JosefinSans-SemiBold.ttf"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_alignTop="@+id/been_to_number"
-                android:layout_alignParentStart="true" />
-
-            <TextView
-                tools:ignore="MissingPrefix"
-                android:text="favorites"
-                android:textColor="@color/PrimaryColor"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:layout_width="75dp"
-                android:layout_height="wrap_content"
-                fontPath="fonts/JosefinSans-SemiBold.ttf"
-                android:id="@+id/textView"
-                android:layout_alignTop="@+id/beenNum"
-                android:layout_centerHorizontal="true" />
-
-            <Button
-                tools:ignore="MissingPrefix"
-                android:id="@+id/been_to_number"
-                android:background="@drawable/circle"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:text="1"
-                android:textSize="30sp"
-                android:textColor="#FFFFFF"
-                fontPath="fonts/JosefinSans-SemiBold.ttf"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true" />
-
-            <TextView
-                tools:ignore="MissingPrefix"
-                android:text="Visited"
-                android:textColor="@color/PrimaryColor"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:layout_margin="20dp"
-                android:layout_width="75dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/been_to_number"
-                android:id="@+id/beenNum"
-                fontPath="fonts/JosefinSans-SemiBold.ttf"/>
-
-            <Button
-                tools:ignore="MissingPrefix"
-                android:id="@+id/recommended_number"
-                android:background="@drawable/circle"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:text="0"
-                android:textSize="30sp"
-                android:textColor="#FFFFFF"
-                fontPath="fonts/JosefinSans-SemiBold.ttf"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_alignTop="@+id/been_to_number"
-                android:layout_alignParentEnd="true" />
-
-            <TextView
-                tools:ignore="MissingPrefix"
-                android:text="Shared"
-                android:textColor="@color/PrimaryColor"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:layout_width="75dp"
-                android:layout_height="wrap_content"
-                fontPath="fonts/JosefinSans-SemiBold.ttf"
-                android:layout_alignTop="@+id/textView"
-                android:layout_alignEnd="@+id/recommended_number" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/profile_image"
-        android:layout_width="125dp"
-        android:layout_height="125dp"
-        android:src="@drawable/name_color"
-        android:layout_margin="30dp"
-        app:border_width="0dp"
-        app:layout_anchor="@id/viewA"
-        app:layout_anchorGravity="bottom|right|end" />
-</android.support.design.widget.CoordinatorLayout>
+    </com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader>
+</FrameLayout>

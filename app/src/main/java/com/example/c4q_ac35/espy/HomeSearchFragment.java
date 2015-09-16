@@ -2,6 +2,7 @@ package com.example.c4q_ac35.espy;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -9,10 +10,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -200,7 +203,7 @@ public class HomeSearchFragment extends Fragment
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    performSearch(v.getText().toString(), 10);
+                    performSearch(v.getText().toString(), 20);
 
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(mEditTextSearch.getWindowToken(), 0);
@@ -311,7 +314,23 @@ public class HomeSearchFragment extends Fragment
         boolean isNetworkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
         if (!isGPSEnabled && !isNetworkEnabled) {
-            // no network provider is enabled
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("No Network")
+                    .setMessage("Please check your Network Settings")
+                    .setIcon(R.mipmap.espy_icon)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent networkIntent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                            startActivity(networkIntent);
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
         } else {
             // First get location from Network Provider
             if (isNetworkEnabled) {

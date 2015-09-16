@@ -66,6 +66,7 @@
 
     <string name="userName">Bella Viva</string>
     <string name="favorite">Favorites</string>
+    <string name="history">Places I\'ve Been</string>
     <string name="nearby">Nearby</string>
 
 </resources>

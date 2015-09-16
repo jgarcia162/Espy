@@ -2,13 +2,25 @@ package com.example.c4q_ac35.espy;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
+import com.example.c4q_ac35.espy.foursquare.Venue;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserFragment extends Fragment {
-    ImageView userPic;
+    public static List<Venue> historyList = new ArrayList<Venue>();
+    private RecyclerView hRecyclerView;
+    private RecyclerViewHeader hRecyclerViewHeader;
+    private VenueAdapter adapter;
+
 
 
     public static UserFragment newInstance(int page, String title) {
@@ -30,6 +42,14 @@ public class UserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         //userPic = (ImageView) view.findViewById(R.id.user_pic);
+        hRecyclerView = (RecyclerView) view.findViewById(R.id.historylist);
+        hRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header);
+        hRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+        hRecyclerViewHeader.attachTo(hRecyclerView, true);
+        if (historyList != null) {
+            adapter = new VenueAdapter(getActivity(), historyList);
+            hRecyclerView.setAdapter(adapter);
+        }
         return view;
     }
 }

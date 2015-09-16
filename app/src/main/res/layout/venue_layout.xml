@@ -92,8 +92,6 @@
                     tools:ignore="MissingPrefix"/>
                   </LinearLayout>
                 ​​
->>>>>>> f275176ee41ee2b0f72b46489cc84af3d8adb943
-
                 <TextView
                     android:id="@+id/item_address"
                     fontPath="fonts/JosefinSans-Regular.ttf"
@@ -158,6 +156,15 @@
                         android:src="@drawable/ic_share"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_weight="1"/>
+
+                    <ImageButton
+                        android:id="@+id/done"
+                        android:src="@drawable/ic_marker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_weight="1"
+                        />
                     ​
                 </LinearLayout>
 

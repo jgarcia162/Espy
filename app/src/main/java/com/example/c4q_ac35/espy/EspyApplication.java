@@ -103,7 +103,6 @@ public class EspyApplication extends Application implements
                             // do nothing
                         }
                     })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
     }
