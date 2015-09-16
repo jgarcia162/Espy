@@ -70,7 +70,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         //TODO ALARM TO HANDLE WEEKLY NOTIFICATIONS
         setNotificationAlarm();
 
-       mFab = (FloatingActionButton) findViewById(R.id.faveBt);
+     //  mFab = (FloatingActionButton) findViewById(R.id.faveBt);
 
     }
 

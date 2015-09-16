@@ -10,9 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.c4q_ac35.espy.db.FavoritesHelper;
@@ -21,7 +21,6 @@ import com.example.c4q_ac35.espy.foursquare.Venue;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -46,9 +45,9 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         TextView phone;
         @Bind(R.id.venue_picture)
         ImageView mImageViewVenue;
-        //        @Bind(R.id.menubt)
-//        ImageButton menuBt;
-        @Bind(R.id.plus)
+        @Bind(R.id.menu)
+        ImageButton menuBt;
+      //  @Bind(R.id.plus)
         FloatingActionButton favButton;
 //        @Bind(R.id.shareBt)
 //        ImageView mShareButton;
@@ -91,21 +90,21 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         holder.address.setText(venue.getLocation().getCity());
         holder.phone.setText(venue.getContact().phone);
 //        holder.ratingBar.setText("" + venue.getStats().getUsersCount());
-        holder.favButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (FavoritesFragment.venueList != null) {
-                    FavoritesFragment.venueList.add(venue);
-                } else {
-                    FavoritesFragment.venueList = new ArrayList<Venue>();
-                    FavoritesFragment.venueList.add(venue);
-                    Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ", Toast.LENGTH_SHORT).show();
-                    holder.favButton.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
-//            final double venueLat = venue.getLocation().getLat();
+//        holder.favButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (FavoritesFragment.venueList != null) {
+//                    FavoritesFragment.venueList.add(venue);
+//                } else {
+//                    FavoritesFragment.venueList = new ArrayList<Venue>();
+//                    FavoritesFragment.venueList.add(venue);
+//                    Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ", Toast.LENGTH_SHORT).show();
+//                    holder.favButton.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        });
+//
+////            final double venueLat = venue.getLocation().getLat();
 //            final double venueLon = venue.getLocation().getLng();
 
         holder.phone.setOnClickListener(new View.OnClickListener() {

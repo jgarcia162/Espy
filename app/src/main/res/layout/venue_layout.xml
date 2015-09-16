@@ -73,10 +73,13 @@
                     android:orientation="horizontal">
                     ​
                 <ImageButton
-                    android:layout_width="wrap_content"
+                    android:layout_width="28dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/distance_marker"/>
+                    android:src="@drawable/ic_marker"
+                    android:id="@+id/distance_marker"
+                    style="?android:attr/borderlessButtonStyle"/>
                 <TextView
+                    android:paddingTop="8dp"
                     android:id="@+id/item_distance"
                     fontPath="fonts/JosefinSans-Regular.ttf"
                     android:layout_width="wrap_content"
@@ -84,7 +87,7 @@
                     android:layout_margin="3dp"
                     android:text="distance"
                     android:textColor="#218C8D"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     tools:ignore="MissingPrefix"/>
                   </LinearLayout>
                 ​
@@ -125,7 +128,7 @@
 
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     ​
@@ -134,21 +137,29 @@
                         android:id="@+id/favorite_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fav."/>
+                        android:src="@drawable/ic_fave"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_weight="1"/>
                     ​
 
                     <ImageButton
                         android:id="@+id/menu"
+                        android:src="@drawable/ic_menu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="menu"/>
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_weight="1"
+                        />
                     ​
 
                     <ImageButton
                         android:id="@+id/share_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="share"/>
+                        android:text="share"
+                        android:src="@drawable/ic_share"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_weight="1"/>
                     ​
                 </LinearLayout>
                 ​
