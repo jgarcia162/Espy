@@ -69,6 +69,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         ImageButton favButton;
         @Bind(R.id.share_button)
         ImageView mShareButton;
+        @Bind(R.id.done)
+        ImageButton doneButton;
         @Bind(R.id.distance_marker)
         ImageButton distanceMaker;
         @Bind(R.id.item_distance)
@@ -95,7 +97,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public VenueAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.venue_layout, parent, false);
-        Log.d(TAG, "K Mierda ma loca esta: " + itemView);
 
         return new VenueAdapter.ViewHolder(itemView);
 
@@ -116,50 +117,46 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         holder.favButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (FavoritesFragment.venueList != null) {
+                if (FavoritesFragment.venueList != null
+                        && !FavoritesFragment.venueList.contains(venue)) {
                     FavoritesFragment.venueList.add(venue);
 //                    EspyMain.startLocationUpdates();
 
                 } else {
                     FavoritesFragment.venueList = new ArrayList<Venue>();
                     FavoritesFragment.venueList.add(venue);
-                    Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext(), "Added " + venue.getName() + " to Favorites ", Toast.LENGTH_SHORT).show();
                     holder.favButton.setVisibility(View.INVISIBLE);
                     //holder.favButton.setEnabled(false);
 //                    EspyMain.startLocationUpdates();
                 }
 
                 EspyApplication.populateGeofenceList();
-                ((EspyApplication)mContext.getApplicationContext()).addGeofences();
+                ((EspyApplication) mContext.getApplicationContext()).addGeofences();
             }
         });
 
+        holder.doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(FavoritesFragment.venueList != null
+                        && !FavoritesFragment.venueList.isEmpty()
+                        && !UserFragment.historyList.contains(venue)){
+                    FavoritesFragment.venueList.remove(venue);
+                    Toast.makeText(v.getContext(),"NICE!", Toast.LENGTH_SHORT).show();
+                    UserFragment.historyList.add(venue);
+                    holder.doneButton.setVisibility(View.INVISIBLE);
+
+                }else {
+
+                }
+            }
+        });
 
         if (venue.getMenu() != null) {
             holder.menu.setText(venue.getMenu().getMobileUrl());
             holder.menu.setVisibility(View.INVISIBLE);
         }
-
-//            final double venueLat = venue.getLocation().getLat();
-//            final double venueLon = venue.getLocation().getLng();
-
-
-//        holder.favButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (FavoritesFragment.venueList != null) {
-//                    FavoritesFragment.venueList.add(venue);
-//                } else {
-//                    FavoritesFragment.venueList = new ArrayList<Venue>();
-//                    FavoritesFragment.venueList.add(venue);
-//                    Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ", Toast.LENGTH_SHORT).show();
-//                    holder.favButton.setVisibility(View.INVISIBLE);
-//                }
-//            }
-//        });
-//
-////            final double venueLat = venue.getLocation().getLat();
-//            final double venueLon = venue.getLocation().getLng();
 
         holder.phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,9 +185,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         holder.menuBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Todo: create a webview for menu items
                 android.support.v7.app.AlertDialog.Builder alert = new android.support.v7.app.AlertDialog.Builder(mContext);
-                alert.setTitle("Espy's Menu");
+                alert.setTitle("Menu");
 
                 WebView wv = new WebView(mContext);
                 wv.loadUrl(holder.menu.getText().toString());
