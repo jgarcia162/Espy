@@ -54,9 +54,9 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        page = getArguments().getInt("myListPage", 1);
-        title = getArguments().getString("myList");
+//
+//        page = getArguments().getInt("myListPage", 1);
+//        title = getArguments().getString("myList");
 
         //RestAdapter mRestAdapter = new RestAdapter.Builder()
 //                .setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog(TAG))
@@ -85,7 +85,6 @@ public class FavoritesFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), "Add something to your favorites", Toast.LENGTH_SHORT).show();
         }
-
         Log.d(TAG, "recycleviwerHeader");
 
         return view;

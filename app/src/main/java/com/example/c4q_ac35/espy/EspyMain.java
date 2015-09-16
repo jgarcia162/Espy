@@ -51,7 +51,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
     private List<Venue> mVenueList;
     private List<Venue> favoritesList;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +59,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_layout, false);
 
         mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
-        setSupportActionBar(mToolbar);
+//        setSupportActionBar(mToolbar);
         setUpTab();
 
         if (getIntent().getAction().equals("OPEN_MAP")) {
@@ -71,7 +70,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         //TODO ALARM TO HANDLE WEEKLY NOTIFICATIONS
         setNotificationAlarm();
 
-       mFab = (FloatingActionButton) findViewById(R.id.faveBt);
+     //  mFab = (FloatingActionButton) findViewById(R.id.faveBt);
 
     }
 
@@ -82,7 +81,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
     private void setUpTab() {
         viewPager = (TabViewPager) findViewById(R.id.vpPager);
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -252,7 +250,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         }
 
     }
-
 
     //ADD TO FAVORITES WHEN BUTTON ON HOLDER IS CLICKED
     public void addToFavorites(View view) {

@@ -17,11 +17,12 @@
     <PreferenceCategory
         android:title="Notification Options"/>
     <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="pref_notification_sound"
-        android:title="Notification Sound"/>
-    <CheckBoxPreference
         android:defaultValue="true"
+        android:key="pref_notification_sound"
+        android:title="Notification Sound"
+       />
+    <CheckBoxPreference
+        android:defaultValue="false"
         android:key="pref_notification_vibrate"
         android:title="Notification Vibrate"/>
     <CheckBoxPreference

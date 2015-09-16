@@ -1,19 +1,18 @@
 package com.example.c4q_ac35.espy;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-
 import android.net.Uri;
-
-import android.graphics.Typeface;
-import android.location.LocationManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +24,7 @@ import com.example.c4q_ac35.espy.foursquare.Venue;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +35,7 @@ import butterknife.ButterKnife;
  * Created by c4q-marbella on 8/22/15.
  */
 public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> {
-  private static final String PRE_ENDPOINT = "https://maps.googleapis.com/maps/api/streetview?&size=800x400&location=";
+    private static final String PRE_ENDPOINT = "https://maps.googleapis.com/maps/api/streetview?&size=800x400&location=";
     private static final String TAG = "VenueActivity";
     private Location mLocation;
     public List<Venue> mVenues;
@@ -50,15 +50,17 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         TextView phone;
         @Bind(R.id.venue_picture)
         ImageView mImageViewVenue;
-//        @Bind(R.id.menubt)
-//        ImageButton menuBt;
-        @Bind(R.id.plus)
-        FloatingActionButton favButton;
-//        @Bind(R.id.shareBt)
-//        ImageView mShareButton;
-//        @Bind(R.id.ratingBar1)
-//        TextView ratingBar;
-
+        @Bind(R.id.menu)
+        ImageButton menuBt;
+        @Bind(R.id.favorite_button)
+        ImageButton favButton;
+        @Bind(R.id.share_button)
+        ImageView mShareButton;
+        @Bind(R.id.distance_marker)
+        ImageButton distanceMaker;
+        @Bind(R.id.item_distance)
+        TextView distance;
+        @Bind(R.id.menu_txt) TextView menu;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -72,7 +74,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         this.mContext = context;
         this.mVenues = venues;
     }
-
 
 
     @Override
@@ -93,7 +94,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
         //if(venue.getCategories().equals("food") && venue.getCategories().equals("nightlife spot")) {
         holder.name.setText(venue.getName());
-        holder.address.setText(venue.getLocation().getCity());
+        String address = venue.getLocation().getFormattedAddress().toString();
+        holder.address.setText(address.substring(1, address.length()-1));
         holder.phone.setText(venue.getContact().phone);
 //        holder.ratingBar.setText("" + venue.getStats().getUsersCount());
         holder.favButton.setOnClickListener(new View.OnClickListener() {
@@ -104,13 +106,34 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
                     }else{
                         FavoritesFragment.venueList = new ArrayList<Venue>();
                         FavoritesFragment.venueList.add(venue);
-                        Toast.makeText(view.getContext(),FavoritesFragment.venueList.size() + " Favorites ",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ", Toast.LENGTH_SHORT).show();
                         holder.favButton.setVisibility(View.INVISIBLE);
                     }
                 }
         });
+        DecimalFormat df2 = new DecimalFormat("###.##");
+        holder.distance.setText(df2.format(venue.getLocation().getDistance() * (0.000621371)) + " mi");
 
-//            final double venueLat = venue.getLocation().getLat();
+
+        if (venue.getMenu() != null) {
+            holder.menu.setText(venue.getMenu().getMobileUrl());
+            holder.menu.setVisibility(View.INVISIBLE);
+        }
+//        holder.favButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (FavoritesFragment.venueList != null) {
+//                    FavoritesFragment.venueList.add(venue);
+//                } else {
+//                    FavoritesFragment.venueList = new ArrayList<Venue>();
+//                    FavoritesFragment.venueList.add(venue);
+//                    Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ", Toast.LENGTH_SHORT).show();
+//                    holder.favButton.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        });
+//
+////            final double venueLat = venue.getLocation().getLat();
 //            final double venueLon = venue.getLocation().getLng();
 
         holder.phone.setOnClickListener(new View.OnClickListener() {
@@ -123,26 +146,49 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             }
         });
 
-//        holder.mShareButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                String shareIntent= new Intent();
-//                Intent sendInvite = new Intent();
-//                sendInvite.setAction(Intent.ACTION_SEND);
-//                sendInvite.putExtra(Intent.EXTRA_TEXT, venue.getName() + venue.getLocation().getFormattedAddress());
-//                sendInvite.setType("text/plain");
-//                mContext.startActivity(sendInvite);
-//
-//                Log.d(TAG, "share button:" + venue.getName() + venue.getLocation().getFormattedAddress());
-//            }
-//        });
-//
-//        holder.menuBt.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //Todo: create a webview for menu items
-//            }
-//        });
+        holder.mShareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent sendInvite = new Intent();
+                sendInvite.setAction(Intent.ACTION_SEND);
+                sendInvite.putExtra(Intent.EXTRA_TEXT, venue.getName() + venue.getLocation().getFormattedAddress());
+                sendInvite.setType("text/plain");
+                mContext.startActivity(sendInvite);
+
+                Log.d(TAG, "share button:" + venue.getName() + venue.getLocation().getFormattedAddress());
+            }
+        });
+
+        holder.menuBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Todo: create a webview for menu items
+                android.support.v7.app.AlertDialog.Builder alert = new android.support.v7.app.AlertDialog.Builder(mContext);
+                alert.setTitle("Espy's Menu");
+
+                WebView wv = new WebView(mContext);
+                wv.loadUrl(holder.menu.getText().toString());
+                wv.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        view.loadUrl(url);
+
+                        return true;
+                    }
+                });
+
+                alert.setView(wv);
+                alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+
+            }
+        });
 
         mLocation = venue.getLocation();
 
@@ -165,11 +211,12 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public int getItemCount() {
         return mVenues.size();
     }
-    private void addToFavorites(String name,String address,String phone, String hours, String tableName, double lat,double lon,SQLiteDatabase database){
-        FavoritesHelper.insertRow(name,address,phone,hours, tableName,lat,lon,database);
+
+    private void addToFavorites(String name, String address, String phone, String hours, String tableName, double lat, double lon, SQLiteDatabase database) {
+        FavoritesHelper.insertRow(name, address, phone, hours, tableName, lat, lon, database);
     }
 
-    private void addToFaves(View v,int position){
+    private void addToFaves(View v, int position) {
 
     }
 }

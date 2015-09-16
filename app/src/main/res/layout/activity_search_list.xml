@@ -4,11 +4,6 @@
               android:layout_height="match_parent"
               android:background="@color/PrimaryColor">
 <!--tools:context=".MainActivity"-->
-
-
-<include layout="@layout/app_bar" />
-
-
 <android.support.v7.widget.RecyclerView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,7 +15,7 @@
 <com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader
     android:id="@+id/header1"
     android:layout_width="match_parent"
-    android:layout_height="125dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal|top">
     ​
     <RelativeLayout
@@ -28,11 +23,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         ​
-        ​
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            ​
+
             <EditText
                 android:id="@+id/search_field_final"
                 android:layout_width="match_parent"
@@ -41,7 +35,6 @@
                 android:ems="10"
                 android:hint="Search"
                 android:inputType="textNoSuggestions" />
-
 
             <TextView
                 tools:ignore="MissingPrefix"
@@ -54,7 +47,6 @@
                 android:id="@+id/nearby_text"
                 android:textColor="#FFFFFF"
                 fontPath="fonts/JosefinSans-Bold.ttf"/>
-
 
         </android.support.design.widget.TextInputLayout>
     </RelativeLayout>
