@@ -151,7 +151,7 @@
         android:layout_width="125dp"
         android:layout_height="125dp"
         android:layout_margin="30dp"
-        android:src="@drawable/elvis_profile"
+        android:src="@drawable/espy_name"
         app:border_width="0dp"
         app:layout_anchor="@id/viewA"
         app:layout_anchorGravity="bottom|right|end"/>
