@@ -167,7 +167,7 @@ public class HomeSearchActivity extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_search_list, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
-        mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header1);
+       mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header1);
 
         mEditTextSearch = (EditText) view.findViewById(R.id.search_field_final);
 

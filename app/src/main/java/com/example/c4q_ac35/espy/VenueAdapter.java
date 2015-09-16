@@ -92,7 +92,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
         //if(venue.getCategories().equals("food") && venue.getCategories().equals("nightlife spot")) {
         holder.name.setText(venue.getName());
-        holder.address.setText(venue.getLocation().getCity() + " ,"+ venue.getLocation().getState());
+        String address = venue.getLocation().getFormattedAddress().toString();
+        holder.address.setText(address.substring(1, address.length()-1));
         holder.phone.setText(venue.getContact().phone);
         DecimalFormat df2 = new DecimalFormat("###.##");
         holder.distance.setText(df2.format(venue.getLocation().getDistance() * (0.000621371)) + " mi");

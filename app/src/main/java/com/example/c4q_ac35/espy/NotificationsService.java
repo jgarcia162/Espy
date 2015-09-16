@@ -24,6 +24,7 @@ public class NotificationsService extends IntentService {
     protected static final String TAG = "notifications-service";
     protected boolean soundNotification = false;
     protected boolean flashNotification = false;
+    protected boolean notifVibrate = false;
     public NotificationsService() {
         super(TAG);
     }
@@ -31,12 +32,10 @@ public class NotificationsService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-//        Toast.makeText(this,"TESTING",Toast.LENGTH_SHORT).show();
-
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         boolean nearbyEnabled = sharedPreferences.getBoolean("pref_enablednearby", false);
         boolean weeklyEnabled = sharedPreferences.getBoolean("pref_enabledweekly", false);
-        boolean notifVibrate = sharedPreferences.getBoolean("pref_notification_vibrate", false);
+        notifVibrate = sharedPreferences.getBoolean("pref_notification_vibrate", false);
         Log.d(TAG, "sharedPreferences:" + nearbyEnabled + weeklyEnabled + notifVibrate);
 
         soundNotification = sharedPreferences.getBoolean("pref_notification_sound",false);
@@ -44,7 +43,7 @@ public class NotificationsService extends IntentService {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if(weeklyEnabled){
-            Notification weeklyNotification = sendWeeklyNotification("Hey try something new this week!");
+            Notification weeklyNotification = sendWeeklyNotification("Discover a new place this week!");
             notificationManager.notify(WEEKLY_NOTIFICATION_ID, weeklyNotification);
         }
 
@@ -81,7 +80,11 @@ public class NotificationsService extends IntentService {
         }
 
         if(flashNotification){
-           builder = builder.setLights(Color.argb(0,Color.BLUE,Color.YELLOW,Color.GREEN),200,200);
+           builder = builder.setLights(Color.BLUE, 3000, 3000);
+        }
+
+        if(notifVibrate){
+            builder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
         }
             return builder.build();
     }

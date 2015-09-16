@@ -45,7 +45,7 @@
                     app:sriv_right_top_corner_radius="10dip"/>
                 ​
             </LinearLayout>
-            ​
+
 
             <LinearLayout
                 android:id="@+id/layout_info"
@@ -90,18 +90,7 @@
                     android:textSize="24sp"
                     tools:ignore="MissingPrefix"/>
                   </LinearLayout>
-                ​
-                <!--<TextView-->
-                <!--tools:ignore="MissingPrefix"-->
-                <!--android:id="@+id/distance_text"-->
-                <!--android:text="250 ft"-->
-                <!--android:textSize="20sp"-->
-                <!--android:textColor="#218C8D"-->
-                <!--android:layout_margin="3dp"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--fontPath="fonts/JosefinSans-Regular.ttf"/>-->
-                ​
+                ​​
 
                 <TextView
                     android:id="@+id/item_address"
@@ -111,7 +100,7 @@
                     android:layout_margin="3dp"
                     android:text="69 Grand St, Brooklyn, NY 11249"
                     android:textColor="#218C8D"
-                    android:textSize="20sp"
+                    android:textSize="23sp"
                     tools:ignore="MissingPrefix"/>
                 ​
 
@@ -123,8 +112,9 @@
                     android:layout_margin="3dp"
                     android:text="(718) 285-6180"
                     android:textColor="#218C8D"
-                    android:textSize="20sp"
-                    tools:ignore="MissingPrefix"/>
+                    android:textSize="23sp"
+                    tools:ignore="MissingPrefix"
+                    android:autoLink="phone"/>
 
                 <TextView
                     android:id="@+id/menu_txt"
