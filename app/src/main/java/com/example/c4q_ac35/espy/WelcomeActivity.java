@@ -40,6 +40,19 @@ public class WelcomeActivity extends AppCompatActivity {
 //            }
 //        });
 
+
+//Todo: add vanice's splash@@@
+
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        boolean firstOpened = preferences.getBoolean("first_opened", true);
+//        if(firstOpenened) {
+//            //showWelcomeScreen();
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.putBoolean("first_opened", false);
+//            editor.apply();
+//        }
+//
+
     }
 
 }

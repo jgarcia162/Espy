@@ -3,11 +3,7 @@ package com.example.c4q_ac35.espy;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-
 import android.net.Uri;
-
-import android.graphics.Typeface;
-import android.location.LocationManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -35,7 +31,7 @@ import butterknife.ButterKnife;
  * Created by c4q-marbella on 8/22/15.
  */
 public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> {
-  private static final String PRE_ENDPOINT = "https://maps.googleapis.com/maps/api/streetview?&size=800x400&location=";
+    private static final String PRE_ENDPOINT = "https://maps.googleapis.com/maps/api/streetview?&size=800x400&location=";
     private static final String TAG = "VenueActivity";
     private Location mLocation;
     public List<Venue> mVenues;
@@ -50,7 +46,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         TextView phone;
         @Bind(R.id.venue_picture)
         ImageView mImageViewVenue;
-//        @Bind(R.id.menubt)
+        //        @Bind(R.id.menubt)
 //        ImageButton menuBt;
         @Bind(R.id.plus)
         FloatingActionButton favButton;
@@ -72,7 +68,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         this.mContext = context;
         this.mVenues = venues;
     }
-
 
 
     @Override
@@ -97,17 +92,17 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         holder.phone.setText(venue.getContact().phone);
 //        holder.ratingBar.setText("" + venue.getStats().getUsersCount());
         holder.favButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(FavoriteActivity.venueList != null){
-                    FavoriteActivity.venueList.add(venue);
-                    }else{
-                        FavoriteActivity.venueList = new ArrayList<Venue>();
-                        FavoriteActivity.venueList.add(venue);
-                        Toast.makeText(view.getContext(),FavoriteActivity.venueList.size() + " Favorites ",Toast.LENGTH_SHORT).show();
-                        holder.favButton.setVisibility(View.INVISIBLE);
-                    }
+            @Override
+            public void onClick(View view) {
+                if (FavoritesFragment.venueList != null) {
+                    FavoritesFragment.venueList.add(venue);
+                } else {
+                    FavoritesFragment.venueList = new ArrayList<Venue>();
+                    FavoritesFragment.venueList.add(venue);
+                    Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ", Toast.LENGTH_SHORT).show();
+                    holder.favButton.setVisibility(View.INVISIBLE);
                 }
+            }
         });
 
 //            final double venueLat = venue.getLocation().getLat();
@@ -165,11 +160,12 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public int getItemCount() {
         return mVenues.size();
     }
-    private void addToFavorites(String name,String address,String phone, String hours, String tableName, double lat,double lon,SQLiteDatabase database){
-        FavoritesHelper.insertRow(name,address,phone,hours, tableName,lat,lon,database);
+
+    private void addToFavorites(String name, String address, String phone, String hours, String tableName, double lat, double lon, SQLiteDatabase database) {
+        FavoritesHelper.insertRow(name, address, phone, hours, tableName, lat, lon, database);
     }
 
-    private void addToFaves(View v,int position){
+    private void addToFaves(View v, int position) {
 
     }
 }

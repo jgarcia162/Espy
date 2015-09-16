@@ -30,7 +30,6 @@ public class MyPreferenceFragment extends PreferenceFragment implements SharedPr
 
 
 
-
 //        boolean notifEnabledbt = sharedPreferences.getBoolean("pref_enablednotif", false);
 //        boolean nearbyEnabled = sharedPreferences.getBoolean("pref_enablednearby", false);
 //

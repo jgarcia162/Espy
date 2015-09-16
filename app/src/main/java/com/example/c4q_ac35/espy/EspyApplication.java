@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Result;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
@@ -124,8 +123,8 @@ public class EspyApplication extends Application implements
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
                         Geofence.GEOFENCE_TRANSITION_EXIT)
                 .build());
-        if(FavoriteActivity.venueList != null) {
-            for (Venue venue : FavoriteActivity.venueList) {
+        if(FavoritesFragment.venueList != null) {
+            for (Venue venue : FavoritesFragment.venueList) {
                 double venueLat = venue.getLocation().getLat();
                 double venueLong = venue.getLocation().getLng();
                 sGeofenceList.add(new Geofence.Builder()
