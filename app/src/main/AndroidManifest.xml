@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.c4q_ac35.espy" >
+    package="com.example.c4q_ac35.espy">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -17,7 +17,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/espy_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".EspyMain"
             android:label="@string/app_name"
@@ -25,7 +25,7 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
@@ -36,18 +36,26 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAs0pUsczACKcZ44Hb9tjaLbwKqtlz48fo" />
         <!--AIzaSyB2Hv1wRfZ0DY01NXGaq4m1mSICX4FEWbI-->
-            <!--android:value="AIzaSyAs0pUsczACKcZ44Hb9tjaLbwKqtlz48fo" />-->
+        <!--android:value="AIzaSyAs0pUsczACKcZ44Hb9tjaLbwKqtlz48fo" />-->
         <!--android:value="AIzaSyDDREe4DCpVa7J2EbvhQRsr-BSxaovc8Ms" />-->
-        <activity android:name=".UserInitalSetActivity"
-            android:label="Initial Setup"/>
+        <activity
+            android:name=".UserInitalSetActivity"
+            android:label="Initial Setup" />
+
         <service
             android:name=".GeofenceTransitionsIntentService"
-            android:exported="true">
-        </service>
+            android:exported="true"></service>
         <service
             android:name=".NotificationsService"
-            android:exported="true">
-        </service>
+            android:exported="true"></service>
+
+        <activity android:name=".CustomBackgroundActivity"
+                  android:label="CustomSplash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 
