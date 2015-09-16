@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textSize="50sp"
-                android:text="Elvis Boves"
+                android:text="Great Explorer"
                 android:padding="10dp"
                 android:layout_gravity="center_vertical"
                 fontPath="fonts/JosefinSans-SemiBold.ttf"/>
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"
-                android:text="Brooklyn, NY"
+                android:text="New York, NY"
                 android:padding="10dp"
                 android:layout_gravity="center_vertical"
                 fontPath="fonts/JosefinSans-SemiBold.ttf"/>
@@ -146,7 +146,7 @@
         android:id="@+id/profile_image"
         android:layout_width="125dp"
         android:layout_height="125dp"
-        android:src="@drawable/elvis_profile"
+        android:src="@drawable/name_color"
         android:layout_margin="30dp"
         app:border_width="0dp"
         app:layout_anchor="@id/viewA"

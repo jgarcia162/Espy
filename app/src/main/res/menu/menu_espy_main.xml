@@ -7,4 +7,11 @@
           android:orderInCategory="100"
           app:showAsAction="never" />
 
+    <!--<item-->
+        <!--android:id="@+id/action_search"-->
+        <!--android:icon="@drawable/search_icon"-->
+        <!--android:title="Search Items"-->
+        <!--app:showAsAction="ifRoom|collapseActionView"-->
+        <!--app:actionViewClass="android.support.v7.widget.SearchView" />-->
+
 </menu>
