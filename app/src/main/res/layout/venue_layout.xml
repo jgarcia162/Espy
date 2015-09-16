@@ -55,6 +55,7 @@
                 android:padding="10dp">
 
 
+
                 <TextView
                     android:id="@+id/item_name"
                     fontPath="fonts/JosefinSans-Bold.ttf"
@@ -91,6 +92,7 @@
                     tools:ignore="MissingPrefix"/>
                   </LinearLayout>
                 ​​
+>>>>>>> f275176ee41ee2b0f72b46489cc84af3d8adb943
 
                 <TextView
                     android:id="@+id/item_address"
@@ -115,6 +117,7 @@
                     android:textSize="23sp"
                     tools:ignore="MissingPrefix"
                     android:autoLink="phone"/>
+
 
                 <TextView
                     android:id="@+id/menu_txt"
@@ -159,7 +162,6 @@
                 </LinearLayout>
                 ​
                 ​
-                ​
             </LinearLayout>
             ​
         </LinearLayout>
@@ -167,3 +169,4 @@
     </android.support.v7.widget.CardView>
     ​
 </LinearLayout>
+

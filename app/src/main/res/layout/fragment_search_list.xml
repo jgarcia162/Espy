@@ -1,0 +1,60 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/PrimaryColor"
+    android:paddingBottom="@dimen/activity_recycleV_margin"
+    android:paddingLeft="@dimen/activity_recycleH_margin"
+    android:paddingRight="@dimen/activity_recycleH_margin"
+    android:paddingTop="@dimen/activity_recycleV_margin"
+    tools:context=".MainActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top" />
+
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
+    <!--<todo: add  margin btw search bar and title;-->
+
+    <com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader
+        android:id="@+id/header1"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_gravity="center_horizontal|top">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <EditText
+                android:id="@+id/search_field_final"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Search"
+                android:textColor="#FFFFFF"
+                android:imeOptions="actionSearch"
+                android:inputType="textNoSuggestions" />
+
+
+        <TextView
+            android:id="@+id/nearby_text"
+            fontPath="fonts/JosefinSans-Bold.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:text="Nearby"
+            android:textColor="#FFFFFF"
+            android:textSize="35sp"
+            tools:ignore="MissingPrefix" />
+
+        </LinearLayout>
+
+    </com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader>
+    ​
+</FrameLayout>
+

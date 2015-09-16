@@ -30,6 +30,7 @@
     <string name="homeInstru">Enter full home address with zip code.</string>
     <string name="workInstru">Enter full work address with zip code.</string>
     <string name="schoolInstru">Enter full school address with zip code.</string>
+    <string name="empty_list">You don\'t have any favorites yet!</string>
     <string name="search">Search</string>
     <string name="title_activity_user_inital_set">UserInitalSetActivity</string>
 
@@ -64,7 +65,7 @@
     <string name="title_activity_login">LoginActivity</string>
 
     <string name="userName">Bella Viva</string>
-    <string name="favorite">Favorite</string>
+    <string name="favorite">Favorites</string>
     <string name="nearby">Nearby</string>
 
 </resources>

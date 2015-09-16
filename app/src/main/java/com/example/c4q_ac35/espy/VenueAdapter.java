@@ -1,10 +1,16 @@
 package com.example.c4q_ac35.espy;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+
+import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.FloatingActionButton;
+
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,8 +27,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.c4q_ac35.espy.db.FavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Location;
+import com.example.c4q_ac35.espy.foursquare.Menu;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -41,7 +50,11 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public List<Venue> mVenues;
     private Context mContext;
 
+    //MyFavoritesHelper myFavoritesHelper = new MyFavoritesHelper();
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         @Bind(R.id.item_name)
         TextView name;
         @Bind(R.id.item_address)
@@ -65,10 +78,12 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         public ViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
         }
 
 
     }
+
 
     public VenueAdapter(Context context, List<Venue> venues) {
         this.mContext = context;
@@ -79,9 +94,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     @Override
     public VenueAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.venue_layout, parent, false);
-
+        Log.d(TAG, "K Mierda ma loca esta: " + itemView);
 
         return new VenueAdapter.ViewHolder(itemView);
 
@@ -90,12 +104,12 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(final VenueAdapter.ViewHolder holder, int position) {
+
         final Venue venue = mVenues.get(position);
 
-        //if(venue.getCategories().equals("food") && venue.getCategories().equals("nightlife spot")) {
         holder.name.setText(venue.getName());
         String address = venue.getLocation().getFormattedAddress().toString();
-        holder.address.setText(address.substring(1, address.length()-1));
+        holder.address.setText(address.substring(1, address.length() - 1));
         holder.phone.setText(venue.getContact().phone);
 //        holder.ratingBar.setText("" + venue.getStats().getUsersCount());
         holder.favButton.setOnClickListener(new View.OnClickListener() {
@@ -113,12 +127,38 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         });
         DecimalFormat df2 = new DecimalFormat("###.##");
         holder.distance.setText(df2.format(venue.getLocation().getDistance() * (0.000621371)) + " mi");
+        holder.favButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (FavoritesFragment.venueList != null) {
+                    FavoritesFragment.venueList.add(venue);
+//                    EspyMain.startLocationUpdates();
+
+                } else {
+                    FavoritesFragment.venueList = new ArrayList<Venue>();
+                    FavoritesFragment.venueList.add(venue);
+                    Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ", Toast.LENGTH_SHORT).show();
+                    holder.favButton.setVisibility(View.INVISIBLE);
+                    //holder.favButton.setEnabled(false);
+//                    EspyMain.startLocationUpdates();
+                }
+
+                EspyApplication.populateGeofenceList();
+                ((EspyApplication)mContext.getApplicationContext()).addGeofences();
+            }
+        });
+
 
 
         if (venue.getMenu() != null) {
             holder.menu.setText(venue.getMenu().getMobileUrl());
             holder.menu.setVisibility(View.INVISIBLE);
         }
+
+//            final double venueLat = venue.getLocation().getLat();
+//            final double venueLon = venue.getLocation().getLng();
+
+
 //        holder.favButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -210,14 +250,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return mVenues.size();
-    }
-
-    private void addToFavorites(String name, String address, String phone, String hours, String tableName, double lat, double lon, SQLiteDatabase database) {
-        FavoritesHelper.insertRow(name, address, phone, hours, tableName, lat, lon, database);
-    }
-
-    private void addToFaves(View v, int position) {
 
     }
+
 }
 

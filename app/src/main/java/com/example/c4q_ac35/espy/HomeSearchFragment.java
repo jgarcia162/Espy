@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,13 +22,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
@@ -46,8 +47,8 @@ import retrofit.android.AndroidLog;
 import retrofit.client.Response;
 
 
-public class HomeSearchActivity extends Fragment
-        implements LocationListener,OnStreetViewPanoramaReadyCallback {
+public class HomeSearchFragment extends Fragment
+        implements LocationListener, OnStreetViewPanoramaReadyCallback {
     protected TextView Nearby;
 
 
@@ -55,7 +56,7 @@ public class HomeSearchActivity extends Fragment
     private int page;
     private VenueAdapter adapter;
     public static final String BASE_API = "https://api.foursquare.com/v2";
-    public static final String TAG = "HomeSearchActivity";
+    public static final String TAG = "HomeSearchFragment";
     FourSquareAPI servicesFourSquare = null;
     public static List<Venue> venueList;
     private boolean resultsFound = false;
@@ -74,13 +75,13 @@ public class HomeSearchActivity extends Fragment
     EditText mEditTextSearch;
 
 
-    public static HomeSearchActivity newInstance(int page, String title) {
-        HomeSearchActivity homeSearchActivity = new HomeSearchActivity();
+    public static HomeSearchFragment newInstance(int page, String title) {
+        HomeSearchFragment homeSearchFragment = new HomeSearchFragment();
         Bundle args = new Bundle();
         args.putInt("homePage", page);
         args.putString("home", title);
-        homeSearchActivity.setArguments(args);
-        return homeSearchActivity;
+        homeSearchFragment.setArguments(args);
+        return homeSearchFragment;
     }
 
     @Override
@@ -118,20 +119,17 @@ public class HomeSearchActivity extends Fragment
         if (location != null) {
             Log.d(TAG, "date: " + (System.currentTimeMillis() - location.getTime()));
             updateLocation(location);
-        } else {
-
-            // getting GPS status
+        }
+        else {
             boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-            // getting network status
             boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-
-            if (isNetworkEnabled)
+            if (isNetworkEnabled) {
                 locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-            if (isGPSEnabled)
+            }
+            if (isGPSEnabled) {
                 locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-
+            }
         }
     }
 
@@ -141,42 +139,23 @@ public class HomeSearchActivity extends Fragment
         locationManager.removeUpdates(this);
     }
 
-//    @Override
-//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        mEditTextSearch = (EditText) view.findViewById(R.id.search_field_final);
-//
-//        mEditTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//                    performSearch(v.getText().toString(), 10);
-//
-//                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.hideSoftInputFromWindow(mEditTextSearch.getWindowToken(), 0);
-//
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-//
-//    }
-
     private void performSearch(String query, int limit) {
-
         servicesFourSquare.search(query, limit, new FourSquareCallback());
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_search_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_list, container, false);
+      //  mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
-       mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header1);
+        mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header1);
 
+        // this setups the layout manager (can be done before connecting to internet)
+        mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+        mRecyclerViewHeader.attachTo(mRecyclerView, true);
         mEditTextSearch = (EditText) view.findViewById(R.id.search_field_final);
+       // mSwipeRefreshLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener) getActivity());
+
 
         mEditTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -194,7 +173,6 @@ public class HomeSearchActivity extends Fragment
         });
 
         return view;
-
     }
 
     @Override
@@ -213,7 +191,7 @@ public class HomeSearchActivity extends Fragment
     }
 
     private void updateLocation(Location location) {
-        final String ll = String.format("%g,%g", location.getLatitude(), location.getLongitude());
+        final String ll = String.format("%f,%f", location.getLatitude(), location.getLongitude());
         servicesFourSquare.getFeed(ll, new FourSquareCallback());
     }
 
@@ -265,8 +243,6 @@ public class HomeSearchActivity extends Fragment
 
             adapter = new VenueAdapter(getActivity(), venueList);
             mRecyclerView.setAdapter(adapter);
-            mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
-            mRecyclerViewHeader.attachTo(mRecyclerView, true);
         }
 
 
@@ -310,35 +286,30 @@ public class HomeSearchActivity extends Fragment
                 }
             }
         }
-
-        if (isNetworkEnabled)
-            mLocationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-        if (isGPSEnabled)
-            mLocationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
         return null;
     }
 
-    @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater){
-        inflater.inflate(R.menu.menu_espy_main, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        SearchView sv = new SearchView(((EspyMain) getActivity()).getSupportActionBar().getThemedContext());
-        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        MenuItemCompat.setActionView(item, sv);
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                System.out.println("search query submit");
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                System.out.println("tap");
-                return false;
-            }
-        });
-    }
+//    @Override
+//    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater){
+//        inflater.inflate(R.menu.menu_espy_main, menu);
+//        MenuItem item = menu.findItem(R.id.action_search);
+//        SearchView sv = new SearchView(((EspyMain) getActivity()).getSupportActionBar().getThemedContext());
+//        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+//        MenuItemCompat.setActionView(item, sv);
+//        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                System.out.println("search query submit");
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                System.out.println("tap");
+//                return false;
+//            }
+//        });
+//    }
 
 
 //    private AdapterView.OnItemClickListener mAutocompleteClickListener

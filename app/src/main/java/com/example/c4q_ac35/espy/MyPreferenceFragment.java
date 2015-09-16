@@ -3,11 +3,18 @@ package com.example.c4q_ac35.espy;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
+
+import android.preference.PreferenceFragment;
+
+/**
+ * Created by c4q-ac35 on 9/15/15.
+=======
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 /**
  * Created by c4q-marbella on 9/14/15.
+>>>>>>> f275176ee41ee2b0f72b46489cc84af3d8adb943
  */
 public class MyPreferenceFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String TAG = "NotifSettings";
@@ -15,12 +22,16 @@ public class MyPreferenceFragment extends PreferenceFragment implements SharedPr
     public static boolean IS_VIBRATE = false;
     private AudioManager myAudioManager;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.user_settings_layout);
 
-       Preference nearbyEnabled = findPreference("pref_enablednearby");
+//
+    }
+
+
 ////        Preference weeklyEnabled = findPreference("pref_enabledweekly");
 ////        Preference biWeeklyEnabled = findPreference("pref_enabledbiweekly");
 ////        Preference notifSound = findPreference("pref_notification_sound");
@@ -76,13 +87,14 @@ public class MyPreferenceFragment extends PreferenceFragment implements SharedPr
 //            }
 //        });
 
-    }
+
 
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
 //        public void update
+
 
 
     }

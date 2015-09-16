@@ -47,6 +47,7 @@ public class NotificationsService extends IntentService {
             notificationManager.notify(WEEKLY_NOTIFICATION_ID, weeklyNotification);
         }
 
+
     }
 
 
@@ -54,13 +55,7 @@ public class NotificationsService extends IntentService {
         Intent notificationIntent = new Intent(getApplicationContext(),EspyMain.class);
         notificationIntent.setAction("OPEN_FAVORITES");
 
-        TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
-
-        taskStackBuilder.addParentStack(EspyMain.class);
-
-        taskStackBuilder.addNextIntent(notificationIntent);
-
-        PendingIntent notificationPendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent notificationPendingIntent = PendingIntent.getActivity(this,Constants.WEEKLY_NOTIFICATION_ID,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 

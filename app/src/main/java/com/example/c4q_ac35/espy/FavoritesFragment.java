@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
+import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 
@@ -38,16 +38,16 @@ public class FavoritesFragment extends Fragment {
     private boolean resultsFound = false;
     Context context;
     protected TextView favorite;
-
+    MyFavoritesHelper myFavoritesHelper;
     // newInstance constructor for creating fragment with arguments
 
     public static FavoritesFragment newInstance(int page, String title) {
-        FavoritesFragment faveActivity = new FavoritesFragment();
+        FavoritesFragment favFragment = new FavoritesFragment();
         Bundle args = new Bundle();
         args.putInt("favePage", page);
         args.putString("Favorites", title);
-        faveActivity.setArguments(args);
-        return faveActivity;
+        favFragment.setArguments(args);
+        return favFragment;
     }
 
     // Store instance variables based on arguments passed
@@ -57,6 +57,7 @@ public class FavoritesFragment extends Fragment {
 //
 //        page = getArguments().getInt("myListPage", 1);
 //        title = getArguments().getString("myList");
+
 
         //RestAdapter mRestAdapter = new RestAdapter.Builder()
 //                .setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog(TAG))
@@ -70,23 +71,30 @@ public class FavoritesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.activity_favorites, container, false);
+        View view = inflater.inflate(R.layout.fragment_favorites, container, false);
+        //myFavoritesHelper = new MyFavoritesHelper(view.getContext());
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.favelist);
         mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header);
 //            this.favorite = (TextView) view.findViewById(R.id.favorite_text);
 //            android.graphics.Typeface font = android.graphics.Typeface.createFromAsset(getActivity().getAssets(), "fonts/poiret_one.ttf");
 //            this.favorite.setTypeface(font);
-        if (adapter == null && venueList != null) {
+//        try {
+//            if(myFavoritesHelper.getVenueDao() !=null){
+//                venueList = myFavoritesHelper.getVenueDao().queryForAll();
+//            } else{
+//                venueList = null;
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+        mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+        mRecyclerViewHeader.attachTo(mRecyclerView, true);
+
+        if (venueList != null) {
             adapter = new VenueAdapter(getActivity(), venueList);
             mRecyclerView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-            mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
-            mRecyclerViewHeader.attachTo(mRecyclerView, true);
-        } else {
-            Toast.makeText(getActivity(), "Add something to your favorites", Toast.LENGTH_SHORT).show();
         }
-        Log.d(TAG, "recycleviwerHeader");
-
         return view;
     }
 
@@ -104,6 +112,33 @@ public class FavoritesFragment extends Fragment {
         }
     }
 
+//    class FourSquareCallback implements Callback<ResponseAPI> {
+//
+//        @Override
+//        public void success(final ResponseAPI responseAPI, Response response) {
+//
+//            venueList = responseAPI.getResponse().getVenues();
+//
+//            resultsFound = true;
+//            if (adapter == null) {
+//                resultsFound = true;
+//                List<Venue> venueList = responseAPI.getResponse().getVenues();
+//
+//                adapter = new VenueAdapter(getActivity(), venueList);
+//                mRecyclerView.setAdapter(adapter);
+//                mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+//                mRecyclerViewHeader.attachTo(mRecyclerView, true);
+//
+//                Log.d(TAG, "Success");
+//            }
+//
+//        }
+//
+//        @Override
+//        public void failure(RetrofitError error) {
+//
+//        }
+//
+//    }
 }
-
 

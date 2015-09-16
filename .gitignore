@@ -1,10 +1,14 @@
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
+.idea/
+*.iml
 .DS_Store
 /build
 /captures
+<<<<<<< HEAD
 .idea
 .app
 .app
+=======
+release.jks
+>>>>>>> e1f65d4391fc353c340ddff251ec24579bfb7854
