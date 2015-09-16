@@ -15,14 +15,9 @@ import android.widget.Toast;
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
-import com.example.c4q_ac35.espy.foursquare.Response;
-import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 
-import java.sql.SQLException;
 import java.util.List;
-
-import retrofit.Callback;
 
 /**
  * Created by c4q-marbella on 8/24/15.
@@ -47,12 +42,12 @@ public class FavoritesFragment extends Fragment {
     // newInstance constructor for creating fragment with arguments
 
     public static FavoritesFragment newInstance(int page, String title) {
-        FavoritesFragment faveActivity = new FavoritesFragment();
+        FavoritesFragment favFragment = new FavoritesFragment();
         Bundle args = new Bundle();
         args.putInt("favePage", page);
         args.putString("Favorites", title);
-        faveActivity.setArguments(args);
-        return faveActivity;
+        favFragment.setArguments(args);
+        return favFragment;
     }
 
     // Store instance variables based on arguments passed
@@ -61,8 +56,6 @@ public class FavoritesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         page = getArguments().getInt("myListPage", 1);
         title = getArguments().getString("myList");
-
-
 
         //RestAdapter mRestAdapter = new RestAdapter.Builder()
 //                .setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog(TAG))
@@ -75,7 +68,7 @@ public class FavoritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_favorites, container, false);
+        View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         //myFavoritesHelper = new MyFavoritesHelper(view.getContext());
 
 
@@ -93,12 +86,13 @@ public class FavoritesFragment extends Fragment {
 //        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }
-        if (adapter == null && venueList != null) {
+        mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+        mRecyclerViewHeader.attachTo(mRecyclerView, true);
+
+        if (venueList != null) {
             adapter = new VenueAdapter(getActivity(), venueList);
             mRecyclerView.setAdapter(adapter);
-            mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
-            mRecyclerViewHeader.attachTo(mRecyclerView, true);
-            adapter.notifyDataSetChanged();
+            //adapter.notifyDataSetChanged();
         }else{
             Toast.makeText(getActivity(),"Add something to your favorites",Toast.LENGTH_SHORT).show();
         }

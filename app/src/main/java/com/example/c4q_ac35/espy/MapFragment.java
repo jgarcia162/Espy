@@ -10,17 +10,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-public class MapActivity extends Fragment {
+public class MapFragment extends Fragment {
 
     public static TextView venueName,venueAddress,venuePhone;
 
-    public static MapActivity newInstance (int page, String title){
-        MapActivity mapActivity = new MapActivity();
+    public static MapFragment newInstance (int page, String title){
+        MapFragment mapFragment = new MapFragment();
         Bundle args = new Bundle();
         args.putInt("mapPage", page);
         args.putString("map", title);
-        mapActivity.setArguments(args);
-        return mapActivity;
+        mapFragment.setArguments(args);
+        return mapFragment;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class MapActivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       View view = inflater.inflate(R.layout.activity_map,container,false);
+       View view = inflater.inflate(R.layout.fragment_map,container,false);
         createMap();
         return view;
     }

@@ -67,22 +67,8 @@ public class EspyApplication extends Application implements
 
     @Override
     public void onConnected(Bundle bundle) {
-        //        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-        //if(!sGeofenceList.isEmpty()){
-        AsyncTask geofence = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                populateGeofenceList();
-                addGeofences();
-                return null;
-            }
-        };
+        EspyMain.startLocationUpdates();
 
-        geofence.execute();
-
-//        if (mRequestingLocationUpdates) {
-//            startLocationUpdates();
-//        }
         // mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
         Log.i(LOG_TAG, "Google Places API connected.");
     }
@@ -122,7 +108,10 @@ public class EspyApplication extends Application implements
 //                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
 //                        Geofence.GEOFENCE_TRANSITION_EXIT)
 //                .build());
+
         if(FavoritesFragment.venueList != null) {
+            sGeofenceList.clear();
+
             for (Venue venue : FavoritesFragment.venueList) {
                 double venueLat = venue.getLocation().getLat();
                 double venueLong = venue.getLocation().getLng();
@@ -142,6 +131,7 @@ public class EspyApplication extends Application implements
             }
         }
     }
+
     public void addGeofences() {
         if (!sGoogleApiClient.isConnected()) {
             Toast.makeText(this, "Not connected to GoogleApiClient", Toast.LENGTH_LONG).show();

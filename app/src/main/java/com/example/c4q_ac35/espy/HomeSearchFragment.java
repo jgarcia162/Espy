@@ -1,71 +1,48 @@
 package com.example.c4q_ac35.espy;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.joooonho.SelectableRoundedImageView;
 
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Handler;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.android.AndroidLog;
 import retrofit.client.Response;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 
-public class HomeSearchActivity extends Fragment
-        implements LocationListener,OnStreetViewPanoramaReadyCallback {
+public class HomeSearchFragment extends Fragment
+        implements LocationListener, OnStreetViewPanoramaReadyCallback {
     protected TextView Nearby;
 
 
@@ -73,7 +50,7 @@ public class HomeSearchActivity extends Fragment
     private int page;
     private VenueAdapter adapter;
     public static final String BASE_API = "https://api.foursquare.com/v2";
-    public static final String TAG = "HomeSearchActivity";
+    public static final String TAG = "HomeSearchFragment";
     FourSquareAPI servicesFourSquare = null;
     public static List<Venue> venueList;
     private boolean resultsFound = false;
@@ -92,13 +69,13 @@ public class HomeSearchActivity extends Fragment
     EditText mEditTextSearch;
 
 
-    public static HomeSearchActivity newInstance(int page, String title) {
-        HomeSearchActivity homeSearchActivity = new HomeSearchActivity();
+    public static HomeSearchFragment newInstance(int page, String title) {
+        HomeSearchFragment homeSearchFragment = new HomeSearchFragment();
         Bundle args = new Bundle();
         args.putInt("homePage", page);
         args.putString("home", title);
-        homeSearchActivity.setArguments(args);
-        return homeSearchActivity;
+        homeSearchFragment.setArguments(args);
+        return homeSearchFragment;
     }
 
     @Override
@@ -134,20 +111,17 @@ public class HomeSearchActivity extends Fragment
         if (location != null) {
             Log.d(TAG, "date: " + (System.currentTimeMillis() - location.getTime()));
             updateLocation(location);
-        } else {
-
-            // getting GPS status
+        }
+        else {
             boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-            // getting network status
             boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-
-            if (isNetworkEnabled)
+            if (isNetworkEnabled) {
                 locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-            if (isGPSEnabled)
+            }
+            if (isGPSEnabled) {
                 locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-
+            }
         }
     }
 
@@ -155,7 +129,6 @@ public class HomeSearchActivity extends Fragment
     public void onPause() {
         super.onPause();
         locationManager.removeUpdates(this);
-
     }
 
     @Override
@@ -163,13 +136,11 @@ public class HomeSearchActivity extends Fragment
         super.onViewCreated(view, savedInstanceState);
 
         mEditTextSearch = (EditText) view.findViewById(R.id.search_field_final);
-
         mEditTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     performSearch(v.getText().toString(), 20);
-
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(mEditTextSearch.getWindowToken(), 0);
 
@@ -183,20 +154,21 @@ public class HomeSearchActivity extends Fragment
     }
 
     private void performSearch(String query, int limit) {
-
         servicesFourSquare.search(query, limit, new FourSquareCallback());
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_search_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_list, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
         mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header1);
 
-        return view;
+        // this setups the layout manager (can be done before connecting to internet)
+        mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
+        mRecyclerViewHeader.attachTo(mRecyclerView, true);
 
+        return view;
     }
 
     @Override
@@ -267,8 +239,6 @@ public class HomeSearchActivity extends Fragment
 
             adapter = new VenueAdapter(getActivity(), venueList);
             mRecyclerView.setAdapter(adapter);
-            mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
-            mRecyclerViewHeader.attachTo(mRecyclerView, true);
         }
 
 

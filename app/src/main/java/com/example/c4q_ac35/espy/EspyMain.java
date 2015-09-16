@@ -35,8 +35,6 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -83,7 +81,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
         mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         mToolbar = (Toolbar) findViewById(R.id.app_bar);
-        setSupportActionBar(mToolbar);
+//        setSupportActionBar(mToolbar);
 //        FAB = (FloatingActionButton) findViewById(R.id.fab);
         setUpTab();
 
@@ -113,6 +111,10 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
        // setNotificationAlarm();
 
         mFab = (FloatingActionButton) findViewById(R.id.faveBt);
+    }
+
+    public static void addGeofencesFromFavorites(){
+       // EspyApplication.addGeofences();
     }
 
     private void initData() {
@@ -179,6 +181,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                adapterViewPager.notifyDataSetChanged();
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
@@ -290,36 +293,27 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     class MyPagerAdapter extends FragmentStatePagerAdapter {
-        int num_tabs = 4;
-        Fragment[] mFragments;
+        private final int numTabs;
 
-
-        public MyPagerAdapter(FragmentManager fm, int num_tabs) {
+        public MyPagerAdapter(FragmentManager fm, int numTabs) {
             super(fm);
-            this.num_tabs = num_tabs;
-
-            mFragments = new Fragment[4];
-            mFragments[0] = new HomeSearchActivity();
-            mFragments[1] = new FavoritesFragment();
-            mFragments[2] = new MapActivity();
-            mFragments[3] = new UserFragment();
-
+            this.numTabs = numTabs;
         }
 
         @Override
         public int getCount() {
-            return num_tabs;
+            return numTabs;
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return HomeSearchActivity.newInstance(0, "Home");
+                    return HomeSearchFragment.newInstance(0, "Home");
                 case 1:
                     return FavoritesFragment.newInstance(1, "Favorites");
                 case 2:
-                    return MapActivity.newInstance(2, "Map");
+                    return MapFragment.newInstance(2, "Map");
                 case 3:
                     return UserFragment.newInstance(3, "User");
                 default:
@@ -327,27 +321,9 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
             }
         }
 
-        private int[] imageResId = {
-                R.drawable.house_icon,
-                R.drawable.heart_icon,
-                R.drawable.map_icon,
-                R.drawable.user_icon,
-        };
-
-}
-
-    //ADD TO FAVORITES WHEN BUTTON ON HOLDER IS CLICKED
-    public void addToFavorites(View view){
-        mVenueList = HomeSearchActivity.venueList;
-        //favoritesList = FavoritesFragment.venueList;
-        //TODO FIND HOLDER POSITION
-        //view.
-//        Venue venue = mVenueList.get(position);
-//        favoritesList.add(venue);
-
-        if(favoritesList != null){
-        Toast.makeText(this,"TESTING",Toast.LENGTH_SHORT).show();
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
-
     }
 }

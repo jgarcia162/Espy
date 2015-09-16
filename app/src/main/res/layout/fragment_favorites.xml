@@ -2,13 +2,18 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/PrimaryColor">
+    android:layout_height="wrap_content"
+    android:background="@color/PrimaryColor"
+    android:paddingBottom="@dimen/activity_recycleV_margin"
+    android:paddingLeft="@dimen/activity_recycleH_margin"
+    android:paddingRight="@dimen/activity_recycleH_margin"
+    android:paddingTop="@dimen/activity_recycleV_margin">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/favelist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/favelist"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top" />
 
     <com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader
         android:id="@+id/header"
@@ -17,17 +22,16 @@
         android:layout_gravity="center_horizontal|top">
 
         <TextView
-            tools:ignore="MissingPrefix"
-            android:text="@string/favorite"
+            android:id="@+id/favorite_text"
+            fontPath="fonts/JosefinSans-Bold.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="35sp"
             android:layout_centerInParent="true"
-            android:id="@+id/favorite_text"
+            android:text="@string/favorite"
             android:textColor="#FFFFFF"
-            fontPath="fonts/JosefinSans-Bold.ttf"/>
+            android:textSize="35sp"
+            tools:ignore="MissingPrefix" />
 
     </com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader>
-
 
 </FrameLayout>

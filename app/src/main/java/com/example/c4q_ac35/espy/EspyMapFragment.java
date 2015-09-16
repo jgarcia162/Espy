@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -14,7 +13,6 @@ import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -67,8 +65,6 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
             googleMap.animateCamera(CameraUpdateFactory.zoomTo(13)); // choose default zoom of map
         }
 
-
-
         //Set custom icon for markers
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(),
                 R.mipmap.espy_marker);
@@ -79,7 +75,7 @@ public class EspyMapFragment extends SupportMapFragment implements Callback<Resp
         if(FavoritesFragment.venueList!= null){
             favoriteVenuesList = FavoritesFragment.venueList;
         }else{
-            favoriteVenuesList = HomeSearchActivity.venueList;
+            favoriteVenuesList = HomeSearchFragment.venueList;
         }
         if(!favoriteVenuesList.isEmpty()){
         for(Venue venue: favoriteVenuesList){
