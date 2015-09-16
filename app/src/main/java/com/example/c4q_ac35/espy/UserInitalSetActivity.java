@@ -19,7 +19,7 @@ public class UserInitalSetActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_user_setup);
+        setContentView(R.layout.fragment_user);
         ButterKnife.bind(this);
         getUserInput();
         getIntent();

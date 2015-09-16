@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
+import com.j256.ormlite.field.DatabaseField;
 
 
 public class Venue {
@@ -12,10 +13,13 @@ public class Venue {
     @Expose
     private String id;
     @Expose
+    @DatabaseField
     private String name;
     @Expose
+   @DatabaseField (columnName = "Contact Information",foreign = true)
     private Contact contact;
     @Expose
+    @DatabaseField (columnName = "Location",foreign = true)
     private Location location;
     @Expose
     private List<Category> categories = new ArrayList<Category>();
@@ -28,6 +32,7 @@ public class Venue {
     @Expose
     private boolean hasMenu;
     @Expose
+    @DatabaseField(columnName = "Menu",foreign = true,canBeNull = true)
     private Menu menu;
     @Expose
     private Specials specials;

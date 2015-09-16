@@ -1,45 +1,57 @@
 package com.example.c4q_ac35.espy;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
+import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
+
+
+import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
+import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.location.Geofence;
+
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+
 /**
  * Created by c4q-ac35 on 8/12/15.
  */
 
-public class EspyMapFragment extends SupportMapFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+public class EspyMapFragment extends SupportMapFragment {
+    private static final String TAG = "EspyMapFragment";
     GoogleMap googleMap;
-    Location myLocation;
-    GoogleApiClient mapGoogleApiClient;
+   public static Location myLocation;
     List<Geofence> mGeofenceList;
-    float GEOFENCE_RADIUS_IN_METERS = 1000;
+    FourSquareAPI servicesFoursquare;
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-//        mapGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(LocationServices.API)
-//                .build();
-//        mapGoogleApiClient.connect();
 
         googleMap = getMap(); // loads map
         googleMap.setMyLocationEnabled(true); //finds current location
@@ -50,71 +62,72 @@ public class EspyMapFragment extends SupportMapFragment implements GoogleApiClie
 
         String provider = locationManager.getBestProvider(criteria, true);
 
-        myLocation = locationManager.getLastKnownLocation(provider);
+            myLocation = locationManager.getLastKnownLocation(provider);
+
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); //Choose type of map, normal, terrain, satellite, none
 
+        //Adding a null check
+        if(myLocation!=null){
+            double latitude = myLocation.getLatitude();
+            double longitude = myLocation.getLongitude();
+            LatLng latLng = new LatLng(latitude, longitude);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(15)); // choose default zoom of map
+        }
 
         double lat = 40.722695;
         double lon = -73.996545;
-
+        //Todo: fix map to prompt user to turn on GPS _ high accuracy in LOcation Services
         //Adding a null check
-        if(myLocation==null){
-            LocationRequest mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(10000);
-            mLocationRequest.setFastestInterval(5000);
-            mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
-        } else {
-            double latitude = myLocation.getLatitude();
-            double longitude = myLocation.getLongitude();
-            //Geofence.Builder falchiGeofence = new
-            LatLng latLng = new LatLng(latitude, longitude);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        }
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(11)); // choose default zoom of map
-
-
-        Marker marker = googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(lat,lon))
-                .title("Rice To Riches"));
-        marker.setSnippet("Phone Number: (212) 274-0008");
-        marker.isInfoWindowShown();
-
-
-
-
-
-
-        // Calls location service within context
-
-//        //Loop for setting markers and geofences for each location in list
-//        for(Location location : mListOfLocations ){
-//            double lat = location.getLatitude();
-//            double lon = location.getLongitude();
-//            EspyGeofence locationFence = new EspyGeofence(location.getName().toString(),lat,lon,geofenceRadius,Constants.GEOFENCE_EXPIRATION_TIME,Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_DWELL | Geofence.GEOFENCE_TRANSITION_EXIT);
-//            locationFence.toGeofence();
 //
-//            Marker locationMarker = googleMap.addMarker(new MarkerOptions()
-//                    .position(new LatLng(location.getLatitude(),location.getLongitude()))
-//                    .title(location.getName()));
-//            locationMarker.setSnippet("Phone NUmber: " + location.getPhone().toString());
-//            locationMarker.isInfoWindowShown();
+//        if(myLocation==null){
+//            LocationRequest mLocationRequest = new LocationRequest();
+//            mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
+//            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+//        } else {
+//            LocationRequest mLocationRequest = new LocationRequest();
+//            mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
+//            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 //        }
-    }
+//        googleMap.moveCamera(CameraUpdateFactory.zoomTo(13)); // choose default zoom of map
 
-    @Override
-    public void onConnected(Bundle bundle) {
+//        double latitude = myLocation.getLatitude();
+//        double longitude = myLocation.getLongitude();
+//        LatLng latLng = new LatLng(latitude, longitude);
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//        googleMap.animateCamera(CameraUpdateFactory.zoomTo(13)); // choose default zoom of map
 
-    }
 
-    @Override
-    public void onConnectionSuspended(int i) {
+        //Set custom icon for markers
+        Bitmap icon = BitmapFactory.decodeResource(this.getResources(),
+                R.mipmap.espy_marker);
+        BitmapDescriptor iconMarker = BitmapDescriptorFactory.fromBitmap(icon);
 
-    }
+        //Loop for setting markers and geofences for each location in results and or favorites list
+        List<Venue> favoriteVenuesList;
+        if(FavoritesFragment.venueList!= null){
+            favoriteVenuesList = FavoritesFragment.venueList;
+        }else{
+            favoriteVenuesList = HomeSearchFragment.venueList;
+        }
+        if(favoriteVenuesList != null && !favoriteVenuesList.isEmpty()){
+        for(Venue venue: favoriteVenuesList){
+            double lati = venue.getLocation().getLat();
+            double longi = venue.getLocation().getLng();
+            Marker mark = googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(lati,longi))
+                    .title(venue.getName()));
+            mark.setSnippet( " "+ venue.getLocation().getFormattedAddress());
+            mark.isInfoWindowShown();
+            mark.setIcon(iconMarker);
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        }
+        }else if(favoriteVenuesList == null){
+            Toast.makeText(getActivity().getApplicationContext(),"You don't have any favorites yet!",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getActivity().getApplicationContext(),"You don't have any favorites yet!",Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

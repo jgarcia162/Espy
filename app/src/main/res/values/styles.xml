@@ -9,9 +9,9 @@
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="fontPath">fonts/poiret_one.ttf</item>
         <item name="windowActionBar">false</item>
-        <item name="colorPrimary">@color/PrimaryColor</item>
-        <item name="colorPrimaryDark">@color/PrimaryDarkColor</item>
-        <item name="colorAccent">@color/AccentColor</item>
+        <item name="colorPrimary">@color/PrimaryColor2</item>
+        <item name="colorPrimaryDark">@color/PrimaryDarkColor2</item>
+        <item name="colorAccent">@color/AccentColor2</item>
     </style>
 
 
@@ -19,7 +19,7 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">#000000</item>
         <item name="android:padding">5dp</item>
     </style>
 

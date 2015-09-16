@@ -7,14 +7,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.service.notification.NotificationListenerService;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
-
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Places;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,41 +32,82 @@ import java.util.List;
 public class GeofenceTransitionsIntentService extends IntentService {
 
     protected static final String TAG = "geofence-transitions-service";
-
+    public static int GEOFENCE_NOTIFICATION_ID = 101;
+    public static int PUSH_NOTIFICATION_ID = 102;
+    private static final int GOOGLE_API_CLIENT_ID = 0;
+    List<GeofenceNotificationsHistory> oldNotifications = new ArrayList<>();
+    public static List<Geofence> triggeredFences = new ArrayList<>();
+    private static boolean isAlreadyNotified = false;
 
     public GeofenceTransitionsIntentService(){
         super(TAG);
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Override
     protected void onHandleIntent(Intent intent) {
+        NotificationManager geoNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         GeofencingEvent geoFenceEvent = GeofencingEvent.fromIntent(intent);
         if (geoFenceEvent.hasError()) {
             String errorMessage = GeofenceErrorMessages.getErrorString(this, geoFenceEvent.getErrorCode());
-            Log.e(TAG,errorMessage);
             return;
         }
-
         int geofenceTransition = geoFenceEvent.getGeofenceTransition();
 
-        if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
-                geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT){
+        //TODO ADD MARKERS FROM TRIGGERED GEOFENCE
+        if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
             List<Geofence> triggeringGeofences = geoFenceEvent.getTriggeringGeofences();
+
+            for(int i = 0;i < triggeringGeofences.size();i++){
+               Geofence trigger =  triggeringGeofences.get(i);
+                triggeredFences.add(trigger);
+                trigger.getRequestId();
+            }
 
             String geofenceTransitionDetails = getGeofenceTransitionDetails(
                     this,
                     geofenceTransition,
                     triggeringGeofences
             );
+            if(isNotified(geofenceTransitionDetails)){
 
-            sendNotification(geofenceTransitionDetails);
-            Log.i(TAG, getString(R.string.geofence_transition_invalid_type, geofenceTransition));
+            }else {
+                addNotificationToList(geofenceTransitionDetails);
+
+                sendNotification(geofenceTransitionDetails);
+
+            }
+        } else if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT){
+            geoNotificationManager.cancel(GEOFENCE_NOTIFICATION_ID);
         }
+    }
+
+    private void addNotificationToList(String geofenceTransitionDetails) {
+        boolean prevNotified = false;
+        for (GeofenceNotificationsHistory item : oldNotifications) {
+            if (item.getGeofenceTransitionDetails().equals(geofenceTransitionDetails)){
+                item.setNotifiedAt(new Date());
+                prevNotified = true;
+                break;
+            }
+        }
+        if (!prevNotified){
+            GeofenceNotificationsHistory newItem = new GeofenceNotificationsHistory();
+            newItem.setNotifiedAt(new Date());
+            newItem.setGeofenceTransitionDetails(geofenceTransitionDetails);
+            oldNotifications.add(newItem);
+        }
+    }
+    private boolean isNotified(String notificationIds) {
+        for (GeofenceNotificationsHistory item : oldNotifications)  {
+            if (item.getGeofenceTransitionDetails().equals(notificationIds)){
+                Date now = new Date();
+                if (now.getTime() - item.getNotifiedAt().getTime() < Constants.GEOFENCE_NOTIFICATION_TIME) {
+                    return true;
+                }
+                break;
+            }
+        }
+        return false;
     }
 
     private String getGeofenceTransitionDetails(
@@ -85,28 +135,21 @@ public class GeofenceTransitionsIntentService extends IntentService {
         Intent notificationIntent = new Intent(getApplicationContext(), EspyMain.class);
 
         // Construct a task stack.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
-        // Add the main Activity to the task stack as the parent.
-        stackBuilder.addParentStack(EspyMain.class);
-
-        // Push the content Intent onto the stack.
-        stackBuilder.addNextIntent(notificationIntent);
 
         // Get a PendingIntent containing the entire back stack.
         PendingIntent notificationPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.getActivity(this,GEOFENCE_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Get a notification builder that's compatible with platform versions >= 4
         android.support.v4.app.NotificationCompat.Builder builder = new android.support.v4.app.NotificationCompat.Builder(this);
 
         // Define the notification settings.
-        builder.setSmallIcon(R.drawable.ic_plusone_standard_off_client)
+        builder.setSmallIcon(R.mipmap.espy_icon)
                 // In a real app, you may want to use a library like Volley
                 // to decode the Bitmap.
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),
-                        R.drawable.ic_plusone_tall_off_client))
-                .setColor(Color.RED)
+                        R.mipmap.espy_icon))
                 .setContentTitle("Check this out!")
                 .setContentText(notificationDetails)
                 .setContentIntent(notificationPendingIntent);
@@ -114,12 +157,13 @@ public class GeofenceTransitionsIntentService extends IntentService {
         // Dismiss notification once the user touches it.
         builder.setAutoCancel(true);
 
+
         // Get an instance of the Notification manager
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Issue the notification
-        mNotificationManager.notify(0, builder.build());
+        mNotificationManager.notify(PUSH_NOTIFICATION_ID, builder.build());
     }
 
     /**
@@ -138,4 +182,5 @@ public class GeofenceTransitionsIntentService extends IntentService {
                 return getString(R.string.unknown_geofence_transition);
         }
     }
+
 }
