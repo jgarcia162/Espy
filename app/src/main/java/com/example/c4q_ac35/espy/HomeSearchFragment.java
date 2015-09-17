@@ -118,15 +118,15 @@ public class HomeSearchFragment extends Fragment
             updateLocation(location);
         }
         else {
-            boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//            boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
             if (isNetworkEnabled) {
                 locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
             }
-            if (isGPSEnabled) {
-                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-            }
+//            if (isGPSEnabled) {
+//                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
+//            }
         }
     }
 
@@ -255,12 +255,12 @@ public class HomeSearchFragment extends Fragment
         android.location.Location location = null;
 
         // getting GPS status
-        boolean isGPSEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//        boolean isGPSEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         // getting network status
         boolean isNetworkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-        if (!isGPSEnabled && !isNetworkEnabled) {
+        if (!isNetworkEnabled) {
             new AlertDialog.Builder(getActivity())
                     .setTitle("No Network")
                     .setMessage("Please check your Network Settings")
@@ -288,14 +288,14 @@ public class HomeSearchFragment extends Fragment
                 }
             }
             //get the location by gps
-            if (isGPSEnabled) {
-
-                Log.d("GPS Enabled", "GPS Enabled");
-                location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (location != null && (System.currentTimeMillis() - location.getTime()) < maxAge) {
-                    return location;
-                }
-            }
+//            if (isGPSEnabled) {
+//
+//                Log.d("GPS Enabled", "GPS Enabled");
+//                location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                if (location != null && (System.currentTimeMillis() - location.getTime()) < maxAge) {
+//                    return location;
+//                }
+//            }
         }
         return null;
     }

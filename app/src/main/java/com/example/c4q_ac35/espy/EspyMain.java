@@ -87,11 +87,11 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 //        setSupportActionBar(mToolbar);
         setUpTab();
 
-        if (getIntent().getAction().equals("OPEN_MAP")) {
-            viewPager.setCurrentItem(2);
-        } else if (getIntent().getAction().equals("OPEN_FAVORITES")) {
-            viewPager.setCurrentItem(1);
-        }
+//        if (getIntent().getAction().equals("OPEN_MAP")) {
+//            viewPager.setCurrentItem(2);
+//        } else if (getIntent().getAction().equals("OPEN_FAVORITES")) {
+//            viewPager.setCurrentItem(1);
+//        }
         //TODO ALARM TO HANDLE WEEKLY NOTIFICATIONS
 
         setNotificationAlarm();
@@ -219,7 +219,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
     public static void startLocationUpdates() {
         LocationRequest mLocationRequest = new LocationRequest();
         //mLocationRequest.setInterval(Constants.LOCATION_UPDATE_INTERVAL);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         LocationListener mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -237,7 +237,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         //google calender code from current date to 7*24*60*60*1000
 //        mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, Calendar.FRIDAY, 20000, mNotificationPendingIntent);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, 20000, mNotificationPendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, Constants.ALARM_WEEKLY_INTERVAL, mNotificationPendingIntent);
     }
 
 

@@ -126,7 +126,7 @@ public class EspyMapFragment extends SupportMapFragment {
         }else if(favoriteVenuesList == null){
             Toast.makeText(getActivity().getApplicationContext(),"You don't have any favorites yet!",Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(getActivity().getApplicationContext(),"You don't have any favorites yet!",Toast.LENGTH_SHORT).show();
+
         }
     }
 

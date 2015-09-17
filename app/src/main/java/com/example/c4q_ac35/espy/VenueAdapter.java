@@ -1,14 +1,9 @@
 package com.example.c4q_ac35.espy;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import android.database.sqlite.SQLiteDatabase;
-import android.support.design.widget.FloatingActionButton;
-
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import android.support.v7.widget.RecyclerView;
@@ -18,19 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.c4q_ac35.espy.db.FavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Location;
-import com.example.c4q_ac35.espy.foursquare.Menu;
 import com.example.c4q_ac35.espy.foursquare.Venue;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationServices;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -48,6 +41,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     private static final String TAG = "VenueActivity";
     private Location mLocation;
     public List<Venue> mVenues;
+    public List<String> geofencesToRemove = new ArrayList<>();
     private Context mContext;
 
     //MyFavoritesHelper myFavoritesHelper = new MyFavoritesHelper();
@@ -146,6 +140,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
                     Toast.makeText(v.getContext(),"NICE!", Toast.LENGTH_SHORT).show();
                     UserFragment.historyList.add(venue);
                     holder.doneButton.setVisibility(View.INVISIBLE);
+                    geofencesToRemove.add(venue.getName());
+                    LocationServices.GeofencingApi.removeGeofences(EspyApplication.getsGoogleApiClient(),geofencesToRemove);
 
                 }else {
 

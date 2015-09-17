@@ -196,7 +196,7 @@ public class EspyApplication extends Application implements
         return builder.build();
 
     }
-    private PendingIntent getGeofencePendingIntent() {
+    public PendingIntent getGeofencePendingIntent() {
         // Reuse the PendingIntent if we already have it.
         if (mGeofencePendingIntent != null) {
             return mGeofencePendingIntent;
