@@ -4,23 +4,25 @@ apply plugin: 'com.android.application'
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 def releasePassword = properties.getProperty('releasePassword')
+def releaseStore = properties.getProperty('releaseStore')
+
 
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "nyc.c4q_ac35.espy"
+        applicationId "nyc.c4q_ac21.espy"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 3
-        versionName "3.0"
+        versionCode 1
+        versionName "1.0.0"
 
     }
 
     signingConfigs {
         release {
-            storeFile file("release.jks")
+            storeFile file("$releaseStore")
             keyAlias "android"
             storePassword "$releasePassword"
             keyPassword "$releasePassword"
