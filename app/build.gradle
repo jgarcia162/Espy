@@ -4,23 +4,25 @@ apply plugin: 'com.android.application'
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 def releasePassword = properties.getProperty('releasePassword')
+def releaseStore = properties.getProperty('releaseStore')
+
 
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "nyc.c4q_ac35.espy"
+        applicationId "nyc.c4q_ac21.espy"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 3
-        versionName "3.0"
+        versionCode 1
+        versionName "1.0.0"
 
     }
 
     signingConfigs {
         release {
-            storeFile file("release.jks")
+            storeFile file("$releaseStore")
             keyAlias "android"
             storePassword "$releasePassword"
             keyPassword "$releasePassword"
@@ -33,12 +35,28 @@ android {
         abortOnError false
     }
 
+
+ signingConfigs {
+        debug {
+            storeFile new File(getRootDir(), "debug.keystore")
+            storePassword "123456"
+            keyAlias "elvis"
+            keyPassword "123456"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+
         }
+
+//debug {
+//            signingConfig signingConfigs.debug
+//        }
+
     }
 
     packagingOptions {
