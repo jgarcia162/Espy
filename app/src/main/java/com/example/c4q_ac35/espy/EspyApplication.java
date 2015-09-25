@@ -3,11 +3,9 @@ package com.example.c4q_ac35.espy;
 import android.app.Application;
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -24,6 +22,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 
 import java.util.ArrayList;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created by c4q-ac35 on 9/13/15.
@@ -49,6 +49,12 @@ public class EspyApplication extends Application implements
     @Override
     public void onCreate() {
         super.onCreate();
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/Roboto-ThinItalic.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .addCustomStyle(EspyFont.class, R.attr.textFieldStyle)
+                        .build()
+        );
         //mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
         sGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -92,7 +98,7 @@ public class EspyApplication extends Application implements
 //                Toast.LENGTH_LONG).show();
             new AlertDialog.Builder(getApplicationContext())
                     .setTitle("No Internet")
-                    .setMessage("Looks like theres no internet right now, try again later!")
+                    .setMessage("Looks like there  is no internet right now, try again later!")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // continue with delete
@@ -103,7 +109,6 @@ public class EspyApplication extends Application implements
                             // do nothing
                         }
                     })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
     }
@@ -111,26 +116,8 @@ public class EspyApplication extends Application implements
     public static void populateGeofenceList() {
         float geofenceRadius = Constants.GEOFENCE_RADIUS_IN_METERS;
 
-        double riteAidLat = 40.742723;
-        double riteAidLng = -73.935131;
-
-//        sGeofenceList.add(new Geofence.Builder()
-//                .setRequestId("Doughnut Plant") //replace with place.getName()
-//
-//                        // Set the circular region of this geofence.
-//                .setCircularRegion(
-//                        riteAidLat, //Replace with place.getLat()
-//                        riteAidLng, // Replace with place.getLong()
-//                        geofenceRadius
-//                )
-//                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-//                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-//                        Geofence.GEOFENCE_TRANSITION_EXIT)
-//                .build());
-
         if(FavoritesFragment.venueList != null) {
             sGeofenceList.clear();
-
             for (Venue venue : FavoritesFragment.venueList) {
                 double venueLat = venue.getLocation().getLat();
                 double venueLong = venue.getLocation().getLng();

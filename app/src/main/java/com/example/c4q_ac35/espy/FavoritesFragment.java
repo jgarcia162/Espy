@@ -54,8 +54,9 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt("myListPage", 1);
-        title = getArguments().getString("myList");
+//
+//        page = getArguments().getInt("myListPage", 1);
+//        title = getArguments().getString("myList");
 
 
         //RestAdapter mRestAdapter = new RestAdapter.Builder()
@@ -72,7 +73,6 @@ public class FavoritesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         //myFavoritesHelper = new MyFavoritesHelper(view.getContext());
-
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.favelist);
         mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header);
@@ -94,15 +94,9 @@ public class FavoritesFragment extends Fragment {
         if (venueList != null) {
             adapter = new VenueAdapter(getActivity(), venueList);
             mRecyclerView.setAdapter(adapter);
-            //adapter.notifyDataSetChanged();
-        }else{
-            Toast.makeText(getActivity(),"Add something to your favorites",Toast.LENGTH_SHORT).show();
         }
-
-
         return view;
     }
-
 
     public static final void setAppFont(ViewGroup mContainer, Typeface mFont) {
         if (mContainer == null || mFont == null) return;
@@ -147,3 +141,4 @@ public class FavoritesFragment extends Fragment {
 //
 //    }
 }
+

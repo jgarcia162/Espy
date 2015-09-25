@@ -13,7 +13,7 @@ public interface FourSquareAPI {
     @GET("/venues/search?v=20130815&client_id=1GRBSICWBKAFJKO1PL5SY3MK4MFIMJAZ2OS3U0O5RYM1WLWY&client_secret=FXFOQD33LQO0PX2ZY1OWKZ3MVZELAXVSHYLVJBPJM4UPGNIL")
     public void getFeed (@Query("ll") String lat, Callback<ResponseAPI> response);
 
-    @GET("/venues/search?v=20130815&client_id=1GRBSICWBKAFJKO1PL5SY3MK4MFIMJAZ2OS3U0O5RYM1WLWY&client_secret=FXFOQD33LQO0PX2ZY1OWKZ3MVZELAXVSHYLVJBPJM4UPGNIL&near=New York, NY&x=200")
+    @GET("/venues/search?v=20130815&client_id=1GRBSICWBKAFJKO1PL5SY3MK4MFIMJAZ2OS3U0O5RYM1WLWY&client_secret=FXFOQD33LQO0PX2ZY1OWKZ3MVZELAXVSHYLVJBPJM4UPGNIL&near=Astoria,NY&x=200")
     public void search (@Query("query") String query, @Query("limit") int limits, Callback<ResponseAPI> resposeLimit);
 
 }

@@ -9,6 +9,7 @@
     android:paddingRight="@dimen/activity_recycleH_margin"
     android:paddingTop="@dimen/activity_recycleV_margin">
 
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/favelist"
         android:layout_width="match_parent"
@@ -33,5 +34,4 @@
             tools:ignore="MissingPrefix" />
 
     </com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader>
-
 </FrameLayout>
