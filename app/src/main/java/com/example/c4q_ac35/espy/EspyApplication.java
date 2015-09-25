@@ -3,11 +3,9 @@ package com.example.c4q_ac35.espy;
 import android.app.Application;
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -24,6 +22,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 
 import java.util.ArrayList;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created by c4q-ac35 on 9/13/15.
@@ -49,6 +49,12 @@ public class EspyApplication extends Application implements
     @Override
     public void onCreate() {
         super.onCreate();
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/Roboto-ThinItalic.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .addCustomStyle(EspyFont.class, R.attr.textFieldStyle)
+                        .build()
+        );
         //mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
         sGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)

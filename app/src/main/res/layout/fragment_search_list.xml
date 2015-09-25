@@ -17,7 +17,6 @@
         android:layout_gravity="center_horizontal|top" />
 
     <!--</android.support.v4.widget.SwipeRefreshLayout>-->
-    <!--<todo: add  margin btw search bar and title;-->
 
     <com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader
         android:id="@+id/header1"
