@@ -17,6 +17,7 @@ import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -54,6 +55,16 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //TODO TEST THIS
+        try {
+            venueList = myFavoritesHelper.getVenueDao().queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        myFavoritesHelper.close();
+
 //
 //        page = getArguments().getInt("myListPage", 1);
 //        title = getArguments().getString("myList");

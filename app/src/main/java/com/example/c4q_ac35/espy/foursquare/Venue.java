@@ -16,7 +16,7 @@ public class Venue {
     @DatabaseField
     private String name;
     @Expose
-   @DatabaseField (columnName = "Contact Information",foreign = true)
+    @DatabaseField (columnName = "Contact Information",foreign = true)
     private Contact contact;
     @Expose
     @DatabaseField (columnName = "Location",foreign = true)

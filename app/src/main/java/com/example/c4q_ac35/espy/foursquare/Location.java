@@ -5,19 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
-import com.j256.ormlite.field.DatabaseField;
 
 
 public class Location {
 
     @Expose
-    @DatabaseField
     private double lat;
     @Expose
-    @DatabaseField
     private double lng;
     @Expose
-    @DatabaseField
     private long distance;
     @Expose
     private String cc;

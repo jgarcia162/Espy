@@ -25,8 +25,7 @@ public class MyFavoritesHelper extends OrmLiteSqliteOpenHelper {
     public static final String MY_NAME = MyFavoritesHelper.class.getName();
 
     private Dao<Venue, Integer> venueDao = null;
-    private Dao<Contact,Integer> contactDao = null;
-    private Dao<Location,Integer> locationDao = null;
+
 
     public MyFavoritesHelper(Context context) {
         super(context, MYDB, null, VERSION);
@@ -37,16 +36,15 @@ public class MyFavoritesHelper extends OrmLiteSqliteOpenHelper {
         try {
             Log.i(MY_NAME, "onCreate");
             TableUtils.createTable(connectionSource, Venue.class);
-            TableUtils.createTable(connectionSource, Location.class);
 
             //...
 
-//            Dao<Venue, Integer> dao = getVenueDao();
-//            Venue v = new Venue();
-//            v.setId("123");
-//            v.setName("Jose");
-//            v.setName(someTextView.getText());
-//            dao.create(v);
+            Dao<Venue, Integer> dao = getVenueDao();
+            Venue v = new Venue();
+            v.setId("123");
+            v.setName("Jose");
+            v.setLocation(v.getLocation());
+            dao.create(v);
 
             Log.i(MY_NAME, "created new entries in onCreate");
         } catch (SQLException e) {
@@ -78,18 +76,7 @@ public class MyFavoritesHelper extends OrmLiteSqliteOpenHelper {
         }
         return venueDao;
     }
-    public Dao<Contact, Integer> getContactDao() throws SQLException {
-        if (contactDao == null) {
-            contactDao = getDao(Contact.class);
-        }
-        return contactDao;
-    }
-    public Dao<Location, Integer> getLocationDao() throws SQLException {
-        if (locationDao == null) {
-            locationDao = getDao(Location.class);
-        }
-        return locationDao;
-    }
+
 
     @Override
     public void close() {

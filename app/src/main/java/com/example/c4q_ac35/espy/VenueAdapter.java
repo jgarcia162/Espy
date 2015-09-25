@@ -19,13 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Location;
 import com.example.c4q_ac35.espy.foursquare.Venue;
-import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationServices;
+import com.j256.ormlite.dao.Dao;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +45,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public List<Venue> mVenues;
     public List<String> geofencesToRemove = new ArrayList<>();
     private Context mContext;
-
-    //MyFavoritesHelper myFavoritesHelper = new MyFavoritesHelper();
+    public Dao<Venue, Integer> dao;
+    MyFavoritesHelper myFavoritesHelper;
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -66,7 +68,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         @Bind(R.id.done)
         ImageButton doneButton;
         @Bind(R.id.distance_marker)
-        ImageButton distanceMaker;
+        ImageButton distanceMarker;
         @Bind(R.id.item_distance)
         TextView distance;
         @Bind(R.id.menu_txt) TextView menu;
@@ -74,6 +76,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         public ViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
 
         }
 
@@ -91,6 +94,12 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public VenueAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.venue_layout, parent, false);
+        myFavoritesHelper = new MyFavoritesHelper(itemView.getContext());
+        try {
+            dao = myFavoritesHelper.getVenueDao();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return new VenueAdapter.ViewHolder(itemView);
 
@@ -114,6 +123,23 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
                 if (FavoritesFragment.venueList != null
                         && !FavoritesFragment.venueList.contains(venue)) {
                     FavoritesFragment.venueList.add(venue);
+                    //TODO ADD TO DATABASE ON CLICK
+                    Venue v = new Venue();
+                    v.setId(venue.getId());
+                    v.setName(venue.getName());
+                    v.setLocation(venue.getLocation());
+                    v.setMenu(venue.getMenu());
+                    v.setContact(venue.getContact());
+                    try {
+                        dao.createIfNotExists(v);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        dao.create(v);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
 //                    EspyMain.startLocationUpdates();
 
                 } else {

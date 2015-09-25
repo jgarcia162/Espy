@@ -20,8 +20,6 @@ public class DaoFactory extends Application {
     private MyFavoritesHelper myFavoritesHelper = null;
 
     private Dao<Venue,Integer> venueDao=null;
-    private Dao<Location,Integer> locationDao = null;
-    private Dao<Contact, Integer> contactDao = null;
 
     @Override
     public void onCreate() {
@@ -41,20 +39,6 @@ public class DaoFactory extends Application {
             venueDao = myFavoritesHelper.getDao(Venue.class);
         }
         return venueDao;
-    }
-
-    public Dao<Contact, Integer> getContactDao() throws SQLException {
-        if(contactDao == null){
-            contactDao = myFavoritesHelper.getDao(Contact.class);
-        }
-        return contactDao;
-    }
-
-    public Dao<Location, Integer> getLocationDao() throws SQLException {
-        if (locationDao == null) {
-            locationDao = myFavoritesHelper.getDao(Location.class);
-        }
-        return locationDao;
     }
 
     @Override
