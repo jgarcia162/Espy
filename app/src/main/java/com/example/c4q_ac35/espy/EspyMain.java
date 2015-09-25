@@ -92,8 +92,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 //        } else if (getIntent().getAction().equals("OPEN_FAVORITES")) {
 //            viewPager.setCurrentItem(1);
 //        }
-        //TODO ALARM TO HANDLE WEEKLY NOTIFICATIONS
-
         setNotificationAlarm();
 
      //  mFab = (FloatingActionButton) findViewById(R.id.faveBt);
