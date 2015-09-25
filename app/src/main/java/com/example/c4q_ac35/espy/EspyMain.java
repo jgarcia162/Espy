@@ -1,7 +1,7 @@
 package com.example.c4q_ac35.espy;
 
-import android.app.Notification;
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -12,9 +12,8 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -23,26 +22,19 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-import com.example.c4q_ac35.espy.db.MyFavoritesHelper;
+
 import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.Dao;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -84,7 +76,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_layout, false);
 
         mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
-//        setSupportActionBar(mToolbar);
+        setSupportActionBar(mToolbar);
         setUpTab();
 
         if (getIntent().getAction().equals("OPEN_MAP")) {
@@ -96,7 +88,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
         setNotificationAlarm();
 
-     //  mFab = (FloatingActionButton) findViewById(R.id.faveBt);
+        //  mFab = (FloatingActionButton) findViewById(R.id.faveBt);
 
 //        if(!isNetworkOnline() && !checkForWifi()){
 //            createNetworkDialog(this);
@@ -105,7 +97,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
     }
 
 
-//    private void initData() {
+    //    private void initData() {
 //        try {
 //            for(Venue venue : FavoritesFragment.venueList) {
 //                Dao<Venue, Integer> venueDao = getHelper().getVenueDao();
@@ -134,7 +126,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.map_icon));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user_icon));
 
-        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapterViewPager);
 //        tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -191,7 +183,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
                 .title("Marker"));
     }
 
-//    @Override
+    //    @Override
 //    protected void onStart() {
 //        super.onStart();
 //        mGoogleApiClient.connect();
@@ -212,7 +204,7 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
             return mNotificationPendingIntent;
         }
         Intent notificationIntent = new Intent(this, NotificationsService.class);
-            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP | Notification.FLAG_AUTO_CANCEL);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP | Notification.FLAG_AUTO_CANCEL);
         return PendingIntent.getService(this, Constants.WEEKLY_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -239,8 +231,6 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, Constants.ALARM_WEEKLY_INTERVAL, mNotificationPendingIntent);
     }
-
-
 
 
     class MyPagerAdapter extends FragmentStatePagerAdapter {
@@ -279,20 +269,19 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
     }
 
 
-
     public boolean isNetworkOnline() {
-        boolean status=false;
-        try{
+        boolean status = false;
+        try {
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = cm.getNetworkInfo(0);
-            if (netInfo != null && netInfo.getState()==NetworkInfo.State.CONNECTED) {
-                status= true;
-            }else {
+            if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
+                status = true;
+            } else {
                 netInfo = cm.getNetworkInfo(1);
-                if(netInfo!=null && netInfo.getState()== NetworkInfo.State.CONNECTED)
-                    status= true;
+                if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED)
+                    status = true;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
 
@@ -301,35 +290,35 @@ public class EspyMain extends AppCompatActivity implements OnMapReadyCallback {
 
     }
 
-    private boolean checkForWifi(){
+    private boolean checkForWifi() {
         ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
         if (!mWifi.isConnected()) {
             return false;
-        }else
+        } else
             return true;
     }
 
 
-    private void createNetworkDialog(Context context){
-            new AlertDialog.Builder(context)
-                    .setTitle("No Network")
-                    .setMessage("Please check your Network Settings")
-                    .setIcon(R.mipmap.espy_icon)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent networkIntent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
-                            startActivity(networkIntent);
-                            dialog.dismiss();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .show();
+    private void createNetworkDialog(Context context) {
+        new AlertDialog.Builder(context)
+                .setTitle("No Network")
+                .setMessage("Please check your Network Settings")
+                .setIcon(R.mipmap.espy_icon)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent networkIntent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                        startActivity(networkIntent);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
 
     }
 

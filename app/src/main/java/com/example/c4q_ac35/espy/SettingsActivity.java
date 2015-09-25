@@ -12,9 +12,9 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_layout);
 
-//        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+       setSupportActionBar(toolbar);
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         FragmentManager fragmentManager = getFragmentManager();

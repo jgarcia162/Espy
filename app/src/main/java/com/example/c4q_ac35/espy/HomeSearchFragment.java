@@ -1,6 +1,5 @@
 package com.example.c4q_ac35.espy;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,32 +7,24 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
 import com.example.c4q_ac35.espy.foursquare.ResponseAPI;
@@ -64,7 +55,8 @@ public class HomeSearchFragment extends Fragment
     public static final String BASE_API = "https://api.foursquare.com/v2";
     public static final String TAG = "HomeSearchFragment";
     FourSquareAPI servicesFourSquare = null;
-    public static List<Venue> venueList = new ArrayList<>();;
+    public static List<Venue> venueList = new ArrayList<>();
+    ;
     private boolean resultsFound = false;
     private RecyclerView mRecyclerView;
     private RecyclerViewHeader mRecyclerViewHeader;
@@ -103,8 +95,6 @@ public class HomeSearchFragment extends Fragment
         servicesFourSquare = mRestAdapter.create(FourSquareAPI.class);
 
 
-
-
 //        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
 //            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -139,9 +129,6 @@ public class HomeSearchFragment extends Fragment
 //    }
 
 
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -160,8 +147,7 @@ public class HomeSearchFragment extends Fragment
         if (location != null) {
             Log.d(TAG, "date: " + (System.currentTimeMillis() - location.getTime()));
             updateLocation(location);
-        }
-        else {
+        } else {
             boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
@@ -187,7 +173,7 @@ public class HomeSearchFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_list, container, false);
-      //  mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        //  mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
         mRecyclerViewHeader = (RecyclerViewHeader) view.findViewById(R.id.header1);
         adapter = new VenueAdapter(getActivity(), venueList);
@@ -196,7 +182,7 @@ public class HomeSearchFragment extends Fragment
         mRecyclerView.setLayoutManager((new LinearLayoutManager(getActivity())));
         mRecyclerViewHeader.attachTo(mRecyclerView, true);
         mEditTextSearch = (EditText) view.findViewById(R.id.search_field_final);
-       // mSwipeRefreshLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener) getActivity());
+        // mSwipeRefreshLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener) getActivity());
 
 
         mEditTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -267,7 +253,6 @@ public class HomeSearchFragment extends Fragment
 //                Toast.LENGTH_LONG).show();
 //    }
 
-    //Todo
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
 
@@ -285,13 +270,12 @@ public class HomeSearchFragment extends Fragment
             adapter.setVenues(venueList);
             mRecyclerView.setVerticalScrollbarPosition(0);
         }
-           // adapter = new VenueAdapter(getActivity(), venueList);
-           // mRecyclerView.setAdapter(adapter);
+        // adapter = new VenueAdapter(getActivity(), venueList);
+        // mRecyclerView.setAdapter(adapter);
 
-     //<--------------------Attempt #3 ---------------------->
-           // adapter.notifyItemRangeChanged(0, venueList.size() -1);
-           // adapter.notifyDataSetChanged();
-
+        //<--------------------Attempt #3 ---------------------->
+        // adapter.notifyItemRangeChanged(0, venueList.size() -1);
+        // adapter.notifyDataSetChanged();
 
 
         @Override
@@ -389,7 +373,6 @@ public class HomeSearchFragment extends Fragment
 //    };
 
 
-    // Todo: Hide the keyboard
     //Todo: Hide the AutoComplete
     //Todo: The AsynTask if the searching is null "saying that is loading"
 
