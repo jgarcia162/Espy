@@ -149,7 +149,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
 
-
                 android.support.v7.app.AlertDialog.Builder alert = new android.support.v7.app.AlertDialog.Builder(mContext);
                 alert.setTitle("Menu");
 
@@ -172,7 +171,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
                     }
                 });
                 alert.show();
-
             }
         });
 

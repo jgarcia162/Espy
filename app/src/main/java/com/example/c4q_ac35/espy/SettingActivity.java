@@ -28,8 +28,6 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
