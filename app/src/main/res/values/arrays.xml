@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="distance">
+        <item>0.1 mile</item>
+        <item>0.2 miles</item>
+        <item>0.5 miles</item>
+        <item>0.8 miles</item>
+        <item>1 mile</item>
+    </string-array>
+
+    <string-array name="distance_values">
+        <item>160</item>
+        <item>321</item>
+        <item>804</item>
+        <item>1287</item>
+        <item>1609</item>
+    </string-array>
+</resources>
