@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 
 import android.content.Intent;
@@ -81,32 +83,22 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         public ViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
         }
-
-
     }
-
 
     public VenueAdapter(Context context, List<Venue> venues) {
         this.mContext = context;
         this.mVenues = venues;
     }
 
-
     @Override
     public VenueAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.venue_layout, parent, false);
-
         return new VenueAdapter.ViewHolder(itemView);
-
     }
-
 
     @Override
     public void onBindViewHolder(final VenueAdapter.ViewHolder holder, int position) {
-
         final Venue venue = mVenues.get(position);
 
         holder.name.setText(venue.getName());
@@ -115,17 +107,17 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         holder.phone.setText(venue.getContact().phone);
 //        holder.ratingBar.setText("" + venue.getStats().getUsersCount());
         holder.favButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(FavoritesFragment.venueList != null){
+            @Override
+            public void onClick(View view) {
+                if(FavoritesFragment.venueList != null){
                     FavoritesFragment.venueList.add(venue);
-                    }else{
-                        FavoritesFragment.venueList = new ArrayList<Venue>();
-                        FavoritesFragment.venueList.add(venue);
-                        Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ", Toast.LENGTH_SHORT).show();
-                        holder.favButton.setVisibility(View.INVISIBLE);
-                    }
+                }else{
+                    FavoritesFragment.venueList = new ArrayList<Venue>();
+                    FavoritesFragment.venueList.add(venue);
+                    Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ", Toast.LENGTH_SHORT).show();
+                    holder.favButton.setVisibility(View.INVISIBLE);
                 }
+            }
         });
         DecimalFormat df2 = new DecimalFormat("###.##");
         holder.distance.setText(df2.format(venue.getLocation().getDistance() * (0.000621371)) + " mi");
@@ -146,7 +138,9 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 //                    EspyMain.startLocationUpdates();
                 }
 
-                EspyApplication.populateGeofenceList();
+                SharedPreferences pref = mContext.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+                float radius = pref.getFloat(Constants.PREFERENCE_DISTANCE, Constants.GEOFENCE_RADIUS_IN_METERS);
+                EspyApplication.populateGeofenceList(radius);
                 ((EspyApplication) mContext.getApplicationContext()).addGeofences();
             }
         });
@@ -267,6 +261,4 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         this.mVenues = venues;
         notifyDataSetChanged();
     }
-
 }
-

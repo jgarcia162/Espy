@@ -12,8 +12,8 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_layout);
 
-       android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
-       setSupportActionBar(toolbar);
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -23,12 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
                     .add(R.id.fragment_container, new MyPreferenceFragment())
                     .commit();
         }
-
-//        getIntent();
-//        addPreferencesFromResource(R.xml.user_settings_layout);
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -38,8 +33,5 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-
     }
-
-
 }

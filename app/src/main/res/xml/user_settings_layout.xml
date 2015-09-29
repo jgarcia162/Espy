@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-        android:title="Notifications Types"/>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Notifications Types" />
     <CheckBoxPreference
+        android:defaultValue="true"
         android:key="pref_enablednearby"
-        android:title="Nearby Location"
-        android:defaultValue="true"/>
+        android:title="Nearby Location" />
+    <ListPreference
+        android:title="Distance to Location"
+        android:key="pref_geofencedistance"
+        android:entryValues="@array/distance_values"
+        android:entries="@array/distance" />
     <CheckBoxPreference
+        android:defaultValue="true"
         android:key="pref_enabledweekly"
-        android:title="Weekly"
-        android:defaultValue="true"/>
+        android:title="Weekly" />
     <CheckBoxPreference
         android:key="pref_enabledbiweekly"
-        android:title="Bi-weekly"/>
-    <PreferenceCategory
-        android:title="Notification Options"/>
+        android:title="Bi-weekly" />
+    <PreferenceCategory android:title="Notification Options" />
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="pref_notification_sound"
-        android:title="Notification Sound"/>
+        android:title="Notification Sound" />
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="pref_notification_vibrate"
-        android:title="Notification Vibrate"/>
+        android:title="Notification Vibrate" />
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="pref_notification_light"
-        android:title="Notification Blink"/>
-
+        android:title="Notification Blink" />
 </PreferenceScreen>
 

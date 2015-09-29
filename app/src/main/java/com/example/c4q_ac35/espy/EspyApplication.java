@@ -62,11 +62,8 @@ public class EspyApplication extends Application implements
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
-        if (!sGoogleApiClient.isConnected()) {
+        if (!sGoogleApiClient.isConnected())
             sGoogleApiClient.connect();
-        } else {
-
-        }
     }
 
     @Override
@@ -96,25 +93,24 @@ public class EspyApplication extends Application implements
 //                "Google Places API connection failed with error code:" +
 //                        connectionResult.getErrorCode(),
 //                Toast.LENGTH_LONG).show();
-            new AlertDialog.Builder(getApplicationContext())
-                    .setTitle("No Internet")
-                    .setMessage("Looks like there  is no internet right now, try again later!")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // continue with delete
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // do nothing
-                        }
-                    })
-                    .show();
+        new AlertDialog.Builder(getApplicationContext())
+                .setTitle("No Internet")
+                .setMessage("Looks like there  is no internet right now, try again later!")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .show();
 
     }
 
-    public static void populateGeofenceList() {
-        float geofenceRadius = Constants.GEOFENCE_RADIUS_IN_METERS;
+    public static void populateGeofenceList(float geofenceRadius) {
 
         if(FavoritesFragment.venueList != null) {
             sGeofenceList.clear();
@@ -126,14 +122,11 @@ public class EspyApplication extends Application implements
                         .setCircularRegion(
                                 venueLat,
                                 venueLong,
-                                geofenceRadius
-
-                        )
+                                geofenceRadius)
                         .setExpirationDuration(Geofence.NEVER_EXPIRE)
                         .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
                                 Geofence.GEOFENCE_TRANSITION_EXIT)
                         .build());
-
             }
         }
     }
@@ -161,8 +154,8 @@ public class EspyApplication extends Application implements
                 logSecurityException(securityException);
             }
         }
-
     }
+
     /**
      * Removes geofences, which stops further notifications when the device enters or exits
      * previously registered geofences.
@@ -183,6 +176,7 @@ public class EspyApplication extends Application implements
             logSecurityException(securityException);
         }
     }
+
     /**
      * Builds and returns a GeofencingRequest. Specifies the list of geofences to be monitored.
      * Also specifies how the geofence notifications are initially triggered.
@@ -214,7 +208,6 @@ public class EspyApplication extends Application implements
 
             return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
-
     }
 
     /**
@@ -252,6 +245,4 @@ public class EspyApplication extends Application implements
         Log.e(LOG_TAG, "Invalid location permission. " +
                 "You need to use ACCESS_FINE_LOCATION with geofences", securityException);
     }
-
-
 }
