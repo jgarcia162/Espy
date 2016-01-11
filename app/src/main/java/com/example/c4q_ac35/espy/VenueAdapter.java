@@ -94,12 +94,12 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
     public VenueAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.venue_layout, parent, false);
-        myFavoritesHelper = new MyFavoritesHelper(itemView.getContext());
-        try {
-            dao = myFavoritesHelper.getVenueDao();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        myFavoritesHelper = new MyFavoritesHelper(itemView.getContext());
+//        try {
+//            dao = myFavoritesHelper.getVenueDao();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
         return new VenueAdapter.ViewHolder(itemView);
 

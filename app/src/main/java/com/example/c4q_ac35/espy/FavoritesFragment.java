@@ -57,13 +57,13 @@ public class FavoritesFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //TODO TEST THIS
-        try {
-            venueList = myFavoritesHelper.getVenueDao().queryForAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        myFavoritesHelper.close();
+//        try {
+//            venueList = myFavoritesHelper.getVenueDao().queryForAll();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        myFavoritesHelper.close();
 
 //
 //        page = getArguments().getInt("myListPage", 1);
