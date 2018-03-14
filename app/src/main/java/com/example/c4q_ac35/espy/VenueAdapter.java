@@ -1,18 +1,13 @@
 package com.example.c4q_ac35.espy;
 
-import android.app.AlertDialog;
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
-
-import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
-import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
-
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,27 +15,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.c4q_ac35.espy.db.FavoritesHelper;
 import com.example.c4q_ac35.espy.foursquare.Location;
-import com.example.c4q_ac35.espy.foursquare.Menu;
 import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -58,27 +49,28 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.item_name)
+        @BindView(R.id.item_name)
         TextView name;
-        @Bind(R.id.item_address)
+        @BindView(R.id.item_address)
         TextView address;
-        @Bind(R.id.item_phone)
+        @BindView(R.id.item_phone)
         TextView phone;
-        @Bind(R.id.venue_picture)
+        @BindView(R.id.venue_picture)
         ImageView mImageViewVenue;
-        @Bind(R.id.menu)
+        @BindView(R.id.menu)
         ImageButton menuBt;
-        @Bind(R.id.favorite_button)
+        @BindView(R.id.favorite_button)
         ImageButton favButton;
-        @Bind(R.id.share_button)
+        @BindView(R.id.share_button)
         ImageView mShareButton;
-        @Bind(R.id.done)
+        @BindView(R.id.done)
         ImageButton doneButton;
-        @Bind(R.id.distance_marker)
+        @BindView(R.id.distance_marker)
         ImageButton distanceMaker;
-        @Bind(R.id.item_distance)
+        @BindView(R.id.item_distance)
         TextView distance;
-        @Bind(R.id.menu_txt) TextView menu;
+        @BindView(R.id.menu_txt)
+        TextView menu;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -109,9 +101,9 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         holder.favButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(FavoritesFragment.venueList != null){
+                if (FavoritesFragment.venueList != null) {
                     FavoritesFragment.venueList.add(venue);
-                }else{
+                } else {
                     FavoritesFragment.venueList = new ArrayList<Venue>();
                     FavoritesFragment.venueList.add(venue);
                     Toast.makeText(view.getContext(), FavoritesFragment.venueList.size() + " Favorites ", Toast.LENGTH_SHORT).show();
@@ -148,14 +140,14 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         holder.doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(FavoritesFragment.venueList != null
+                if (FavoritesFragment.venueList != null
                         && !FavoritesFragment.venueList.isEmpty()
-                        && !UserFragment.historyList.contains(venue)){
+                        && !UserFragment.historyList.contains(venue)) {
                     FavoritesFragment.venueList.remove(venue);
-                    Toast.makeText(v.getContext(),"NICE!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), "NICE!", Toast.LENGTH_SHORT).show();
                     UserFragment.historyList.add(venue);
                     holder.doneButton.setVisibility(View.INVISIBLE);
-                }else{
+                } else {
                 }
             }
         });
@@ -172,6 +164,16 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
                 String venuePhone = venue.getContact().getPhone();
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 callIntent.setData(Uri.parse("tel:" + venuePhone));
+                if (ActivityCompat.checkSelfPermission(v.getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
                 mContext.startActivity(callIntent);
             }
         });

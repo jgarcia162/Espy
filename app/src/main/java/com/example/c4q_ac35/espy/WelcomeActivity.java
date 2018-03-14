@@ -6,14 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    @Bind(R.id.login_button)
+    @BindView(R.id.login_button)
     Button loginButton;
-    @Bind(R.id.signup_button)
+    @BindView(R.id.signup_button)
     Button signupButton;
 
 

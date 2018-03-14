@@ -1,7 +1,6 @@
 package com.example.c4q_ac35.espy;
 
 import android.app.Application;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -93,6 +92,7 @@ public class EspyApplication extends Application implements
 //                "Google Places API connection failed with error code:" +
 //                        connectionResult.getErrorCode(),
 //                Toast.LENGTH_LONG).show();
+        //TODO reimplement ALertDialog
         new AlertDialog.Builder(getApplicationContext())
                 .setTitle("No Internet")
                 .setMessage("Looks like there  is no internet right now, try again later!")
@@ -202,7 +202,7 @@ public class EspyApplication extends Application implements
             return mGeofencePendingIntent;
         } else {
             Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP | Notification.FLAG_AUTO_CANCEL);
+            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
             // addGeofences() and removeGeofences().
 

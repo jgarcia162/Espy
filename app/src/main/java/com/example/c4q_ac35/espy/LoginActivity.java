@@ -8,25 +8,25 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
-    @Bind(R.id.email)
+    @BindView(R.id.email)
     TextInputLayout emailEditText;
-    @Bind(R.id.passwordText)
+    @BindView(R.id.passwordText)
     TextInputLayout passwordEditText;
-    @Bind(R.id.login_button)
+    @BindView(R.id.login_button)
     Button login_button;
-    @Bind(R.id.signup_button)
+    @BindView(R.id.signup_button)
     Button signup_button;
-    @Bind(R.id.googleLoginButton)
+    @BindView(R.id.googleLoginButton)
     Button googleButton;
-    @Bind(R.id.twitterLoginButton)
+    @BindView(R.id.twitterLoginButton)
     Button twitterButton;
-    @Bind(R.id.facebookLoginButton)
+    @BindView(R.id.facebookLoginButton)
     Button facebookButton;
 
 

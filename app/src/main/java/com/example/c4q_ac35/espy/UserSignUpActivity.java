@@ -6,19 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class UserSignUpActivity extends AppCompatActivity {
-    @Bind(R.id.userName)
+    @BindView(R.id.userName)
     TextInputLayout userName;
 
-    @Bind(R.id.passwordText)
+    @BindView(R.id.passwordText)
     TextInputLayout passwordText;
 
-    @Bind(R.id.confirmpasswordText)
+    @BindView(R.id.confirmpasswordText)
     TextInputLayout confirmPasswordText;
 
-    @Bind(R.id.firstSubmit)
+    @BindView(R.id.firstSubmit)
     Button submitbt;
 
     @Override

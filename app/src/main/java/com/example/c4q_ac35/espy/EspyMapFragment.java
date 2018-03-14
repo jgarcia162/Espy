@@ -1,12 +1,15 @@
 package com.example.c4q_ac35.espy;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
 import com.example.c4q_ac35.espy.foursquare.FourSquareAPI;
@@ -14,6 +17,7 @@ import com.example.c4q_ac35.espy.foursquare.Venue;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -29,7 +33,7 @@ import java.util.List;
  */
 
 
-public class EspyMapFragment extends SupportMapFragment {
+public class EspyMapFragment extends SupportMapFragment implements OnMapReadyCallback {
     private static final String TAG = "EspyMapFragment";
     GoogleMap googleMap;
     public static Location myLocation;
@@ -41,13 +45,24 @@ public class EspyMapFragment extends SupportMapFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        googleMap = getMap(); // loads map
+        getMapAsync(this); // loads map
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         googleMap.setMyLocationEnabled(true); //finds current location
 
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         Criteria criteria = new Criteria();
 
+        assert locationManager != null;
         String provider = locationManager.getBestProvider(criteria, true);
 
         myLocation = locationManager.getLastKnownLocation(provider);
@@ -118,4 +133,8 @@ public class EspyMapFragment extends SupportMapFragment {
         }
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+    }
 }
